@@ -11,18 +11,18 @@ syntax File_and_sort_description_entry =
   ;
 
 syntax Label_records_clause_tail =
-  \label-records-clause-tail-c1: "STANDARD" !>> [\- 0-9 A-Z _ a-z] 
-  | \label-records-clause-tail-c2: "OMITTED" !>> [\- 0-9 A-Z _ a-z] 
+  \label-records-clause-tail-c1: "STANDARD" 
+  | \label-records-clause-tail-c2: "OMITTED" 
   | \label-records-clause-tail-c3: Data_names 
   ;
 
 syntax To_integer =
-  \to-integer: "TO" !>> [\- 0-9 A-Z _ a-z] Integer 
+  \to-integer: "TO" Integer 
   ;
 
 syntax Alt_fd_sd =
-  \alt-fd-sd-c1: "FD" !>> [\- 0-9 A-Z _ a-z] 
-  | \alt-fd-sd-c2: "SD" !>> [\- 0-9 A-Z _ a-z] 
+  \alt-fd-sd-c1: "FD" 
+  | \alt-fd-sd-c2: "SD" 
   ;
 
 syntax Data_names =
@@ -36,37 +36,37 @@ syntax Record_clause_tail =
   ;
 
 syntax Footing =
-  footing: "WITH"? "FOOTING" !>> [\- 0-9 A-Z _ a-z] "AT"? Alt_data_name_integer 
+  footing: "WITH"? "FOOTING" "AT"? Alt_data_name_integer 
   ;
 
 syntax Record_varying_phrase =
-  \record-varying-phrase: "IS"? "VARYING" !>> [\- 0-9 A-Z _ a-z] "IN"? "SIZE"? From_integer? To_integer? "CHARACTERS"? 
+  \record-varying-phrase: "IS"? "VARYING" "IN"? "SIZE"? From_integer? To_integer? "CHARACTERS"? 
   ;
 
 syntax Depending_on =
-  \depending-on: "DEPENDING" !>> [\- 0-9 A-Z _ a-z] "ON"? Data_name 
+  \depending-on: "DEPENDING" "ON"? Data_name 
   ;
 
 syntax Lines_bottom =
-  \lines-bottom: "LINES"? "AT"? "BOTTOM" !>> [\- 0-9 A-Z _ a-z] Alt_data_name_integer 
+  \lines-bottom: "LINES"? "AT"? "BOTTOM" Alt_data_name_integer 
   ;
 
 syntax Data_records_clause =
-  \data-records-clause: "DATA" !>> [\- 0-9 A-Z _ a-z] Records_are Data_name+ 
+  \data-records-clause: "DATA" Records_are Data_name+ 
   ;
 
 syntax Linage_clause =
-  \linage-clause: "LINAGE" !>> [\- 0-9 A-Z _ a-z] "IS"? Alt_data_name_integer "LINES"? Linage_footing_phrase 
+  \linage-clause: "LINAGE" "IS"? Alt_data_name_integer "LINES"? Linage_footing_phrase 
   ;
 
 syntax Alt_characters_records =
-  \alt-characters-records-c1: "CHARACTERS" !>> [\- 0-9 A-Z _ a-z] 
-  | \alt-characters-records-c2: "RECORDS" !>> [\- 0-9 A-Z _ a-z] 
-  | \alt-characters-records-c3: "RECORD" !>> [\- 0-9 A-Z _ a-z] 
+  \alt-characters-records-c1: "CHARACTERS" 
+  | \alt-characters-records-c2: "RECORDS" 
+  | \alt-characters-records-c3: "RECORD" 
   ;
 
 syntax Record_clause_tail_2 =
-  \record-clause-tail-2: "CONTAINS"? Integer "TO" !>> [\- 0-9 A-Z _ a-z] Integer "CHARACTERS"? 
+  \record-clause-tail-2: "CONTAINS"? Integer "TO" Integer "CHARACTERS"? 
   ;
 
 syntax Record_clause_tail_1 =
@@ -74,19 +74,19 @@ syntax Record_clause_tail_1 =
   ;
 
 syntax Block_contains_clause =
-  \block-contains-clause: "BLOCK" !>> [\- 0-9 A-Z _ a-z] "CONTAINS"? Integer_to? Integer Alt_characters_records? 
+  \block-contains-clause: "BLOCK" "CONTAINS"? Integer_to? Integer Alt_characters_records? 
   ;
 
 syntax Recording_mode_clause =
-  \recording-mode-clause: "RECORDING" !>> [\- 0-9 A-Z _ a-z] "MODE"? "IS"? Cobword \ CobwordKeywords 
+  \recording-mode-clause: "RECORDING" "MODE"? "IS"? Cobword \ CobwordKeywords 
   ;
 
 syntax Record_clause =
-  \record-clause: "RECORD" !>> [\- 0-9 A-Z _ a-z] Record_clause_tail 
+  \record-clause: "RECORD" Record_clause_tail 
   ;
 
 syntax Code_set_clause =
-  \code-set-clause: "CODE-SET" !>> [\- 0-9 A-Z _ a-z] "IS"? Alphabet_name 
+  \code-set-clause: "CODE-SET" "IS"? Alphabet_name 
   ;
 
 syntax File_and_sort_description_entry_clauses =
@@ -94,7 +94,7 @@ syntax File_and_sort_description_entry_clauses =
   ;
 
 syntax Lines_top =
-  \lines-top: "LINES"? "AT"? "TOP" !>> [\- 0-9 A-Z _ a-z] Alt_data_name_integer 
+  \lines-top: "LINES"? "AT"? "TOP" Alt_data_name_integer 
   ;
 
 syntax File_and_sort_description_entry_clause =
@@ -124,11 +124,11 @@ syntax Alt_qualified_data_name_literal =
   ;
 
 syntax Label_records_clause =
-  \label-records-clause: "LABEL" !>> [\- 0-9 A-Z _ a-z] Records_are Label_records_clause_tail 
+  \label-records-clause: "LABEL" Records_are Label_records_clause_tail 
   ;
 
 syntax Value_of_clause =
-  \value-of-clause: "VALUE" !>> [\- 0-9 A-Z _ a-z] "OF" !>> [\- 0-9 A-Z _ a-z] Value_of_clause_tail+ 
+  \value-of-clause: "VALUE" "OF" Value_of_clause_tail+ 
   ;
 
 syntax From_integer =

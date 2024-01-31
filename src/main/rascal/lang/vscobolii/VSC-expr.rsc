@@ -43,7 +43,7 @@ syntax Index_name =
   ;
 
 syntax Equal_to_1 =
-  \equal-to-1: "EQUAL" !>> [\- 0-9 A-Z _ a-z] "TO"? 
+  \equal-to-1: "EQUAL" "TO"? 
   ;
 
 syntax System_name =
@@ -55,7 +55,7 @@ syntax Identifier_1 =
   ;
 
 syntax Special_register_1 =
-  \special-register-1: "ADDRESS" !>> [\- 0-9 A-Z _ a-z] "OF" !>> [\- 0-9 A-Z _ a-z] Data_name 
+  \special-register-1: "ADDRESS" "OF" Data_name 
   ;
 
 syntax Text_name =
@@ -77,7 +77,7 @@ syntax Symbolic_character =
   ;
 
 syntax Identifier_2 =
-  \identifier-2: "LINAGE-COUNTER" !>> [\- 0-9 A-Z _ a-z] In_file_name? 
+  \identifier-2: "LINAGE-COUNTER" In_file_name? 
   ;
 
 syntax Paragraph_name =
@@ -86,7 +86,7 @@ syntax Paragraph_name =
   ;
 
 syntax Special_register_2 =
-  \special-register-2: "LENGTH" !>> [\- 0-9 A-Z _ a-z] "OF" !>> [\- 0-9 A-Z _ a-z] Identifier 
+  \special-register-2: "LENGTH" "OF" Identifier 
   ;
 
 syntax Copy_operand =
@@ -132,24 +132,24 @@ syntax Through_arithmetic_expression =
   ;
 
 syntax Alt_reel_unit =
-  \alt-reel-unit-c1: "REEL" !>> [\- 0-9 A-Z _ a-z] 
-  | \alt-reel-unit-c2: "UNIT" !>> [\- 0-9 A-Z _ a-z] 
+  \alt-reel-unit-c1: "REEL" 
+  | \alt-reel-unit-c2: "UNIT" 
   ;
 
 syntax Figurative_constant_simple =
-  \figurative-constant-simple-c5: "SPACES" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c11: "QUOTES" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c7: "HIGH-VALUES" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c12: "NULL" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c3: "ZEROES" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c8: "LOW-VALUE" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c6: "HIGH-VALUE" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c1: "ZERO" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c4: "SPACE" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c10: "QUOTE" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c9: "LOW-VALUES" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c2: "ZEROS" !>> [\- 0-9 A-Z _ a-z] 
-  | \figurative-constant-simple-c13: "NULLS" !>> [\- 0-9 A-Z _ a-z] 
+  \figurative-constant-simple-c5: "SPACES" 
+  | \figurative-constant-simple-c11: "QUOTES" 
+  | \figurative-constant-simple-c7: "HIGH-VALUES" 
+  | \figurative-constant-simple-c12: "NULL" 
+  | \figurative-constant-simple-c3: "ZEROES" 
+  | \figurative-constant-simple-c8: "LOW-VALUE" 
+  | \figurative-constant-simple-c6: "HIGH-VALUE" 
+  | \figurative-constant-simple-c1: "ZERO" 
+  | \figurative-constant-simple-c4: "SPACE" 
+  | \figurative-constant-simple-c10: "QUOTE" 
+  | \figurative-constant-simple-c9: "LOW-VALUES" 
+  | \figurative-constant-simple-c2: "ZEROS" 
+  | \figurative-constant-simple-c13: "NULLS" 
   ;
 
 syntax Class_name =
@@ -157,8 +157,8 @@ syntax Class_name =
   ;
 
 syntax Alt_ascending_descending =
-  \alt-ascending-descending-c2: "DESCENDING" !>> [\- 0-9 A-Z _ a-z] 
-  | \alt-ascending-descending-c1: "ASCENDING" !>> [\- 0-9 A-Z _ a-z] 
+  \alt-ascending-descending-c2: "DESCENDING" 
+  | \alt-ascending-descending-c1: "ASCENDING" 
   ;
 
 syntax Through_literal =
@@ -271,16 +271,16 @@ syntax Alt_plus_minus =
   ;
 
 syntax Copy_statement_replacing_phrase =
-  \copy-statement-replacing-phrase: "REPLACING" !>> [\- 0-9 A-Z _ a-z] Copy_statement_by_phrase+ 
+  \copy-statement-replacing-phrase: "REPLACING" Copy_statement_by_phrase+ 
   ;
 
 syntax Figurative_constant_all =
-  \figurative-constant-all: "ALL" !>> [\- 0-9 A-Z _ a-z] Literal 
+  \figurative-constant-all: "ALL" Literal 
   ;
 
 syntax Records =
-  \records-c2: "RECORDS" !>> [\- 0-9 A-Z _ a-z] 
-  | \records-c1: "RECORD" !>> [\- 0-9 A-Z _ a-z] 
+  \records-c2: "RECORDS" 
+  | \records-c1: "RECORD" 
   ;
 
 syntax Alphabetic_user_defined_word =
@@ -288,8 +288,8 @@ syntax Alphabetic_user_defined_word =
   ;
 
 syntax Values =
-  \values-c2: "VALUES" !>> [\- 0-9 A-Z _ a-z] 
-  | \values-c1: "VALUE" !>> [\- 0-9 A-Z _ a-z] 
+  \values-c2: "VALUES" 
+  | \values-c1: "VALUE" 
   ;
 
 syntax Arithmetic_expression_tail =
@@ -307,8 +307,8 @@ syntax Section_name =
   ;
 
 syntax Through =
-  \through-c1: "THROUGH" !>> [\- 0-9 A-Z _ a-z] 
-  | \through-c2: "THRU" !>> [\- 0-9 A-Z _ a-z] 
+  \through-c1: "THROUGH" 
+  | \through-c2: "THRU" 
   ;
 
 syntax Literal_through_literal =
@@ -320,12 +320,12 @@ syntax Power =
   ;
 
 syntax Copy_statement =
-  \copy-statement: "COPY" !>> [\- 0-9 A-Z _ a-z] Alt_text_name_literal In_library? "SUPPRESS"? Copy_statement_replacing_phrase? "." 
+  \copy-statement: "COPY" Alt_text_name_literal In_library? "SUPPRESS"? Copy_statement_replacing_phrase? "." 
   ;
 
 syntax In =
-  \in-c1: "OF" !>> [\- 0-9 A-Z _ a-z] 
-  | \in-c2: "IN" !>> [\- 0-9 A-Z _ a-z] 
+  \in-c1: "OF" 
+  | \in-c2: "IN" 
   ;
 
 syntax Priority_number =
@@ -341,7 +341,7 @@ syntax Data_or_file_name =
   ;
 
 syntax Copy_statement_by_phrase =
-  \copy-statement-by-phrase: Copy_operand "BY" !>> [\- 0-9 A-Z _ a-z] Copy_operand 
+  \copy-statement-by-phrase: Copy_operand "BY" Copy_operand 
   ;
 
 syntax Length =

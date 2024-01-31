@@ -5,50 +5,50 @@ extend lang::vscobolii::\VSC-expr;
 
 
 syntax Alphabet_clause =
-  \alphabet-clause: "ALPHABET" !>> [\- 0-9 A-Z _ a-z] Alphabet_name "IS"? Alphabet_type 
+  \alphabet-clause: "ALPHABET" Alphabet_name "IS"? Alphabet_type 
   ;
 
 syntax Memory_size_type =
-  \memory-size-type-c2: "CHARACTERS" !>> [\- 0-9 A-Z _ a-z] 
-  | \memory-size-type-c3: "MODULES" !>> [\- 0-9 A-Z _ a-z] 
-  | \memory-size-type-c1: "WORDS" !>> [\- 0-9 A-Z _ a-z] 
+  \memory-size-type-c2: "CHARACTERS" 
+  | \memory-size-type-c3: "MODULES" 
+  | \memory-size-type-c1: "WORDS" 
   ;
 
 syntax Memory_size =
-  \memory-size: "MEMORY" !>> [\- 0-9 A-Z _ a-z] "SIZE"? Integer Memory_size_type 
+  \memory-size: "MEMORY" "SIZE"? Integer Memory_size_type 
   ;
 
 syntax Special_names_paragraph =
-  \special-names-paragraph: "SPECIAL-NAMES" !>> [\- 0-9 A-Z _ a-z] "." Special_names_paragraph_phrase* Special_names_paragraph_clauses "."? 
+  \special-names-paragraph: "SPECIAL-NAMES" "." Special_names_paragraph_phrase* Special_names_paragraph_clauses "."? 
   ;
 
 syntax On_status =
-  \on-status: "ON" !>> [\- 0-9 A-Z _ a-z] "STATUS"? "IS"? Condition 
+  \on-status: "ON" "STATUS"? "IS"? Condition 
   ;
 
 syntax Are =
-  \are-c2: "IS" !>> [\- 0-9 A-Z _ a-z] 
-  | \are-c1: "ARE" !>> [\- 0-9 A-Z _ a-z] 
+  \are-c2: "IS" 
+  | \are-c1: "ARE" 
   ;
 
 syntax With_debugging_mode =
-  \with-debugging-mode: "WITH"? "DEBUGGING" !>> [\- 0-9 A-Z _ a-z] "MODE" !>> [\- 0-9 A-Z _ a-z] 
+  \with-debugging-mode: "WITH"? "DEBUGGING" "MODE" 
   ;
 
 syntax Decimal_point_clause =
-  \decimal-point-clause: "DECIMAL-POINT" !>> [\- 0-9 A-Z _ a-z] "IS"? "COMMA" !>> [\- 0-9 A-Z _ a-z] 
+  \decimal-point-clause: "DECIMAL-POINT" "IS"? "COMMA" 
   ;
 
 syntax Source_computer_paragraph =
-  \source-computer-paragraph: "SOURCE-COMPUTER" !>> [\- 0-9 A-Z _ a-z] "." Source_computer_name? 
+  \source-computer-paragraph: "SOURCE-COMPUTER" "." Source_computer_name? 
   ;
 
 syntax Alphabet_type_also =
-  \alphabet-type-also: "ALSO" !>> [\- 0-9 A-Z _ a-z] Literal 
+  \alphabet-type-also: "ALSO" Literal 
   ;
 
 syntax Currency_sign_clause =
-  \currency-sign-clause: "CURRENCY" !>> [\- 0-9 A-Z _ a-z] "SIGN"? "IS"? Literal 
+  \currency-sign-clause: "CURRENCY" "SIGN"? "IS"? Literal 
   ;
 
 syntax Special_names_paragraph_phrase =
@@ -56,7 +56,7 @@ syntax Special_names_paragraph_phrase =
   ;
 
 syntax Program_collating_sequence =
-  \program-collating-sequence: "PROGRAM"? "COLLATING"? "SEQUENCE" !>> [\- 0-9 A-Z _ a-z] "IS"? Alphabet_name 
+  \program-collating-sequence: "PROGRAM"? "COLLATING"? "SEQUENCE" "IS"? Alphabet_name 
   ;
 
 syntax Special_names_paragraph_status_phrase =
@@ -65,7 +65,7 @@ syntax Special_names_paragraph_status_phrase =
   ;
 
 syntax In_alphabet_name =
-  \in-alphabet-name: "IN" !>> [\- 0-9 A-Z _ a-z] Alphabet_name 
+  \in-alphabet-name: "IN" Alphabet_name 
   ;
 
 syntax Special_names_paragraph_clause =
@@ -77,7 +77,7 @@ syntax Special_names_paragraph_clause =
   ;
 
 syntax Configuration_section =
-  \configuration-section: "CONFIGURATION" !>> [\- 0-9 A-Z _ a-z] "SECTION" !>> [\- 0-9 A-Z _ a-z] "." Configuration_section_paragraphs 
+  \configuration-section: "CONFIGURATION" "SECTION" "." Configuration_section_paragraphs 
   ;
 
 syntax Alphabet_type_others =
@@ -97,11 +97,11 @@ syntax Alphabet_type_other =
   ;
 
 syntax Symbolic_characters_clause =
-  \symbolic-characters-clause: "SYMBOLIC" !>> [\- 0-9 A-Z _ a-z] "CHARACTERS"? Symbolic_character_mapping+ In_alphabet_name? 
+  \symbolic-characters-clause: "SYMBOLIC" "CHARACTERS"? Symbolic_character_mapping+ In_alphabet_name? 
   ;
 
 syntax Class_clause =
-  \class-clause: "CLASS" !>> [\- 0-9 A-Z _ a-z] Class_name "IS"? Literal_through_literal+ 
+  \class-clause: "CLASS" Class_name "IS"? Literal_through_literal+ 
   ;
 
 syntax Special_names_paragraph_clauses =
@@ -118,7 +118,7 @@ syntax Configuration_section_paragraphs =
   ;
 
 syntax Special_names_paragraph_status_phrase_2 =
-  \special-names-paragraph-status-phrase-2: "OFF" !>> [\- 0-9 A-Z _ a-z] "STATUS"? "IS"? Condition On_status? 
+  \special-names-paragraph-status-phrase-2: "OFF" "STATUS"? "IS"? Condition On_status? 
   ;
 
 syntax Symbolic_character_mapping =
@@ -136,15 +136,15 @@ syntax Source_computer_name =
   ;
 
 syntax Special_names_paragraph_status_phrase_1 =
-  \special-names-paragraph-status-phrase-1: "ON" !>> [\- 0-9 A-Z _ a-z] "STATUS"? "IS"? Condition Off_status? 
+  \special-names-paragraph-status-phrase-1: "ON" "STATUS"? "IS"? Condition Off_status? 
   ;
 
 syntax Object_computer_paragraph =
-  \object-computer-paragraph: "OBJECT-COMPUTER" !>> [\- 0-9 A-Z _ a-z] "." Object_computer_name? 
+  \object-computer-paragraph: "OBJECT-COMPUTER" "." Object_computer_name? 
   ;
 
 syntax Segment_limit =
-  \segment-limit: "SEGMENT-LIMIT" !>> [\- 0-9 A-Z _ a-z] "IS"? Priority_number 
+  \segment-limit: "SEGMENT-LIMIT" "IS"? Priority_number 
   ;
 
 syntax Object_computer_name =
@@ -156,14 +156,14 @@ syntax Object_computer_paragraph_sequence_phrase =
   ;
 
 syntax Off_status =
-  \off-status: "OFF" !>> [\- 0-9 A-Z _ a-z] "STATUS"? "IS"? Condition 
+  \off-status: "OFF" "STATUS"? "IS"? Condition 
   ;
 
 syntax Alphabet_type =
-  \alphabet-type-c3: "NATIVE" !>> [\- 0-9 A-Z _ a-z] 
-  | \alphabet-type-c4: "EBCDIC" !>> [\- 0-9 A-Z _ a-z] 
-  | \alphabet-type-c2: "STANDARD-2" !>> [\- 0-9 A-Z _ a-z] 
-  | \alphabet-type-c1: "STANDARD-1" !>> [\- 0-9 A-Z _ a-z] 
+  \alphabet-type-c3: "NATIVE" 
+  | \alphabet-type-c4: "EBCDIC" 
+  | \alphabet-type-c2: "STANDARD-2" 
+  | \alphabet-type-c1: "STANDARD-1" 
   | \alphabet-type-c5: Alphabet_type_others 
   ;
 

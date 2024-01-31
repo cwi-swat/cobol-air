@@ -6,12 +6,12 @@ extend lang::vscobolii::\VSC-expr;
 
 
 syntax Integer_to =
-  \integer-to: Integer "TO" !>> [\- 0-9 A-Z _ a-z] 
+  \integer-to: Integer "TO" 
   ;
 
 syntax Picture =
-  \picture-c2: "PIC" !>> [\- 0-9 A-Z _ a-z] 
-  | \picture-c1: "PICTURE" !>> [\- 0-9 A-Z _ a-z] 
+  \picture-c2: "PIC" 
+  | \picture-c1: "PICTURE" 
   ;
 
 syntax Sign_clause =
@@ -27,17 +27,17 @@ syntax Values_are =
   ;
 
 syntax Zeroes =
-  \zeroes-c2: "ZEROS" !>> [\- 0-9 A-Z _ a-z] 
-  | \zeroes-c1: "ZERO" !>> [\- 0-9 A-Z _ a-z] 
-  | \zeroes-c3: "ZEROES" !>> [\- 0-9 A-Z _ a-z] 
+  \zeroes-c2: "ZEROS" 
+  | \zeroes-c1: "ZERO" 
+  | \zeroes-c3: "ZEROES" 
   ;
 
 syntax Redefines_clause =
-  \redefines-clause: "REDEFINES" !>> [\- 0-9 A-Z _ a-z] Data_name 
+  \redefines-clause: "REDEFINES" Data_name 
   ;
 
 syntax Usage_is =
-  \usage-is: "USAGE" !>> [\- 0-9 A-Z _ a-z] "IS"? 
+  \usage-is: "USAGE" "IS"? 
   ;
 
 syntax Justified_clause =
@@ -45,15 +45,15 @@ syntax Justified_clause =
   ;
 
 syntax External_clause =
-  \external-clause: "IS"? "EXTERNAL" !>> [\- 0-9 A-Z _ a-z] 
+  \external-clause: "IS"? "EXTERNAL" 
   ;
 
 syntax Occurs_clause_1 =
-  \occurs-clause-1: "OCCURS" !>> [\- 0-9 A-Z _ a-z] Integer "TIMES"? Occurs_clause_key* Indexed_by? 
+  \occurs-clause-1: "OCCURS" Integer "TIMES"? Occurs_clause_key* Indexed_by? 
   ;
 
 syntax Renames_clause =
-  \renames-clause: "RENAMES" !>> [\- 0-9 A-Z _ a-z] Qualified_data_name Through_qualified_data_name? 
+  \renames-clause: "RENAMES" Qualified_data_name Through_qualified_data_name? 
   ;
 
 syntax Synchronized_clause =
@@ -66,17 +66,17 @@ syntax Data_description_entry =
   ;
 
 syntax Occurs_clause_2 =
-  \occurs-clause-2: "OCCURS" !>> [\- 0-9 A-Z _ a-z] Integer_to? Integer "TIMES"? "DEPENDING" !>> [\- 0-9 A-Z _ a-z] "ON"? Qualified_data_name Occurs_clause_key* Indexed_by? 
+  \occurs-clause-2: "OCCURS" Integer_to? Integer "TIMES"? "DEPENDING" "ON"? Qualified_data_name Occurs_clause_key* Indexed_by? 
   ;
 
 syntax Alt_left_right =
-  \alt-left-right-c1: "LEFT" !>> [\- 0-9 A-Z _ a-z] 
-  | \alt-left-right-c2: "RIGHT" !>> [\- 0-9 A-Z _ a-z] 
+  \alt-left-right-c1: "LEFT" 
+  | \alt-left-right-c2: "RIGHT" 
   ;
 
 syntax Justified =
-  \justified-c1: "JUSTIFIED" !>> [\- 0-9 A-Z _ a-z] 
-  | \justified-c2: "JUST" !>> [\- 0-9 A-Z _ a-z] 
+  \justified-c1: "JUSTIFIED" 
+  | \justified-c2: "JUST" 
   ;
 
 syntax Data_description_entry_clauses =
@@ -84,8 +84,8 @@ syntax Data_description_entry_clauses =
   ;
 
 syntax Synchronized =
-  \synchronized-c1: "SYNCHRONIZED" !>> [\- 0-9 A-Z _ a-z] 
-  | \synchronized-c2: "SYNC" !>> [\- 0-9 A-Z _ a-z] 
+  \synchronized-c1: "SYNCHRONIZED" 
+  | \synchronized-c2: "SYNC" 
   ;
 
 syntax Data_description_entry_clause =
@@ -104,16 +104,16 @@ syntax Data_description_entry_clause =
   ;
 
 syntax Global_clause =
-  \global-clause: "IS"? "GLOBAL" !>> [\- 0-9 A-Z _ a-z] 
+  \global-clause: "IS"? "GLOBAL" 
   ;
 
 syntax Alt_leading_trailing =
-  \alt-leading-trailing-c2: "TRAILING" !>> [\- 0-9 A-Z _ a-z] 
-  | \alt-leading-trailing-c1: "LEADING" !>> [\- 0-9 A-Z _ a-z] 
+  \alt-leading-trailing-c2: "TRAILING" 
+  | \alt-leading-trailing-c1: "LEADING" 
   ;
 
 syntax Separate_character =
-  \separate-character: "SEPARATE" !>> [\- 0-9 A-Z _ a-z] "CHARACTER"? 
+  \separate-character: "SEPARATE" "CHARACTER"? 
   ;
 
 syntax Usage_clause =
@@ -125,30 +125,30 @@ syntax Data_description_entry_1 =
   ;
 
 syntax Sign_is =
-  \sign-is: "SIGN" !>> [\- 0-9 A-Z _ a-z] "IS"? 
+  \sign-is: "SIGN" "IS"? 
   ;
 
 syntax Blank_when_zero_clause =
-  \blank-when-zero-clause: "BLANK" !>> [\- 0-9 A-Z _ a-z] "WHEN"? Zeroes 
+  \blank-when-zero-clause: "BLANK" "WHEN"? Zeroes 
   ;
 
 syntax Usage =
-  \usage-c3: "COMP-1" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c12: "DISPLAY" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c14: "INDEX" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c5: "COMP-3" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c4: "COMP-2" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c16: "POINTER" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c11: "COMPUTATIONAL-4" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c8: "COMPUTATIONAL-1" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c9: "COMPUTATIONAL-2" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c1: "BINARY" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c15: "PACKED-DECIMAL" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c2: "COMP" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c7: "COMPUTATIONAL" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c6: "COMP-4" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c13: "DISPLAY-1" !>> [\- 0-9 A-Z _ a-z] 
-  | \usage-c10: "COMPUTATIONAL-3" !>> [\- 0-9 A-Z _ a-z] 
+  \usage-c3: "COMP-1" 
+  | \usage-c12: "DISPLAY" 
+  | \usage-c14: "INDEX" 
+  | \usage-c5: "COMP-3" 
+  | \usage-c4: "COMP-2" 
+  | \usage-c16: "POINTER" 
+  | \usage-c11: "COMPUTATIONAL-4" 
+  | \usage-c8: "COMPUTATIONAL-1" 
+  | \usage-c9: "COMPUTATIONAL-2" 
+  | \usage-c1: "BINARY" 
+  | \usage-c15: "PACKED-DECIMAL" 
+  | \usage-c2: "COMP" 
+  | \usage-c7: "COMPUTATIONAL" 
+  | \usage-c6: "COMP-4" 
+  | \usage-c13: "DISPLAY-1" 
+  | \usage-c10: "COMPUTATIONAL-3" 
   ;
 
 syntax Condition_value_clause =
@@ -156,11 +156,11 @@ syntax Condition_value_clause =
   ;
 
 syntax Indexed_by =
-  \indexed-by: "INDEXED" !>> [\- 0-9 A-Z _ a-z] "BY"? Index_name+ 
+  \indexed-by: "INDEXED" "BY"? Index_name+ 
   ;
 
 syntax Alt_data_name_filler =
-  \alt-data-name-filler-c2: "FILLER" !>> [\- 0-9 A-Z _ a-z] 
+  \alt-data-name-filler-c2: "FILLER" 
   | \alt-data-name-filler-c1: Data_name 
   ;
 

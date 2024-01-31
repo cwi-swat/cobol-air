@@ -8,44 +8,44 @@ syntax Identification_division_content =
   ;
 
 syntax Identification_division =
-  \identification-division: Identification "DIVISION" !>> [\- 0-9 A-Z _ a-z] "." Program_id_cobol_source_program Identification_division_content 
+  \identification-division: Identification "DIVISION" "." Program_id_cobol_source_program Identification_division_content 
   ;
 
 syntax Remarks =
-  remarks: "REMARKS" !>> [\- 0-9 A-Z _ a-z] "."? 
+  remarks: "REMARKS" "."? 
   ;
 
 syntax Program_id_cobol_source_program =
-  \program-id-cobol-source-program: "PROGRAM-ID" !>> [\- 0-9 A-Z _ a-z] "."? Program_name Initial_program? "."? 
+  \program-id-cobol-source-program: "PROGRAM-ID" "."? Program_name Initial_program? "."? 
   ;
 
 syntax Initial_program =
-  \initial-program: "IS"? "INITIAL" !>> [\- 0-9 A-Z _ a-z] "PROGRAM"? 
+  \initial-program: "IS"? "INITIAL" "PROGRAM"? 
   ;
 
 syntax Author =
-  author: "AUTHOR" !>> [\- 0-9 A-Z _ a-z] "."? 
+  author: "AUTHOR" "."? 
   ;
 
 syntax Identification =
-  \identification-c2: "ID" !>> [\- 0-9 A-Z _ a-z] 
-  | \identification-c1: "IDENTIFICATION" !>> [\- 0-9 A-Z _ a-z] 
+  \identification-c2: "ID" 
+  | \identification-c1: "IDENTIFICATION" 
   ;
 
 syntax Security =
-  security: "SECURITY" !>> [\- 0-9 A-Z _ a-z] "."? 
+  security: "SECURITY" "."? 
   ;
 
 syntax Date_compiled =
-  \date-compiled: "DATE-COMPILED" !>> [\- 0-9 A-Z _ a-z] "."? 
+  \date-compiled: "DATE-COMPILED" "."? 
   ;
 
 syntax Date_written =
-  \date-written: "DATE-WRITTEN" !>> [\- 0-9 A-Z _ a-z] "."? 
+  \date-written: "DATE-WRITTEN" "."? 
   ;
 
 syntax Installation =
-  installation: "INSTALLATION" !>> [\- 0-9 A-Z _ a-z] "."? 
+  installation: "INSTALLATION" "."? 
   ;
 
 syntax Identification_division_phrase =

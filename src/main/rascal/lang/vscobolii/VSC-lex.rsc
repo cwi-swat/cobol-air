@@ -15,8 +15,8 @@ lexical Quoted_pseudo_text =
   ;
 
 lexical Id =
-  [\- 0-9]* [A-Z a-z] [\- 0-9 A-Z a-z]* 
-  | [0-9]+ (  [\-]  [0-9]+  )+ 
+    [\- 0-9 A-Z a-z] !<< [\- 0-9]* [A-Z a-z] [\- 0-9 A-Z a-z]* !>> [\- 0-9 A-Z a-z]
+  | [0-9] !<< [0-9]+ (  [\-]  [0-9]+  )+ !>> [0-9]
   ;
 
 lexical Nonnumeric =
