@@ -1,5 +1,11 @@
 
 
+Grammar massaging:
+- inline spurious non-terminals
+- add proper priorities
+- flatten out optionals to alternatives
+
+
 COBOL Preprocessor
 - margins
 - COPY
