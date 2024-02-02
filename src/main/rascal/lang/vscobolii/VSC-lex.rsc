@@ -16,7 +16,7 @@ lexical Quoted_pseudo_text =
   ;
 
 lexical Id =
-    ([\- 0-9 A-Z a-z] !<< [\- 0-9]* [A-Z a-z] [\- 0-9 A-Z a-z]* !>> [\- 0-9 A-Z a-z]) \ CobwordKeywords
+    ([\- 0-9 A-Z a-z] !<< [\- 0-9]* [A-Z a-z] [\- _ 0-9 A-Z a-z]* !>> [\- 0-9 A-Z a-z]) \ CobwordKeywords
   | [0-9] !<< [0-9]+ (  [\-]  [0-9]+  )+ !>> [0-9]
   ;
 
@@ -27,12 +27,22 @@ syntax Nonnumeric
   ;
 
 lexical NonnumericWhole = 
-    [\"] ![\"\n]* [\"] 
-  | [\'] ![\'\n]* [\'] ;
+    [\"] DoubleStrChar* [\"] 
+  | [\'] SingleStrChar* [\'] ;
 
 lexical NonnumericPart
-  = [\"] ![\"\n]* $
-  | [\'] ![\'\n]* $
+  = [\"] DoubleStrChar* $
+  | [\'] SingleStrChar* $
+  ;
+
+lexical DoubleStrChar
+  = ![\"\n]
+  | [\"][\"]
+  ;
+
+lexical SingleStrChar
+  = ![\'\n]
+  | [\'][\'] // assuming same convention as for "
   ;
 
 // lexical Nonnumeric_ =
