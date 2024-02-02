@@ -9,7 +9,7 @@ import Set;
 import Exception;
 
 start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false) {
-    return parse(#start[VSCobolII], nukeLineNos(readFile(org)), org, allowAmbiguity=allowAmbiguity);
+    return parse(#start[VSCobolII], preprocess(readFile(org)), org, allowAmbiguity=allowAmbiguity);
 }
 
 
