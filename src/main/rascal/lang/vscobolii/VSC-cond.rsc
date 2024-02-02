@@ -4,15 +4,15 @@ extend lang::vscobolii::\VSC-expr;
 
 
 syntax Greater =
-  greater: "GREATER" Than 
+  greater: 'GREATER' Than 
   ;
 
 syntax Greater_than_or_equal_to_3 =
-  \greater-than-or-equal-to-3: "NOT" "\<" 
+  \greater-than-or-equal-to-3: 'NOT' "\<" 
   ;
 
 syntax Is_not =
-  \is-not: "IS"? "NOT"? 
+  \is-not: 'IS'? 'NOT'? 
   ;
 
 syntax And_or_combinable_condition =
@@ -44,7 +44,7 @@ syntax Relational_operator_rest =
   ;
 
 syntax Not_is =
-  \not-is: "NOT" "IS" 
+  \not-is: 'NOT' 'IS' 
   ;
 
 syntax Greater_than_or_equal_to =
@@ -55,11 +55,11 @@ syntax Greater_than_or_equal_to =
   ;
 
 syntax Negated_simple_conditions =
-  \negated-simple-conditions: "NOT" Combinable_condition 
+  \negated-simple-conditions: 'NOT' Combinable_condition 
   ;
 
 syntax Greater_equal =
-  \greater-equal: "GREATER" Than "OR" "EQUAL" "TO"? 
+  \greater-equal: 'GREATER' Than 'OR' 'EQUAL' 'TO'? 
   ;
 
 syntax Simple_condition_1 =
@@ -67,7 +67,7 @@ syntax Simple_condition_1 =
   ;
 
 syntax Not_relational_operator_rest =
-  \not-relational-operator-rest: "NOT"? Relational_operator_rest 
+  \not-relational-operator-rest: 'NOT'? Relational_operator_rest 
   ;
 
 syntax Is_or_is_not =
@@ -85,7 +85,7 @@ syntax Sign_condition =
   ;
 
 syntax Less =
-  less: "LESS" Than 
+  less: 'LESS' Than 
   ;
 
 syntax Relation_condition =
@@ -93,11 +93,11 @@ syntax Relation_condition =
   ;
 
 syntax Greater_than_1 =
-  \greater-than-1: "GREATER" "THAN"? 
+  \greater-than-1: 'GREATER' 'THAN'? 
   ;
 
 syntax Greater_than_or_equal_to_1 =
-  \greater-than-or-equal-to-1: "GREATER" "THAN"? "OR" "EQUAL" "TO"? 
+  \greater-than-or-equal-to-1: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'? 
   ;
 
 syntax Condition_name_reference =
@@ -110,11 +110,11 @@ syntax Condition =
   ;
 
 syntax Greater_than_or_equal_to_2 =
-  \greater-than-or-equal-to-2: "NOT" "LESS" "THAN"? 
+  \greater-than-or-equal-to-2: 'NOT' 'LESS' 'THAN'? 
   ;
 
 syntax Relational_operator =
-  \relational-operator: "IS"? Relational_operator_tail 
+  \relational-operator: 'IS'? Relational_operator_tail 
   ;
 
 syntax Combinable_condition =
@@ -123,11 +123,11 @@ syntax Combinable_condition =
   ;
 
 syntax Sign_type =
-  \sign-type-c3: "ZERO" 
-  | \sign-type-c4: "ZEROES" 
-  | \sign-type-c5: "ZEROS" 
-  | \sign-type-c1: "POSITIVE" 
-  | \sign-type-c2: "NEGATIVE" 
+  \sign-type-c3: 'ZERO' 
+  | \sign-type-c4: 'ZEROES' 
+  | \sign-type-c5: 'ZEROS' 
+  | \sign-type-c1: 'POSITIVE' 
+  | \sign-type-c2: 'NEGATIVE' 
   ;
 
 syntax Simple_condition =
@@ -139,7 +139,7 @@ syntax Simple_condition =
   ;
 
 syntax Less_equal =
-  \less-equal: "LESS" Than "OR" "EQUAL" "TO"? 
+  \less-equal: 'LESS' Than 'OR' 'EQUAL' 'TO'? 
   ;
 
 syntax Less_equal_2 =
@@ -147,21 +147,21 @@ syntax Less_equal_2 =
   ;
 
 syntax Alt_and_or =
-  \alt-and-or-c2: "OR" 
-  | \alt-and-or-c1: "AND" 
+  \alt-and-or-c2: 'OR' 
+  | \alt-and-or-c1: 'AND' 
   ;
 
 syntax Class_type =
-  \class-type-c4: "ALPHABETIC-UPPER" 
+  \class-type-c4: 'ALPHABETIC-UPPER' 
   | \class-type-c5: Class_name 
-  | \class-type-c6: "DBCS" 
-  | \class-type-c7: "KANJI" 
-  | \class-type-c3: "ALPHABETIC-LOWER" 
-  | \class-type-c2: "ALPHABETIC" 
-  | \class-type-c1: "NUMERIC" 
+  | \class-type-c6: 'DBCS' 
+  | \class-type-c7: 'KANJI' 
+  | \class-type-c3: 'ALPHABETIC-LOWER' 
+  | \class-type-c2: 'ALPHABETIC' 
+  | \class-type-c1: 'NUMERIC' 
   ;
 
 syntax Than =
-  \than-c2: "THEN"? 
-  | \than-c1: "THAN" 
+  \than-c2: 'THEN'? 
+  | \than-c1: 'THAN' 
   ;

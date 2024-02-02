@@ -5,7 +5,7 @@ extend lang::vscobolii::\VSC-io-sec;
 
 
 syntax Environment_division =
-  \environment-division: "ENVIRONMENT" "DIVISION" "." Environment_division_content 
+  \environment-division: 'ENVIRONMENT' 'DIVISION' "." Environment_division_content 
   ;
 
 syntax Environment_division_content =

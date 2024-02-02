@@ -8,44 +8,44 @@ syntax Identification_division_content =
   ;
 
 syntax Identification_division =
-  \identification-division: Identification "DIVISION" "." Program_id_cobol_source_program Identification_division_content 
+  \identification-division: Identification 'DIVISION' "." Program_id_cobol_source_program Identification_division_content 
   ;
 
 syntax Remarks =
-  remarks: "REMARKS" "."? MetaDataContentLine*
+  remarks: 'REMARKS' "."? MetaDataContentLine*
   ;
 
 syntax Program_id_cobol_source_program =
-  \program-id-cobol-source-program: "PROGRAM-ID" "."? Program_name Initial_program? "."? 
+  \program-id-cobol-source-program: 'PROGRAM-ID' "."? Program_name Initial_program? "."? 
   ;
 
 syntax Initial_program =
-  \initial-program: "IS"? "INITIAL" "PROGRAM"? 
+  \initial-program: 'IS'? 'INITIAL' 'PROGRAM'? 
   ;
 
 syntax Author =
-  author: "AUTHOR" "."?  MetaDataContentLine*
+  author: 'AUTHOR' "."?  MetaDataContentLine*
   ;
 
 syntax Identification =
-  \identification-c2: "ID" 
-  | \identification-c1: "IDENTIFICATION" 
+  \identification-c2: 'ID' 
+  | \identification-c1: 'IDENTIFICATION' 
   ;
 
 syntax Security =
-  security: "SECURITY" "."?  MetaDataContentLine*
+  security: 'SECURITY' "."?  MetaDataContentLine*
   ;
 
 syntax Date_compiled =
-  \date-compiled: "DATE-COMPILED" "."?  MetaDataContentLine*
+  \date-compiled: 'DATE-COMPILED' "."?  MetaDataContentLine*
   ;
 
 syntax Date_written =
-  \date-written: "DATE-WRITTEN" "."? MetaDataContentLine*
+  \date-written: 'DATE-WRITTEN' "."? MetaDataContentLine*
   ;
 
 syntax Installation =
-  installation: "INSTALLATION" "."? MetaDataContentLine*
+  installation: 'INSTALLATION' "."? MetaDataContentLine*
   ;
 
 lexical MetaDataContentLine
@@ -55,15 +55,15 @@ lexical Word
   = [a-zA-Z0-9\"()\-]+ !>> [a-zA-Z0-9\"()\-];
 
 keyword NoIDKeyword
-  = "DATE-WRITTEN"
-  | "SECURITY"
-  | "DATE-COMPILED"
-  | "REMARKS"
-  | "INSTALLATION"
-  | "AUTHOR"
-  | "ENVIRONMENT"
-  | "DATA"
-  | "PROCEDURE"
+  = 'DATE-WRITTEN'
+  | 'SECURITY'
+  | 'DATE-COMPILED'
+  | 'REMARKS'
+  | 'INSTALLATION'
+  | 'AUTHOR'
+  | 'ENVIRONMENT'
+  | 'DATA'
+  | 'PROCEDURE'
   ;
 
 syntax Identification_division_phrase =

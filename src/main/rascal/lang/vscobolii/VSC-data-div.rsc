@@ -9,7 +9,7 @@ syntax Data_division_content =
   ;
 
 syntax Working_storage_section =
-  \working-storage-section: "WORKING-STORAGE" "SECTION" "." Data_description_entry* 
+  \working-storage-section: 'WORKING-STORAGE' 'SECTION' "." Data_description_entry* 
   ;
 
 syntax File_section_entry =
@@ -17,13 +17,13 @@ syntax File_section_entry =
   ;
 
 syntax Linkage_section =
-  \linkage-section: "LINKAGE" "SECTION" "." Data_description_entry* 
+  \linkage-section: 'LINKAGE' 'SECTION' "." Data_description_entry* 
   ;
 
 syntax File_section =
-  \file-section: "FILE" "SECTION" "." File_section_entry* 
+  \file-section: 'FILE' 'SECTION' "." File_section_entry* 
   ;
 
 syntax Data_division =
-  \data-division: "DATA" "DIVISION" "." Data_division_content 
+  \data-division: 'DATA' 'DIVISION' "." Data_division_content 
   ;

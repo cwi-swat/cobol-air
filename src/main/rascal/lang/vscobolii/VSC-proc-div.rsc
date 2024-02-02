@@ -5,7 +5,7 @@ extend lang::vscobolii::\VSC-expr;
 
 
 syntax Procedure_division =
-  \procedure-division: "PROCEDURE" "DIVISION" Using_phrase Declaratives? Sections 
+  \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase Declaratives? Sections 
   ;
 
 syntax Sentence_1 =
@@ -22,11 +22,11 @@ syntax Sentence_2 =
   ;
 
 syntax Declaratives =
-  declaratives: "DECLARATIVES" "." Declaratives_content+ "END" "DECLARATIVES" "." 
+  declaratives: 'DECLARATIVES' "." Declaratives_content+ 'END' 'DECLARATIVES' "." 
   ;
 
 syntax Altered_goto =
-  \altered-goto: Paragraph_name "." "GO" "TO"? "." 
+  \altered-goto: Paragraph_name "." 'GO' 'TO'? "." 
   ;
 
 syntax Section_with_header =
@@ -55,7 +55,7 @@ syntax Paragraph =
   ;
 
 syntax Using_data_names =
-  \using-data-names: "USING" Data_name* 
+  \using-data-names: 'USING' Data_name* 
   ;
 
 syntax Sentence =
@@ -68,7 +68,7 @@ syntax Declaratives_content =
   ;
 
 syntax Section_header =
-  \section-header: Section_name "SECTION" Priority_number? 
+  \section-header: Section_name 'SECTION' Priority_number? 
   ;
 
 syntax Using_phrase_2 =

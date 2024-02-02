@@ -5,50 +5,50 @@ extend lang::vscobolii::\VSC-expr;
 
 
 syntax Alphabet_clause =
-  \alphabet-clause: "ALPHABET" Alphabet_name "IS"? Alphabet_type 
+  \alphabet-clause: 'ALPHABET' Alphabet_name 'IS'? Alphabet_type 
   ;
 
 syntax Memory_size_type =
-  \memory-size-type-c2: "CHARACTERS" 
-  | \memory-size-type-c3: "MODULES" 
-  | \memory-size-type-c1: "WORDS" 
+  \memory-size-type-c2: 'CHARACTERS' 
+  | \memory-size-type-c3: 'MODULES' 
+  | \memory-size-type-c1: 'WORDS' 
   ;
 
 syntax Memory_size =
-  \memory-size: "MEMORY" "SIZE"? Integer Memory_size_type 
+  \memory-size: 'MEMORY' 'SIZE'? Integer Memory_size_type 
   ;
 
 syntax Special_names_paragraph =
-  \special-names-paragraph: "SPECIAL-NAMES" "." Special_names_paragraph_phrase* Special_names_paragraph_clauses "."? 
+  \special-names-paragraph: 'SPECIAL-NAMES' "." Special_names_paragraph_phrase* Special_names_paragraph_clauses "."? 
   ;
 
 syntax On_status =
-  \on-status: "ON" "STATUS"? "IS"? Condition 
+  \on-status: 'ON' 'STATUS'? 'IS'? Condition 
   ;
 
 syntax Are =
-  \are-c2: "IS" 
-  | \are-c1: "ARE" 
+  \are-c2: 'IS' 
+  | \are-c1: 'ARE' 
   ;
 
 syntax With_debugging_mode =
-  \with-debugging-mode: "WITH"? "DEBUGGING" "MODE" 
+  \with-debugging-mode: 'WITH'? 'DEBUGGING' 'MODE' 
   ;
 
 syntax Decimal_point_clause =
-  \decimal-point-clause: "DECIMAL-POINT" "IS"? "COMMA" 
+  \decimal-point-clause: 'DECIMAL-POINT' 'IS'? 'COMMA' 
   ;
 
 syntax Source_computer_paragraph =
-  \source-computer-paragraph: "SOURCE-COMPUTER" "." Source_computer_name? 
+  \source-computer-paragraph: 'SOURCE-COMPUTER' "." Source_computer_name? 
   ;
 
 syntax Alphabet_type_also =
-  \alphabet-type-also: "ALSO" Literal 
+  \alphabet-type-also: 'ALSO' Literal 
   ;
 
 syntax Currency_sign_clause =
-  \currency-sign-clause: "CURRENCY" "SIGN"? "IS"? Literal 
+  \currency-sign-clause: 'CURRENCY' 'SIGN'? 'IS'? Literal 
   ;
 
 syntax Special_names_paragraph_phrase =
@@ -56,7 +56,7 @@ syntax Special_names_paragraph_phrase =
   ;
 
 syntax Program_collating_sequence =
-  \program-collating-sequence: "PROGRAM"? "COLLATING"? "SEQUENCE" "IS"? Alphabet_name 
+  \program-collating-sequence: 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 
   ;
 
 syntax Special_names_paragraph_status_phrase =
@@ -65,7 +65,7 @@ syntax Special_names_paragraph_status_phrase =
   ;
 
 syntax In_alphabet_name =
-  \in-alphabet-name: "IN" Alphabet_name 
+  \in-alphabet-name: 'IN' Alphabet_name 
   ;
 
 syntax Special_names_paragraph_clause =
@@ -77,7 +77,7 @@ syntax Special_names_paragraph_clause =
   ;
 
 syntax Configuration_section =
-  \configuration-section: "CONFIGURATION" "SECTION" "." Configuration_section_paragraphs 
+  \configuration-section: 'CONFIGURATION' 'SECTION' "." Configuration_section_paragraphs 
   ;
 
 syntax Alphabet_type_others =
@@ -89,7 +89,7 @@ syntax Alphabet_type_alsos =
   ;
 
 syntax Is_mnemonic_name =
-  \is-mnemonic-name: "IS"? Mnemonic_name Special_names_paragraph_status_phrase? 
+  \is-mnemonic-name: 'IS'? Mnemonic_name Special_names_paragraph_status_phrase? 
   ;
 
 syntax Alphabet_type_other =
@@ -97,11 +97,11 @@ syntax Alphabet_type_other =
   ;
 
 syntax Symbolic_characters_clause =
-  \symbolic-characters-clause: "SYMBOLIC" "CHARACTERS"? Symbolic_character_mapping+ In_alphabet_name? 
+  \symbolic-characters-clause: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ In_alphabet_name? 
   ;
 
 syntax Class_clause =
-  \class-clause: "CLASS" Class_name "IS"? Literal_through_literal+ 
+  \class-clause: 'CLASS' Class_name 'IS'? Literal_through_literal+ 
   ;
 
 syntax Special_names_paragraph_clauses =
@@ -118,7 +118,7 @@ syntax Configuration_section_paragraphs =
   ;
 
 syntax Special_names_paragraph_status_phrase_2 =
-  \special-names-paragraph-status-phrase-2: "OFF" "STATUS"? "IS"? Condition On_status? 
+  \special-names-paragraph-status-phrase-2: 'OFF' 'STATUS'? 'IS'? Condition On_status? 
   ;
 
 syntax Symbolic_character_mapping =
@@ -136,15 +136,15 @@ syntax Source_computer_name =
   ;
 
 syntax Special_names_paragraph_status_phrase_1 =
-  \special-names-paragraph-status-phrase-1: "ON" "STATUS"? "IS"? Condition Off_status? 
+  \special-names-paragraph-status-phrase-1: 'ON' 'STATUS'? 'IS'? Condition Off_status? 
   ;
 
 syntax Object_computer_paragraph =
-  \object-computer-paragraph: "OBJECT-COMPUTER" "." Object_computer_name? 
+  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Object_computer_name? 
   ;
 
 syntax Segment_limit =
-  \segment-limit: "SEGMENT-LIMIT" "IS"? Priority_number 
+  \segment-limit: 'SEGMENT-LIMIT' 'IS'? Priority_number 
   ;
 
 syntax Object_computer_name =
@@ -156,12 +156,12 @@ syntax Object_computer_paragraph_sequence_phrase =
   ;
 
 syntax Off_status =
-  \off-status: "OFF" "STATUS"? "IS"? Condition 
+  \off-status: 'OFF' 'STATUS'? 'IS'? Condition 
   ;
 
 syntax Alphabet_type =
-  \alphabet-type-c3: "NATIVE" 
-  | \alphabet-type-c4: "EBCDIC" 
+  \alphabet-type-c3: 'NATIVE' 
+  | \alphabet-type-c4: 'EBCDIC' 
   | \alphabet-type-c2: "STANDARD-2" 
   | \alphabet-type-c1: "STANDARD-1" 
   | \alphabet-type-c5: Alphabet_type_others 
