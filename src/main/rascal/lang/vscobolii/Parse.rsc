@@ -6,6 +6,7 @@ import ParseTree;
 import IO;
 import util::FileSystem;
 import Set;
+import Exception;
 
 start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false) {
     return parse(#start[VSCobolII], nukeLineNos(readFile(org)), org, allowAmbiguity=allowAmbiguity);
@@ -26,12 +27,19 @@ void smokeTest() {
     
     int success = 0;
     int errors = 0;
+    int ambs = 0;
     for (loc src <- cbls, src notin bugTriggering) {
         try {
             println("parsing <src>");
             pt = parseVSCobolII(src, allowAmbiguity=true);
             success += 1;
             println("success!");
+        }
+        catch Ambiguity(loc l, str sym, str txt): {
+            println("ambiguity: <l>");
+            println("symbol: <sym>");
+            println("source: `<txt>`");
+            ambs += 1;
         }
         catch ParseError(loc l): {
             println("parse error: <l>");
@@ -41,5 +49,6 @@ void smokeTest() {
 
     println("#succes: <success>");
     println("#errors: <errors>");
+    println("#ambs: <ambs>");
     println("#bugtriggering: <size(bugTriggering)>");
 }
