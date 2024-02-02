@@ -12,7 +12,7 @@ syntax Identification_division =
   ;
 
 syntax Remarks =
-  remarks: "REMARKS" "."? 
+  remarks: "REMARKS" "."? MetaDataContentLine*
   ;
 
 syntax Program_id_cobol_source_program =
@@ -24,7 +24,7 @@ syntax Initial_program =
   ;
 
 syntax Author =
-  author: "AUTHOR" "."? 
+  author: "AUTHOR" "."? MetaDataContentLine*
   ;
 
 syntax Identification =
@@ -33,19 +33,37 @@ syntax Identification =
   ;
 
 syntax Security =
-  security: "SECURITY" "."? 
+  security: "SECURITY" "."? MetaDataContentLine*
   ;
 
 syntax Date_compiled =
-  \date-compiled: "DATE-COMPILED" "."? 
+  \date-compiled: "DATE-COMPILED" "."? MetaDataContentLine*
   ;
 
 syntax Date_written =
-  \date-written: "DATE-WRITTEN" "."? 
+  \date-written: "DATE-WRITTEN" "."? MetaDataContentLine* 
   ;
 
 syntax Installation =
-  installation: "INSTALLATION" "."? 
+  installation: "INSTALLATION" "."? MetaDataContentLine*
+  ;
+
+lexical MetaDataContentLine
+   = Word \ NoIDKeyword  ![\n]* [\n]; // $ seems to trigger bug
+
+lexical Word
+  = [a-zA-Z0-9\"()\-]+ !>> [a-zA-Z0-9\"()\-];
+
+keyword NoIDKeyword
+  = "DATE-WRITTEN"
+  | "SECURITY"
+  | "DATE-COMPILED"
+  | "REMARKS"
+  | "INSTALLATION"
+  | "AUTHOR"
+  | "ENVIRONMENT"
+  | "DATA"
+  | "PROCEDURE"
   ;
 
 syntax Identification_division_phrase =
