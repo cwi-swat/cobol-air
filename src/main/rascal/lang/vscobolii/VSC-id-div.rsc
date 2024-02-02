@@ -24,7 +24,7 @@ syntax Initial_program =
   ;
 
 syntax Author =
-  author: "AUTHOR" "."? MetaDataContentLine*
+  author: "AUTHOR" "."? 
   ;
 
 syntax Identification =
@@ -33,15 +33,15 @@ syntax Identification =
   ;
 
 syntax Security =
-  security: "SECURITY" "."? MetaDataContentLine*
+  security: "SECURITY" "."?  MetaDataContentLine*
   ;
 
 syntax Date_compiled =
-  \date-compiled: "DATE-COMPILED" "."? MetaDataContentLine*
+  \date-compiled: "DATE-COMPILED" "."?  MetaDataContentLine*
   ;
 
 syntax Date_written =
-  \date-written: "DATE-WRITTEN" "."? MetaDataContentLine* 
+  \date-written: "DATE-WRITTEN" "."? MetaDataContentLine*
   ;
 
 syntax Installation =
