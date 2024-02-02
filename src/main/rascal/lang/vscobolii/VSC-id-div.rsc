@@ -24,7 +24,7 @@ syntax Initial_program =
   ;
 
 syntax Author =
-  author: "AUTHOR" "."? 
+  author: "AUTHOR" "."?  MetaDataContentLine*
   ;
 
 syntax Identification =
