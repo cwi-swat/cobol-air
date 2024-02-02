@@ -21,7 +21,8 @@ void smokeTest() {
                     |project://cobol-air/examples/NIST/NC/NC210A.CBL|, |project://cobol-air/examples/NIST/IX/IX118A.SUBPRG|,
                     |project://cobol-air/examples/NIST/IX/IX119A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX120A.SUBPRG|,
                     |project://cobol-air/examples/NIST/IX/IX114A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX115A.SUBPRG|,
-                    |project://cobol-air/examples/NIST/IX/IX116A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX117A.SUBPRG|};
+                    |project://cobol-air/examples/NIST/IX/IX116A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX117A.SUBPRG|,
+                    |project://cobol-air/examples/NIST/NC/NC211A.CBL|};
     
     int success = 0;
     int errors = 0;

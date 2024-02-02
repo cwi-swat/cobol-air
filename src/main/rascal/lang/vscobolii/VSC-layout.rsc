@@ -10,7 +10,7 @@ lexical LAYOUT
   // "%" ![\n]* [\n] 
   = @category="Comment" "*"@7 ![\n]* $
   | "-"@7 // a line continuation
-  | [\t-\n \ ] 
+  | [\t-\n \ ;] 
   | ", " 
   | ",\n" 
   ;
