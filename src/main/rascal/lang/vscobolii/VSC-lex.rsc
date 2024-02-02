@@ -20,10 +20,25 @@ lexical Id =
   | [0-9] !<< [0-9]+ (  [\-]  [0-9]+  )+ !>> [0-9]
   ;
 
-lexical Nonnumeric =
-  [\"] ![\"]* [\"] 
-  | [\'] ![\']* [\'] 
+
+syntax Nonnumeric
+  = NonnumericWhole
+  | NonnumericPart+ NonnumericWhole
   ;
+
+lexical NonnumericWhole = 
+    [\"] ![\"\n]* [\"] 
+  | [\'] ![\'\n]* [\'] ;
+
+lexical NonnumericPart
+  = [\"] ![\"\n]* $
+  | [\'] ![\'\n]* $
+  ;
+
+// lexical Nonnumeric_ =
+//   [\"] ![\"]* [\"] 
+//   | [\'] ![\']* [\'] 
+//   ;
 
 lexical Num =
   [0-9\-+] !<< [+ \-]? ((  [0-9]*  [, .]  [0-9]+  ) | [0-9]+) !>> [0-9]
