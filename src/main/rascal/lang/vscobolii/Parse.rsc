@@ -4,8 +4,38 @@ import lang::vscobolii::Main;
 import lang::vscobolii::Preprocess;
 import ParseTree;
 import IO;
-
+import util::FileSystem;
+import Set;
 
 start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false) {
     return parse(#start[VSCobolII], nukeLineNos(readFile(org)), org, allowAmbiguity=allowAmbiguity);
+}
+
+
+void smokeTest() {
+    cbls = [ f | loc f <- files(|project://cobol-air/examples/NIST/|), f.extension == "CBL"];
+
+    set[loc] bugTriggering = {|project://cobol-air/examples/NIST/IX/IX109A.CBL|, |project://cobol-air/examples/NIST/IX/IX108A.CBL|,
+                    |project://cobol-air/examples/NIST/IX/IX105A.CBL|, |project://cobol-air/examples/NIST/NC/NC201A.CBL|,
+                    |project://cobol-air/examples/NIST/IX/IX113A.CBL|, |project://cobol-air/examples/NIST/RL/RL210A.CBL|,
+                    |project://cobol-air/examples/NIST/NC/NC210A.CBL|};
+    
+    int success = 0;
+    int errors = 0;
+    for (loc src <- cbls, src notin bugTriggering) {
+        try {
+            println("parsing <src>");
+            pt = parseVSCobolII(src, allowAmbiguity=true);
+            success += 1;
+            println("success!");
+        }
+        catch ParseError(loc l): {
+            println("parse error: <l>");
+            errors += 1;
+        }
+    }
+
+    println("#succes: <success>");
+    println("#errors: <errors>");
+    println("#bugtriggering: <size(bugTriggering)>");
 }
