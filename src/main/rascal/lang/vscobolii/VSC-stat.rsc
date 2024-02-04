@@ -647,7 +647,7 @@ syntax When_other_phrase =
 
 syntax If_statement =
   \if-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' 'END-IF'? 
-  | \if-else-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence Else_phrase? 'END-IF'? 
+  | \if-else-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence Else_phrase 'END-IF'? 
   ;
 
 syntax Proceed_to =
