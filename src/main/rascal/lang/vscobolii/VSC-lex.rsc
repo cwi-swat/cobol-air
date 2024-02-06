@@ -7,8 +7,13 @@ extend lang::vscobolii::\VSC-layout;
 
 
 // todo check precede restriction
+// todo: check keywords not allowed in pic strings.
 lexical Picture_string =
-  [\t-\n\ ] << ((  [, . ;]  ![\t-\n \ ]  ) | ![\t-\n \  , . ;])+ !>> ![\t-\n\ ,.l]
+  [\t-\n\ ] << Picture_contents \ CobwordKeywords !>> ![\t-\n\ ,.l] 
+  ;
+
+lexical Picture_contents
+  = ((  [, . ;]  ![\t-\n \ ]  ) | ![\t-\n \  , . ;])+ 
   ;
 
 lexical Quoted_pseudo_text =
@@ -50,8 +55,14 @@ lexical SingleStrChar
 //   | [\'] ![\']* [\'] 
 //   ;
 
-lexical Num =
-  [0-9\-+] !<< [+ \-]? ((  [0-9]*  [, .]  [0-9]+  ) | [0-9]+) !>> [0-9]
+// lexical Num_ =
+//   [0-9\-+] !<< 
+//     [+ \-]? (  ( [0-9]*  [, .]  [0-9]+  ) | [0-9]+) !>> [0-9]
+//   ;
+
+lexical Num
+  = [0-9\-+] !<< [+ \-]?  [0-9]*  [,.]  [0-9]+ !>> [0-9] 
+  | [0-9\-+.] !<< [+ \-]?  [0-9]+ !>> [0-9]
   ;
 
 syntax Cobword =
