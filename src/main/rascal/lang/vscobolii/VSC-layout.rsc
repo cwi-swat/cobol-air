@@ -3,7 +3,7 @@ module lang::vscobolii::\VSC-layout
 
 
 layout LAYOUTLIST  =
-  LAYOUT* !>> [\t-\n \  % ,] 
+  LAYOUT* !>> [\t-\n \  * ,;] 
   ;
 
 lexical LAYOUT
@@ -11,7 +11,7 @@ lexical LAYOUT
   = @category="Comment" "*"@7 ![\n]* $
   | @category="Comment" "/"@7 ![\n]* $
   | "-"@7 // a line continuation
-  | [\t-\n \ ;] 
-  | ", " 
-  | ",\n" 
+  | [\t-\n \ ;, ] 
+  // | ", " 
+  // | ",\n" 
   ;
