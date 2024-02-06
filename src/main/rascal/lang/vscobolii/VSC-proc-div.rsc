@@ -5,7 +5,8 @@ extend lang::vscobolii::\VSC-expr;
 
 
 syntax Procedure_division =
-  \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase Declaratives? Sections 
+   \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase Paragraphs Section_with_header*
+ |  \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase 'DECLARATIVES' "." Declaratives_content+ 'END' 'DECLARATIVES' "."  Paragraphs Section_with_header* 
   ;
 
 syntax Sentence_1 =
@@ -13,8 +14,9 @@ syntax Sentence_1 =
   ;
 
 syntax Using_phrase =
-  \using-phrase-c2: Using_phrase_2 
-  | \using-phrase-c1: Using_phrase_1 
+   \using-phrase-c2: Copy_statement
+ |  \using-phrase-c2: 'USING' Data_name*  Copy_statement 
+  |  \using-phrase-c1: Using_data_name_pluslist? "." 
   ;
 
 syntax Sentence_2 =
@@ -50,8 +52,8 @@ syntax Sections =
   ;
 
 syntax Paragraph =
-  \paragraph-c2: Paragraph_1 
-  | \paragraph-c1: Altered_goto 
+   \paragraph-c2: Paragraph_name "." Sentence* 
+  |  \paragraph-c1: Paragraph_name "." 'GO' 'TO'? "." 
   ;
 
 syntax Using_data_names =
@@ -59,8 +61,8 @@ syntax Using_data_names =
   ;
 
 syntax Sentence =
-  \sentence-c1: Sentence_1 
-  | \sentence-c2: Sentence_2 
+   \sentence-c1: Statement_list "."+ 
+  |  \sentence-c2: Statement_list? Copy_statement 
   ;
 
 syntax Declaratives_content =
@@ -72,5 +74,6 @@ syntax Section_header =
   ;
 
 syntax Using_phrase_2 =
-  \using-phrase-2: Using_data_names? Copy_statement 
+   \using-phrase-2: Copy_statement
+ |  \using-phrase-2: 'USING' Data_name*  Copy_statement 
   ;

@@ -20,11 +20,11 @@ syntax And_or_combinable_condition =
   ;
 
 syntax Relational_operator_tail =
-  \relational-operator-tail-c2: Less_equal 
+   \relational-operator-tail-c2: 'LESS' Than 'OR' 'EQUAL' 'TO'? 
   | \relational-operator-tail-c4: "\>=" 
-  | \relational-operator-tail-c1: Greater_equal 
-  | \relational-operator-tail-c3: Less_equal_2 
-  | \relational-operator-tail-c5: Not_relational_operator_rest 
+  |  \relational-operator-tail-c1: 'GREATER' Than 'OR' 'EQUAL' 'TO'? 
+  |  \relational-operator-tail-c3: "\<" "=" 
+  |  \relational-operator-tail-c5: 'NOT'? Relational_operator_rest 
   ;
 
 syntax Combined_conditions =
@@ -36,11 +36,11 @@ syntax Class_condition =
   ;
 
 syntax Relational_operator_rest =
-  \relational-operator-rest-c3: Less 
+   \relational-operator-rest-c3: 'LESS' Than 
   | \relational-operator-rest-c2: "\>" 
   | \relational-operator-rest-c4: "\<" 
   | \relational-operator-rest-c5: Equal_to 
-  | \relational-operator-rest-c1: Greater 
+  |  \relational-operator-rest-c1: 'GREATER' Than 
   ;
 
 syntax Not_is =
@@ -48,10 +48,10 @@ syntax Not_is =
   ;
 
 syntax Greater_than_or_equal_to =
-  \greater-than-or-equal-to-c1: Greater_than_or_equal_to_1 
-  | \greater-than-or-equal-to-c2: Greater_than_or_equal_to_2 
+   \greater-than-or-equal-to-c1: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'? 
+  |  \greater-than-or-equal-to-c2: 'NOT' 'LESS' 'THAN'? 
   | \greater-than-or-equal-to-c4: "\>=" 
-  | \greater-than-or-equal-to-c3: Greater_than_or_equal_to_3 
+  |  \greater-than-or-equal-to-c3: 'NOT' "\<" 
   ;
 
 syntax Negated_simple_conditions =
@@ -71,13 +71,13 @@ syntax Not_relational_operator_rest =
   ;
 
 syntax Is_or_is_not =
-  \is-or-is-not-c1: Not_is 
-  | \is-or-is-not-c2: Is_not 
+   \is-or-is-not-c1: 'NOT' 'IS' 
+  |  \is-or-is-not-c2: 'IS'? 'NOT'? 
   ;
 
 syntax Greater_than =
   \greater-than-c2: "\>" 
-  | \greater-than-c1: Greater_than_1 
+  |  \greater-than-c1: 'GREATER' 'THAN'? 
   ;
 
 syntax Sign_condition =
@@ -101,12 +101,12 @@ syntax Greater_than_or_equal_to_1 =
   ;
 
 syntax Condition_name_reference =
-  \condition-name-reference: Condition_name In_data_or_file_or_mnemonic_name* Subscript_parentheses* 
+   \condition-name-reference: Alphabetic_user_defined_word In_data_or_file_or_mnemonic_name* Subscript_parentheses* 
   ;
 
 syntax Condition =
   \condition-c2: Combinable_condition 
-  | \condition-c1: Combined_conditions 
+  |  \condition-c1: Combinable_condition And_or_combinable_condition+ 
   ;
 
 syntax Greater_than_or_equal_to_2 =
@@ -119,7 +119,7 @@ syntax Relational_operator =
 
 syntax Combinable_condition =
   \combinable-condition-c1: Simple_condition 
-  | \combinable-condition-c2: Negated_simple_conditions 
+  |  \combinable-condition-c2: 'NOT' Combinable_condition 
   ;
 
 syntax Sign_type =
@@ -131,11 +131,11 @@ syntax Sign_type =
   ;
 
 syntax Simple_condition =
-  \simple-condition-c2: Relation_condition 
+   \simple-condition-c2: Arithmetic_expression Relational_operator Simple_condition 
   | \simple-condition-c5: Arithmetic_expression 
-  | \simple-condition-c4: Simple_condition_1 
-  | \simple-condition-c1: Class_condition 
-  | \simple-condition-c3: Sign_condition 
+  |  \simple-condition-c4: "(" Condition ")" 
+  |  \simple-condition-c1: Identifier Is_or_is_not Class_type 
+  |  \simple-condition-c3: Arithmetic_expression Is_or_is_not Sign_type 
   ;
 
 syntax Less_equal =

@@ -8,7 +8,8 @@ syntax Identification_division_content =
   ;
 
 syntax Identification_division =
-  \identification-division: Identification 'DIVISION' "." Program_id_cobol_source_program Identification_division_content 
+   \identification-division: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name "."?  Identification_division_content
+ |  \identification-division: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name 'IS'? 'INITIAL' 'PROGRAM'?  "."?  Identification_division_content 
   ;
 
 syntax Remarks =
@@ -16,7 +17,8 @@ syntax Remarks =
   ;
 
 syntax Program_id_cobol_source_program =
-  \program-id-cobol-source-program: 'PROGRAM-ID' "."? Program_name Initial_program? "."? 
+   \program-id-cobol-source-program: 'PROGRAM-ID' "."? Program_name "."?
+ |  \program-id-cobol-source-program: 'PROGRAM-ID' "."? Program_name 'IS'? 'INITIAL' 'PROGRAM'?  "."? 
   ;
 
 syntax Initial_program =
@@ -67,10 +69,10 @@ keyword NoIDKeyword
   ;
 
 syntax Identification_division_phrase =
-  \identification-division-phrase-c5: Security 
-  | \identification-division-phrase-c4: Date_compiled 
-  | \identification-division-phrase-c1: Author 
-  | \identification-division-phrase-c3: Date_written 
-  | \identification-division-phrase-c6: Remarks 
-  | \identification-division-phrase-c2: Installation 
+   \identification-division-phrase-c5: 'SECURITY' "."?  MetaDataContentLine* 
+  |  \identification-division-phrase-c4: 'DATE-COMPILED' "."?  MetaDataContentLine* 
+  |  \identification-division-phrase-c1: 'AUTHOR' "."?  MetaDataContentLine* 
+  |  \identification-division-phrase-c3: 'DATE-WRITTEN' "."? MetaDataContentLine* 
+  |  \identification-division-phrase-c6: 'REMARKS' "."? MetaDataContentLine* 
+  |  \identification-division-phrase-c2: 'INSTALLATION' "."? MetaDataContentLine* 
   ;

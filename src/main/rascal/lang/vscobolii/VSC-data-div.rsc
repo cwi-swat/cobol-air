@@ -5,7 +5,14 @@ extend lang::vscobolii::\VSC-dd-entry;
 
 
 syntax Data_division_content =
-  \data-division-content: File_section? Working_storage_section? Linkage_section? 
+   \data-division-content: 
+ |  \data-division-content: 'FILE' 'SECTION' "." File_section_entry*
+ |  \data-division-content: 'LINKAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division-content: 'FILE' 'SECTION' "." File_section_entry*  'LINKAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division-content: 'WORKING-STORAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division-content: 'FILE' 'SECTION' "." File_section_entry*  'WORKING-STORAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division-content: 'WORKING-STORAGE' 'SECTION' "." Data_description_entry* 'LINKAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division-content: 'FILE' 'SECTION' "." File_section_entry*  'WORKING-STORAGE' 'SECTION' "." Data_description_entry* 'LINKAGE' 'SECTION' "." Data_description_entry* 
   ;
 
 syntax Working_storage_section =
@@ -13,7 +20,7 @@ syntax Working_storage_section =
   ;
 
 syntax File_section_entry =
-  \file-section-entry: File_and_sort_description_entry Data_description_entry+ 
+   \file-section-entry: Alt_fd_sd File_name File_and_sort_description_entry_clause*  "." Data_description_entry+ 
   ;
 
 syntax Linkage_section =
@@ -25,5 +32,12 @@ syntax File_section =
   ;
 
 syntax Data_division =
-  \data-division: 'DATA' 'DIVISION' "." Data_division_content 
+   \data-division: 'DATA' 'DIVISION' "."
+ |  \data-division: 'DATA' 'DIVISION' "." 'LINKAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division: 'DATA' 'DIVISION' "." 'WORKING-STORAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division: 'DATA' 'DIVISION' "." 'WORKING-STORAGE' 'SECTION' "." Data_description_entry* 'LINKAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division: 'DATA' 'DIVISION' "." 'FILE' 'SECTION' "." File_section_entry*
+ |  \data-division: 'DATA' 'DIVISION' "." 'FILE' 'SECTION' "." File_section_entry* 'LINKAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division: 'DATA' 'DIVISION' "." 'FILE' 'SECTION' "." File_section_entry* 'WORKING-STORAGE' 'SECTION' "." Data_description_entry*
+ |  \data-division: 'DATA' 'DIVISION' "." 'FILE' 'SECTION' "." File_section_entry* 'WORKING-STORAGE' 'SECTION' "." Data_description_entry* 'LINKAGE' 'SECTION' "." Data_description_entry* 
   ;

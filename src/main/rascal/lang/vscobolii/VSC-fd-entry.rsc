@@ -7,13 +7,13 @@ extend lang::vscobolii::\VSC-expr;
 
 
 syntax File_and_sort_description_entry =
-  \file-and-sort-description-entry: Alt_fd_sd File_name File_and_sort_description_entry_clauses "." 
+   \file-and-sort-description-entry: Alt_fd_sd File_name File_and_sort_description_entry_clause*  "." 
   ;
 
 syntax Label_records_clause_tail =
   \label-records-clause-tail-c1: 'STANDARD' 
   | \label-records-clause-tail-c2: 'OMITTED' 
-  | \label-records-clause-tail-c3: Data_names 
+  |  \label-records-clause-tail-c3: Data_name+ 
   ;
 
 syntax To_integer =
@@ -30,9 +30,16 @@ syntax Data_names =
   ;
 
 syntax Record_clause_tail =
-  \record-clause-tail-c1: Record_clause_tail_2 
-  | \record-clause-tail-c2: Record_clause_tail_1 
-  | \record-clause-tail-c3: Record_clause_tail_3 
+   \record-clause-tail-c1: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'? 
+  |  \record-clause-tail-c2: 'CONTAINS'? Integer 'CHARACTERS'? 
+  |  \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'?
+ |  \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+ |  \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer  'CHARACTERS'?
+ |  \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer  'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+ |  \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'?
+ |  \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+ |  \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer  'CHARACTERS'?
+ |  \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer  'CHARACTERS'? 'DEPENDING' 'ON'? Data_name 
   ;
 
 syntax Footing =
@@ -40,7 +47,10 @@ syntax Footing =
   ;
 
 syntax Record_varying_phrase =
-  \record-varying-phrase: 'IS'? 'VARYING' 'IN'? 'SIZE'? From_integer? To_integer? 'CHARACTERS'? 
+   \record-varying-phrase: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'?
+ |  \record-varying-phrase: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer  'CHARACTERS'?
+ |  \record-varying-phrase: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'?
+ |  \record-varying-phrase: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer  'CHARACTERS'? 
   ;
 
 syntax Depending_on =
@@ -56,7 +66,14 @@ syntax Data_records_clause =
   ;
 
 syntax Linage_clause =
-  \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? Linage_footing_phrase 
+   \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'?
+ |  \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
+ |  \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer
+ |  \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
+ |  \linage-clause: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer 
   ;
 
 syntax Alt_characters_records =
@@ -98,20 +115,34 @@ syntax Lines_top =
   ;
 
 syntax File_and_sort_description_entry_clause =
-  \file-and-sort-description-entry-clause-c5: Label_records_clause 
-  | \file-and-sort-description-entry-clause-c3: Block_contains_clause 
-  | \file-and-sort-description-entry-clause-c8: Linage_clause 
-  | \file-and-sort-description-entry-clause-c9: Recording_mode_clause 
+   \file-and-sort-description-entry-clause-c5: 'LABEL' Records_are Label_records_clause_tail 
+  |  \file-and-sort-description-entry-clause-c3: 'BLOCK' 'CONTAINS'? Integer_to? Integer Alt_characters_records? 
+  |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'?
+ |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
+ |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer
+ |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
+ |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer 
+  |  \file-and-sort-description-entry-clause-c9: 'RECORDING' 'MODE'? 'IS'? Cobword \ CobwordKeywords 
   | \file-and-sort-description-entry-clause-c2: Global_clause 
-  | \file-and-sort-description-entry-clause-c4: Record_clause 
-  | \file-and-sort-description-entry-clause-c7: Data_records_clause 
-  | \file-and-sort-description-entry-clause-c6: Value_of_clause 
-  | \file-and-sort-description-entry-clause-c10: Code_set_clause 
+  |  \file-and-sort-description-entry-clause-c4: 'RECORD' Record_clause_tail 
+  |  \file-and-sort-description-entry-clause-c7: 'DATA' Records_are Data_name+ 
+  |  \file-and-sort-description-entry-clause-c6: 'VALUE' 'OF' Value_of_clause_tail+ 
+  |  \file-and-sort-description-entry-clause-c10: 'CODE-SET' 'IS'? Alphabet_name 
   | \file-and-sort-description-entry-clause-c1: External_clause 
   ;
 
 syntax Linage_footing_phrase =
-  \linage-footing-phrase: Footing? Lines_top? Lines_bottom? 
+   \linage-footing-phrase: 
+ |  \linage-footing-phrase: 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer
+ |  \linage-footing-phrase: 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \linage-footing-phrase: 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer  'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \linage-footing-phrase: 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
+ |  \linage-footing-phrase: 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer  'LINES'? 'AT'? 'TOP' Alt_data_name_integer
+ |  \linage-footing-phrase: 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+ |  \linage-footing-phrase: 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer  'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer 
   ;
 
 syntax Records_are =
@@ -145,5 +176,12 @@ syntax Value_of_clause_tail =
   ;
 
 syntax Record_clause_tail_3 =
-  \record-clause-tail-3: Record_varying_phrase Depending_on? 
+   \record-clause-tail-3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'?
+ |  \record-clause-tail-3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+ |  \record-clause-tail-3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer  'CHARACTERS'?
+ |  \record-clause-tail-3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer  'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+ |  \record-clause-tail-3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'?
+ |  \record-clause-tail-3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+ |  \record-clause-tail-3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer  'CHARACTERS'?
+ |  \record-clause-tail-3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer  'CHARACTERS'? 'DEPENDING' 'ON'? Data_name 
   ;

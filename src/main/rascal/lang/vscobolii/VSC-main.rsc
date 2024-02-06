@@ -12,8 +12,8 @@ syntax Nested_program =
   ;
 
 syntax Common_initial =
-  \common-initial-c2: Common_initial_2 
-  | \common-initial-c1: Common_initial_1 
+   \common-initial-c2: 'INITIAL' 'COMMON'? 
+  |  \common-initial-c1: 'COMMON' 'INITIAL'? 
   ;
 
 syntax Common_initial_program =
@@ -21,15 +21,20 @@ syntax Common_initial_program =
   ;
 
 syntax Nested_cobol_source_program =
-  \nested-cobol-source-program: Identification 'DIVISION' "." Program_id_nested_cobol_source_program Identification_division_content? Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "." 
+   \nested-cobol-source-program: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name "."?  Identification_division_content? Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "."
+ |  \nested-cobol-source-program: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name 'IS'? Common_initial 'PROGRAM'?  "."?  Identification_division_content? Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "." 
   ;
 
 syntax Program_id_nested_cobol_source_program =
-  \program-id-nested-cobol-source-program: 'PROGRAM-ID' "."? Program_name Common_initial_program? "."? 
+   \program-id-nested-cobol-source-program: 'PROGRAM-ID' "."? Program_name "."?
+ |  \program-id-nested-cobol-source-program: 'PROGRAM-ID' "."? Program_name 'IS'? Common_initial 'PROGRAM'?  "."? 
   ;
 
 syntax Cobol_source_program =
-  \cobol-source-program: Identification_division Environment_division? Data_division? Procedure_division? Nested_program? 
+   \cobol-source-program: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name "."?  Identification_division_content Environment_division? Data_division? Procedure_division?
+ |  \cobol-source-program: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name "."?  Identification_division_content Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "."
+ |  \cobol-source-program: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name 'IS'? 'INITIAL' 'PROGRAM'?  "."?  Identification_division_content Environment_division? Data_division? Procedure_division?
+ |  \cobol-source-program: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name 'IS'? 'INITIAL' 'PROGRAM'?  "."?  Identification_division_content Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "." 
   ;
 
 syntax Programs =

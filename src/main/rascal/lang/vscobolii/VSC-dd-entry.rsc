@@ -15,7 +15,10 @@ syntax Picture =
   ;
 
 syntax Sign_clause =
-  \sign-clause: Sign_is? Alt_leading_trailing Separate_character? 
+   \sign-clause: Alt_leading_trailing
+ |  \sign-clause: 'SIGN' 'IS'?  Alt_leading_trailing
+ |  \sign-clause: Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
+ |  \sign-clause: 'SIGN' 'IS'?  Alt_leading_trailing 'SEPARATE' 'CHARACTER'? 
   ;
 
 syntax Picture_clause =
@@ -53,7 +56,8 @@ syntax Occurs_clause_1 =
   ;
 
 syntax Renames_clause =
-  \renames-clause: 'RENAMES' Qualified_data_name Through_qualified_data_name? 
+   \renames-clause: 'RENAMES' Qualified_data_name
+ |  \renames-clause: 'RENAMES' Qualified_data_name Through Qualified_data_name 
   ;
 
 syntax Synchronized_clause =
@@ -61,7 +65,7 @@ syntax Synchronized_clause =
   ;
 
 syntax Data_description_entry =
-  \data-description-entry-c1: Data_description_entry_1 
+   \data-description-entry-c1: Num Alt_data_name_filler? Data_description_entry_clause*  "."? 
   | \data-description-entry-c2: Copy_statement 
   ;
 
@@ -91,15 +95,20 @@ syntax Synchronized =
 syntax Data_description_entry_clause =
   \data-description-entry-clause-c4: External_clause 
   | \data-description-entry-clause-c5: Global_clause 
-  | \data-description-entry-clause-c9: Synchronized_clause 
-  | \data-description-entry-clause-c3: Blank_when_zero_clause 
-  | \data-description-entry-clause-c8: Sign_clause 
-  | \data-description-entry-clause-c12: Condition_value_clause 
-  | \data-description-entry-clause-c1: Picture_clause 
-  | \data-description-entry-clause-c2: Redefines_clause 
-  | \data-description-entry-clause-c10: Usage_clause 
-  | \data-description-entry-clause-c11: Renames_clause 
-  | \data-description-entry-clause-c6: Justified_clause 
+  |  \data-description-entry-clause-c9: Synchronized Alt_left_right? 
+  |  \data-description-entry-clause-c3: 'BLANK' 'WHEN'? Zeroes 
+  |  \data-description-entry-clause-c8: Alt_leading_trailing
+ |  \data-description-entry-clause-c8: 'SIGN' 'IS'?  Alt_leading_trailing
+ |  \data-description-entry-clause-c8: Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
+ |  \data-description-entry-clause-c8: 'SIGN' 'IS'?  Alt_leading_trailing 'SEPARATE' 'CHARACTER'? 
+  |  \data-description-entry-clause-c12: Values Are? Literal_through_literal+ 
+  |  \data-description-entry-clause-c1: Picture 'IS'? Picture_string 
+  |  \data-description-entry-clause-c2: 'REDEFINES' Data_name 
+  |  \data-description-entry-clause-c10: Usage
+ |  \data-description-entry-clause-c10: 'USAGE' 'IS'?  Usage 
+  |  \data-description-entry-clause-c11: 'RENAMES' Qualified_data_name
+ |  \data-description-entry-clause-c11: 'RENAMES' Qualified_data_name Through Qualified_data_name 
+  |  \data-description-entry-clause-c6: Justified 'RIGHT'? 
   | \data-description-entry-clause-c7: Occurs_clause 
   ;
 
@@ -117,11 +126,12 @@ syntax Separate_character =
   ;
 
 syntax Usage_clause =
-  \usage-clause: Usage_is? Usage 
+   \usage-clause: Usage
+ |  \usage-clause: 'USAGE' 'IS'?  Usage 
   ;
 
 syntax Data_description_entry_1 =
-  \data-description-entry-1: Level_number Alt_data_name_filler? Data_description_entry_clauses "."? 
+   \data-description-entry-1: Num Alt_data_name_filler? Data_description_entry_clause*  "."? 
   ;
 
 syntax Sign_is =
@@ -152,7 +162,7 @@ syntax Usage =
   ;
 
 syntax Condition_value_clause =
-  \condition-value-clause: Values_are Literal_through_literal+ 
+   \condition-value-clause: Values Are? Literal_through_literal+ 
   ;
 
 syntax Indexed_by =
@@ -165,8 +175,8 @@ syntax Alt_data_name_filler =
   ;
 
 syntax Occurs_clause =
-  \occurs-clause-c1: Occurs_clause_2 
-  | \occurs-clause-c2: Occurs_clause_1 
+   \occurs-clause-c1: 'OCCURS' Integer_to? Integer 'TIMES'? 'DEPENDING' 'ON'? Qualified_data_name Occurs_clause_key* Indexed_by? 
+  |  \occurs-clause-c2: 'OCCURS' Integer 'TIMES'? Occurs_clause_key* Indexed_by? 
   ;
 
 syntax Occurs_clause_key =

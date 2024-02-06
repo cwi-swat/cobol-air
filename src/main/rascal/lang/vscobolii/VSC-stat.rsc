@@ -35,8 +35,9 @@ syntax No_rewind =
   ;
 
 syntax Accept_statement =
-  \accept-statement-c1: Accept_statement_2 
-  | \accept-statement-c2: Accept_statement_1 
+   \accept-statement-c1: 'ACCEPT' Identifier 'FROM' Date 
+  |  \accept-statement-c2: 'ACCEPT' Identifier
+ |  \accept-statement-c2: 'ACCEPT' Identifier 'FROM' Cobword \ CobwordKeywords 
   ;
 
 syntax Varying_identifier =
@@ -44,8 +45,9 @@ syntax Varying_identifier =
   ;
 
 syntax Search_statement =
-  \search-statement-c2: Search_statement_2 
-  | \search-statement-c1: Search_statement_1 
+   \search-statement-c2: 'SEARCH' 'ALL' Identifier At_end_statement_list? 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence 'END-SEARCH'? 
+  |  \search-statement-c1: 'SEARCH' Identifier At_end_statement_list? When_condition_stats+ 'END-SEARCH'?
+ |  \search-statement-c1: 'SEARCH' Identifier 'VARYING' Identifier  At_end_statement_list? When_condition_stats+ 'END-SEARCH'? 
   ;
 
 syntax Inspect_statement_3 =
@@ -81,7 +83,8 @@ syntax Search_statement_condition_tail =
   ;
 
 syntax Procedure_to_procedure =
-  \procedure-to-procedure: Procedure_name 'TO' Proceed_to? Procedure_name 
+   \procedure-to-procedure: Procedure_name 'TO' Procedure_name
+ |  \procedure-to-procedure: Procedure_name 'TO' 'PROCEED' 'TO'  Procedure_name 
   ;
 
 syntax Delimited_by_phrase =
@@ -89,7 +92,10 @@ syntax Delimited_by_phrase =
   ;
 
 syntax Unstring_statement =
-  \unstring-statement: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ With_pointer_identifier? Tallying_in_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'? 
+   \unstring-statement: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
+ |  \unstring-statement: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
+ |  \unstring-statement: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? Id_or_lit Or_all_id_or_lit*  'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
+ |  \unstring-statement: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? Id_or_lit Or_all_id_or_lit*  'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'? 
   ;
 
 syntax Key_is_rel_op_qualified_data_name =
@@ -152,8 +158,8 @@ syntax Before_after_phrase =
   ;
 
 syntax Tallying_for_argument =
-  \tallying-for-argument-c1: Tallying_for_argument_1 
-  | \tallying-for-argument-c2: Tallying_for_argument_2 
+   \tallying-for-argument-c1: 'CHARACTERS' Before_after_phrase* 
+  |  \tallying-for-argument-c2: Alt_all_leading Tallying_for_id_or_lit+ 
   ;
 
 syntax Rewrite_statement =
@@ -201,10 +207,10 @@ syntax Else_phrase =
   ;
 
 syntax Evaluate_phrase =
-  \evaluate-phrase-c4: Evaluate_phrase_2 
+   \evaluate-phrase-c4: 'NOT'? Arithmetic_expression Through Arithmetic_expression 
   | \evaluate-phrase-c2: 'TRUE' 
   | \evaluate-phrase-c5: Condition 
-  | \evaluate-phrase-c6: Evaluate_phrase_1 
+  |  \evaluate-phrase-c6: 'NOT'? Arithmetic_expression 
   | \evaluate-phrase-c3: 'FALSE' 
   | \evaluate-phrase-c1: 'ANY' 
   ;
@@ -243,10 +249,10 @@ syntax From_identifier =
   ;
 
 syntax Open_statement_phrase =
-  \open-statement-phrase-c3: Open_statement_i_o 
-  | \open-statement-phrase-c1: Open_statement_input 
-  | \open-statement-phrase-c2: Open_statement_output 
-  | \open-statement-phrase-c4: Open_statement_extend 
+   \open-statement-phrase-c3: 'I-O' File_name+ 
+  |  \open-statement-phrase-c1: 'INPUT' Open_statement_input_file_name+ 
+  |  \open-statement-phrase-c2: 'OUTPUT' Open_statement_output_file_name+ 
+  |  \open-statement-phrase-c4: 'EXTEND' File_name+ 
   ;
 
 syntax At_end_statement_list =
@@ -254,9 +260,10 @@ syntax At_end_statement_list =
   ;
 
 syntax Add_statement =
-  \add-statement-c1: Add_statement_2 
-  | \add-statement-c3: Add_statement_3 
-  | \add-statement-c2: Add_statement_1 
+   \add-statement-c1: 'ADD' Id_or_lit+ 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-ADD'?
+ |  \add-statement-c1: 'ADD' Id_or_lit+ 'TO' Id_or_lit  'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-ADD'? 
+  |  \add-statement-c3: 'ADD' Corresponding Identifier 'TO' Identifier 'ROUNDED'? On_size_error_statement_list? Not_on_size_error_statement_list? 'END-ADD'? 
+  |  \add-statement-c2: 'ADD' Id_or_lit+ 'TO' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-ADD'? 
   ;
 
 syntax Also_phrase =
@@ -268,10 +275,10 @@ syntax Through_procedure_name =
   ;
 
 syntax Perform_statement =
-  \perform-statement-c2: Perform_statement_2 
-  | \perform-statement-c3: Perform_statement_3 
-  | \perform-statement-c4: Perform_statement_1 
-  | \perform-statement-c1: Perform_statement_4 
+   \perform-statement-c2: 'PERFORM' Perform_statement_2_alts 
+  |  \perform-statement-c3: 'PERFORM' Perform_statement_3_alts 
+  |  \perform-statement-c4: 'PERFORM' Perform_statement_1_alts 
+  |  \perform-statement-c1: 'PERFORM' Perform_statement_4_alts 
   ;
 
 syntax Evaluate_phrase_1 =
@@ -280,7 +287,7 @@ syntax Evaluate_phrase_1 =
 
 syntax Alt_removal_no_rewind =
   \alt-removal-no-rewind-c2: With_no_rewind 
-  | \alt-removal-no-rewind-c1: For_removal 
+  |  \alt-removal-no-rewind-c1: 'FOR'? 'REMOVAL' 
   ;
 
 syntax Alt_up_down =
@@ -320,8 +327,8 @@ syntax Exit_program_statement =
   ;
 
 syntax Inspect_replacing_phrase =
-  \inspect-replacing-phrase-c1: Inspect_replacing_phrase_1 
-  | \inspect-replacing-phrase-c2: Inspect_replacing_phrase_2 
+   \inspect-replacing-phrase-c1: 'CHARACTERS' 'BY' Id_or_lit Before_after_phrase* 
+  |  \inspect-replacing-phrase-c2: Alt_all_leading_first Inspect_replacing_argument+ 
   ;
 
 syntax Not_on_exception_statement_list =
@@ -329,7 +336,10 @@ syntax Not_on_exception_statement_list =
   ;
 
 syntax Display_statement =
-  \display-statement: 'DISPLAY' Id_or_lit+ Upon_environment_name? With_no_advancing? 
+   \display-statement: 'DISPLAY' Id_or_lit+
+ |  \display-statement: 'DISPLAY' Id_or_lit+ 'WITH'? 'NO' 'ADVANCING'
+ |  \display-statement: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords
+ |  \display-statement: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords 'WITH'? 'NO' 'ADVANCING' 
   ;
 
 syntax Stop_statement =
@@ -346,7 +356,7 @@ syntax Alt_before_after =
   ;
 
 syntax Evaluate_phrase_2 =
-  \evaluate-phrase-2: 'NOT'? Arithmetic_expression Through_arithmetic_expression 
+   \evaluate-phrase-2: 'NOT'? Arithmetic_expression Through Arithmetic_expression 
   ;
 
 syntax Alt_all_leading =
@@ -355,7 +365,8 @@ syntax Alt_all_leading =
   ;
 
 syntax Start_statement =
-  \start-statement: 'START' File_name Key_is_rel_op_qualified_data_name? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'? 
+   \start-statement: 'START' File_name Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'?
+ |  \start-statement: 'START' File_name 'KEY' 'IS'? Rel_op Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'? 
   ;
 
 syntax Set_statement =
@@ -371,7 +382,7 @@ syntax Not_at_end_statement_list =
   ;
 
 syntax Alt_file_names_i_o =
-  \alt-file-names-i-o-c1: File_names 
+   \alt-file-names-i-o-c1: File_name+ 
   | \alt-file-names-i-o-c3: 'OUTPUT' 
   | \alt-file-names-i-o-c2: 'INPUT' 
   | \alt-file-names-i-o-c4: 'I-O' 
@@ -379,7 +390,8 @@ syntax Alt_file_names_i_o =
   ;
 
 syntax Reference_parameter =
-  \reference-parameter: By_reference? Identifier 
+   \reference-parameter: Identifier
+ |  \reference-parameter: 'BY'? 'REFERENCE'  Identifier 
   ;
 
 syntax Output_procedure =
@@ -427,13 +439,13 @@ syntax Move_statement_2 =
   ;
 
 syntax Search_statement_condition =
-  \search-statement-condition-c1: Search_statement_equal_expression 
-  | \search-statement-condition-c2: Condition_name_reference 
+   \search-statement-condition-c1: Identifier 'IS'? Equal_to Arithmetic_expression 
+  |  \search-statement-condition-c2: Alphabetic_user_defined_word In_data_or_file_or_mnemonic_name* Subscript_parentheses* 
   ;
 
 syntax Multiply_statement =
-  \multiply-statement-c1: Multiply_statement_2 
-  | \multiply-statement-c2: Multiply_statement_1 
+   \multiply-statement-c1: 'MULTIPLY' Id_or_lit 'BY' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-MULTIPLY'? 
+  |  \multiply-statement-c2: 'MULTIPLY' Id_or_lit 'BY' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-MULTIPLY'? 
   ;
 
 syntax Go_to_statement_1 =
@@ -442,7 +454,7 @@ syntax Go_to_statement_1 =
 
 syntax Alt_statement_list_next_sentence =
   \alt-statement-list-next-sentence-c1: Statement_list 
-  | \alt-statement-list-next-sentence-c2: Next_sentence 
+  |  \alt-statement-list-next-sentence-c2: 'NEXT' 'SENTENCE' 
   ;
 
 syntax Open_statement_input_file_name =
@@ -488,9 +500,9 @@ syntax Initialize_replacing_type =
   ;
 
 syntax Use_statement =
-  \use-statement-c1: Use_statement_1 
-  | \use-statement-c2: Use_statement_2 
-  | \use-statement-c3: Use_statement_3 
+   \use-statement-c1: 'USE' 'GLOBAL'? 'AFTER' 'STANDARD'? Alt_exception_error 'PROCEDURE' 'ON'? Alt_file_names_i_o 
+  |  \use-statement-c2: 'USE' 'GLOBAL'? 'AFTER' 'STANDARD'? Alt_beginning_ending? Alt_file_reel_unit? 'LABEL' 'PROCEDURE' 'ON'? Alt_file_names_i_o 
+  |  \use-statement-c3: 'USE' 'FOR'? 'DEBUGGING' 'ON'? Alt_procedures_all_procedures 
   ;
 
 syntax Giving_file_names =
@@ -506,8 +518,8 @@ syntax For_removal =
   ;
 
 syntax Sort_statement_in =
-  \sort-statement-in-c1: Using_file_names 
-  | \sort-statement-in-c2: Input_procedure 
+   \sort-statement-in-c1: 'USING' File_name+ 
+  |  \sort-statement-in-c2: 'INPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name? 
   ;
 
 syntax Invalid_key_statement_list =
@@ -535,13 +547,14 @@ syntax Initialize_replacing_phrase =
   ;
 
 syntax Parameter =
-  \parameter-c2: Content_parameter 
-  | \parameter-c1: Reference_parameter 
+   \parameter-c2: 'BY'? 'CONTENT' Content_parameter_value+ 
+  |  \parameter-c1: Identifier
+ |  \parameter-c1: 'BY'? 'REFERENCE'  Identifier 
   ;
 
 syntax Page_phrase =
   \page-phrase-c2: 'PAGE' 
-  | \page-phrase-c1: Nr_lines_phrase 
+  |  \page-phrase-c1: Cobword_int Lines? 
   ;
 
 syntax Use_statement_1 =
@@ -549,15 +562,16 @@ syntax Use_statement_1 =
   ;
 
 syntax Evaluate_statement =
-  \evaluate-statement: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ When_other_phrase? 'END-EVALUATE'? 
+   \evaluate-statement: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ 'END-EVALUATE'?
+ |  \evaluate-statement: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ 'WHEN' 'OTHER' Statement_list  'END-EVALUATE'? 
   ;
 
 syntax Divide_statement =
-  \divide-statement-c3: Divide_statement_2 
-  | \divide-statement-c5: Divide_statement_1 
-  | \divide-statement-c2: Divide_statement_5 
-  | \divide-statement-c1: Divide_statement_4 
-  | \divide-statement-c4: Divide_statement_3 
+   \divide-statement-c3: 'DIVIDE' Id_or_lit 'INTO' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-DIVIDE'? 
+  |  \divide-statement-c5: 'DIVIDE' Id_or_lit 'INTO' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-DIVIDE'? 
+  |  \divide-statement-c2: 'DIVIDE' Id_or_lit 'BY' Id_or_lit 'GIVING' Identifier 'ROUNDED'? 'REMAINDER' Identifier On_size_error_statement_list? Not_on_size_error_statement_list? 'END-DIVIDE'? 
+  |  \divide-statement-c1: 'DIVIDE' Id_or_lit 'INTO' Id_or_lit 'GIVING' Identifier 'ROUNDED'? 'REMAINDER' Identifier On_size_error_statement_list? Not_on_size_error_statement_list? 'END-DIVIDE'? 
+  |  \divide-statement-c4: 'DIVIDE' Id_or_lit 'BY' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-DIVIDE'? 
   ;
 
 syntax Perform_statement_2_statement_list =
@@ -605,7 +619,7 @@ syntax With_test =
   ;
 
 syntax Set_oper =
-  \set-oper-c2: Alt_up_down_by 
+   \set-oper-c2: Alt_up_down 'BY' 
   | \set-oper-c1: 'TO' 
   ;
 
@@ -634,11 +648,13 @@ syntax Use_statement_2 =
   ;
 
 syntax Search_statement_1 =
-  \search-statement-1: 'SEARCH' Identifier Varying_identifier? At_end_statement_list? When_condition_stats+ 'END-SEARCH'? 
+   \search-statement-1: 'SEARCH' Identifier At_end_statement_list? When_condition_stats+ 'END-SEARCH'?
+ |  \search-statement-1: 'SEARCH' Identifier 'VARYING' Identifier  At_end_statement_list? When_condition_stats+ 'END-SEARCH'? 
   ;
 
 syntax Accept_statement_1 =
-  \accept-statement-1: 'ACCEPT' Identifier From_environment_name? 
+   \accept-statement-1: 'ACCEPT' Identifier
+ |  \accept-statement-1: 'ACCEPT' Identifier 'FROM' Cobword \ CobwordKeywords 
   ;
 
 syntax When_other_phrase =
@@ -647,7 +663,7 @@ syntax When_other_phrase =
 
 syntax If_statement =
   \if-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' 'END-IF'? 
-  | \if-else-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence Else_phrase 'END-IF'? 
+  |  \if-else-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence  'END-IF'? 
   ;
 
 syntax Proceed_to =
@@ -663,44 +679,69 @@ syntax Next_sentence =
   ;
 
 syntax Statement =
-  \statement-c18: Exit_program_statement 
-  | \statement-c23: Merge_statement 
+   \statement-c18: 'EXIT' 'PROGRAM' 
+  |  \statement-c23: 'MERGE' File_name On_key_phrase+ Collating_sequence? 'USING' File_name File_name+ Merge_statement_tail 
   | \statement-c30: Search_statement 
-  | \statement-c11: Compute_statement 
-  | \statement-c19: Exit_statement 
-  | \statement-c7: Alter_statement 
-  | \statement-c8: Call_statement 
-  | \statement-c31: Set_statement 
-  | \statement-c34: Stop_statement 
+  |  \statement-c11: 'COMPUTE' Cobword_rounded+ Equal Arithmetic_expression On_size_error_statement_list? Not_on_size_error_statement_list? 'END-COMPUTE'? 
+  |  \statement-c19: 'EXIT' 
+  |  \statement-c7: 'ALTER' Procedure_to_procedure+ 
+  |  \statement-c8: 'CALL' Id_or_lit On_overflow_statement_list?  'END-CALL'?
+ |  \statement-c8: 'CALL' Id_or_lit 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?  'END-CALL'?
+ |  \statement-c8: 'CALL' Id_or_lit 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list?  'END-CALL'?
+ |  \statement-c8: 'CALL' Id_or_lit 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?  'END-CALL'?
+ |  \statement-c8: 'CALL' Id_or_lit 'USING' Parameter+ On_overflow_statement_list?  'END-CALL'?
+ |  \statement-c8: 'CALL' Id_or_lit 'USING' Parameter+ 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?  'END-CALL'?
+ |  \statement-c8: 'CALL' Id_or_lit 'USING' Parameter+ 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list?  'END-CALL'?
+ |  \statement-c8: 'CALL' Id_or_lit 'USING' Parameter+ 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?  'END-CALL'? 
+  |  \statement-c31: 'SET' Set_statement_phrase+ 
+  |  \statement-c34: 'STOP' Alt_run_literal 
   | \statement-c15: Divide_statement 
-  | \statement-c14: Display_statement 
-  | \statement-c26: Read_statement 
-  | \statement-c35: String_statement 
+  |  \statement-c14: 'DISPLAY' Id_or_lit+
+ |  \statement-c14: 'DISPLAY' Id_or_lit+ 'WITH'? 'NO' 'ADVANCING'
+ |  \statement-c14: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords
+ |  \statement-c14: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords 'WITH'? 'NO' 'ADVANCING' 
+  |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'?
+ |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? 'KEY' 'IS'? Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'? 
+  |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-STRING'? 
   | \statement-c36: Subtract_statement 
   | \statement-c1: Move_statement 
   | \statement-c4: Go_to_statement 
-  | \statement-c20: Goback_statement 
+  |  \statement-c20: 'GOBACK' 
   | \statement-c6: Add_statement 
   | \statement-c5: Accept_statement 
-  | \statement-c13: Delete_statement 
-  | \statement-c21: Initialize_statement 
-  | \statement-c12: Continue_statement 
-  | \statement-c27: Release_statement 
-  | \statement-c37: Unstring_statement 
-  | \statement-c10: Close_statement 
+  |  \statement-c13: 'DELETE' File_name 'RECORD'? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-DELETE'? 
+  |  \statement-c21: 'INITIALIZE' Identifier+
+ |  \statement-c21: 'INITIALIZE' Identifier+ 'REPLACING' Initialize_replacing_argument+ 
+  |  \statement-c12: 'CONTINUE' 
+  |  \statement-c27: 'RELEASE' Record_name From_identifier? 
+  |  \statement-c37: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
+ |  \statement-c37: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
+ |  \statement-c37: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? Id_or_lit Or_all_id_or_lit*  'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
+ |  \statement-c37: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? Id_or_lit Or_all_id_or_lit*  'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'? 
+  |  \statement-c10: 'CLOSE' Close_statement_file_name+ 
   | \statement-c2: If_statement 
   | \statement-c22: Inspect_statement 
-  | \statement-c32: Sort_statement 
-  | \statement-c38: Write_statement 
-  | \statement-c17: Evaluate_statement 
-  | \statement-c33: Start_statement 
-  | \statement-c28: Return_statement 
+  |  \statement-c32: 'SORT' File_name On_key_is_phrase+ Collating_sequence? Sort_statement_in Sort_statement_out
+ |  \statement-c32: 'SORT' File_name On_key_is_phrase+ 'WITH'? 'DUPLICATES' 'IN'? 'ORDER'?  Collating_sequence? Sort_statement_in Sort_statement_out 
+  |  \statement-c38: 'WRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \statement-c38: 'WRITE' Record_name From_identifier? 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \statement-c38: 'WRITE' Record_name From_identifier? 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \statement-c38: 'WRITE' Record_name From_identifier? 'AT'? End_of_page Statement_list 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \statement-c38: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \statement-c38: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \statement-c38: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \statement-c38: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'AT'? End_of_page Statement_list 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'? 
+  |  \statement-c17: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ 'END-EVALUATE'?
+ |  \statement-c17: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ 'WHEN' 'OTHER' Statement_list  'END-EVALUATE'? 
+  |  \statement-c33: 'START' File_name Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'?
+ |  \statement-c33: 'START' File_name 'KEY' 'IS'? Rel_op Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'? 
+  |  \statement-c28: 'RETURN' File_name 'RECORD'? Into_identifier? 'AT'? 'END' Statement_list Not_at_end_statement_list? 'END-RETURN'? 
   | \statement-c3: Perform_statement 
-  | \statement-c16: Entry_statement 
-  | \statement-c9: Cancel_statement 
-  | \statement-c25: Open_statement 
+  |  \statement-c16: 'ENTRY' Literal Using_data_name_pluslist? 
+  |  \statement-c9: 'CANCEL' Id_or_lit+ 
+  |  \statement-c25: 'OPEN' Open_statement_phrase+ 
   | \statement-c24: Multiply_statement 
-  | \statement-c29: Rewrite_statement 
+  |  \statement-c29: 'REWRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-REWRITE'? 
   ;
 
 syntax Not_on_size_error_statement_list =
@@ -708,7 +749,14 @@ syntax Not_on_size_error_statement_list =
   ;
 
 syntax Write_statement =
-  \write-statement: 'WRITE' Record_name From_identifier? Advancing_phrase? Write_exceptions 'END-WRITE'? 
+   \write-statement: 'WRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \write-statement: 'WRITE' Record_name From_identifier? 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \write-statement: 'WRITE' Record_name From_identifier? 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \write-statement: 'WRITE' Record_name From_identifier? 'AT'? End_of_page Statement_list 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \write-statement: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \write-statement: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \write-statement: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'?
+ |  \write-statement: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'AT'? End_of_page Statement_list 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'? 
   ;
 
 syntax Tallying_for_argument_2 =
@@ -716,7 +764,8 @@ syntax Tallying_for_argument_2 =
   ;
 
 syntax On_key_is_phrase =
-  \on-key-is-phrase: 'ON'? Alt_ascending_descending Key_is? Qualified_data_name+ 
+   \on-key-is-phrase: 'ON'? Alt_ascending_descending Qualified_data_name+
+ |  \on-key-is-phrase: 'ON'? Alt_ascending_descending 'KEY' 'IS'?  Qualified_data_name+ 
   ;
 
 syntax Date =
@@ -739,11 +788,19 @@ syntax Statement_list =
   ;
 
 syntax Sort_statement =
-  \sort-statement: 'SORT' File_name On_key_is_phrase+ With_duplicates_in_order? Collating_sequence? Sort_statement_in Sort_statement_out 
+   \sort-statement: 'SORT' File_name On_key_is_phrase+ Collating_sequence? Sort_statement_in Sort_statement_out
+ |  \sort-statement: 'SORT' File_name On_key_is_phrase+ 'WITH'? 'DUPLICATES' 'IN'? 'ORDER'?  Collating_sequence? Sort_statement_in Sort_statement_out 
   ;
 
 syntax Call_statement =
-  \call-statement: 'CALL' Id_or_lit Using_parameters? Call_rest_phrase 'END-CALL'? 
+   \call-statement: 'CALL' Id_or_lit On_overflow_statement_list?  'END-CALL'?
+ |  \call-statement: 'CALL' Id_or_lit 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?  'END-CALL'?
+ |  \call-statement: 'CALL' Id_or_lit 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list?  'END-CALL'?
+ |  \call-statement: 'CALL' Id_or_lit 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?  'END-CALL'?
+ |  \call-statement: 'CALL' Id_or_lit 'USING' Parameter+ On_overflow_statement_list?  'END-CALL'?
+ |  \call-statement: 'CALL' Id_or_lit 'USING' Parameter+ 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?  'END-CALL'?
+ |  \call-statement: 'CALL' Id_or_lit 'USING' Parameter+ 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list?  'END-CALL'?
+ |  \call-statement: 'CALL' Id_or_lit 'USING' Parameter+ 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?  'END-CALL'? 
   ;
 
 syntax Tallying_for_argument_1 =
@@ -755,8 +812,8 @@ syntax String_statement =
   ;
 
 syntax Move_statement =
-  \move-statement-c2: Move_statement_2 
-  | \move-statement-c1: Move_statement_1 
+   \move-statement-c2: 'MOVE' Corresponding Identifier 'TO' Identifier+ 
+  |  \move-statement-c1: 'MOVE' Id_or_lit 'TO' Identifier+ 
   ;
 
 syntax Id_or_lit_size =
@@ -766,11 +823,15 @@ syntax Id_or_lit_size =
   ;
 
 syntax Initialize_statement =
-  \initialize-statement: 'INITIALIZE' Identifier+ Initialize_replacing_phrase? 
+   \initialize-statement: 'INITIALIZE' Identifier+
+ |  \initialize-statement: 'INITIALIZE' Identifier+ 'REPLACING' Initialize_replacing_argument+ 
   ;
 
 syntax Unstring_statement_dst =
-  \unstring-statement-dst: Identifier Delimiter_in_identifier? Count_in_identifier? 
+   \unstring-statement-dst: Identifier
+ |  \unstring-statement-dst: Identifier 'COUNT' 'IN'? Identifier
+ |  \unstring-statement-dst: Identifier 'DELIMITER' 'IN'? Identifier
+ |  \unstring-statement-dst: Identifier 'DELIMITER' 'IN'? Identifier 'COUNT' 'IN'? Identifier 
   ;
 
 syntax Return_statement =
@@ -794,8 +855,8 @@ syntax Content_parameter =
   ;
 
 syntax Perform_statement_4_alts =
-  \perform-statement-4-alts-c2: Perform_statement_4_statement_list 
-  | \perform-statement-4-alts-c1: Perform_statement_4_procedure 
+   \perform-statement-4-alts-c2: Perform_until_phrase Statement_list 'END-PERFORM' 
+  |  \perform-statement-4-alts-c1: Procedure_name Through_procedure_name? Perform_until_phrase 
   ;
 
 syntax On_size_error_statement_list =
@@ -811,7 +872,10 @@ syntax Perform_statement_1 =
   ;
 
 syntax Call_rest_phrase =
-  \call-rest-phrase: On_exception_statement_list? Not_on_exception_statement_list? On_overflow_statement_list? 
+   \call-rest-phrase: On_overflow_statement_list?
+ |  \call-rest-phrase: 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?
+ |  \call-rest-phrase: 'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list?
+ |  \call-rest-phrase: 'ON'? 'EXCEPTION' Statement_list  'NOT' 'ON'? 'EXCEPTION' Statement_list  On_overflow_statement_list? 
   ;
 
 syntax By_reference =
@@ -834,9 +898,9 @@ syntax Not_invalid_key_statement_list =
   ;
 
 syntax Go_to_statement =
-  \go-to-statement-c3: Go_to_statement_3 
-  | \go-to-statement-c2: Go_to_statement_1 
-  | \go-to-statement-c1: Go_to_statement_2 
+   \go-to-statement-c3: 'GO' 'TO'? 'MORE-LABELS' 
+  |  \go-to-statement-c2: 'GO' 'TO'? Procedure_name 
+  |  \go-to-statement-c1: 'GO' 'TO'? Procedure_name+ 'DEPENDING' 'ON'? Identifier 
   ;
 
 syntax Entry_statement =
@@ -873,8 +937,8 @@ syntax Open_statement_input =
   ;
 
 syntax Perform_statement_2_alts =
-  \perform-statement-2-alts-c1: Perform_statement_2_procedure 
-  | \perform-statement-2-alts-c2: Perform_statement_2_statement_list 
+   \perform-statement-2-alts-c1: Procedure_name Through_procedure_name? Perform_varying_phrase Perform_after_phrase* 
+  |  \perform-statement-2-alts-c2: Perform_varying_phrase Statement_list 'END-PERFORM' 
   ;
 
 syntax Using_parameters =
@@ -890,13 +954,14 @@ syntax Inspect_replacing_phrase_1 =
   ;
 
 syntax Subtract_statement =
-  \subtract-statement-c2: Subtract_statement_1 
-  | \subtract-statement-c1: Subtract_statement_2 
-  | \subtract-statement-c3: Subtract_statement_3 
+   \subtract-statement-c2: 'SUBTRACT' Id_or_lit+ 'FROM' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-SUBTRACT'? 
+  |  \subtract-statement-c1: 'SUBTRACT' Id_or_lit+ 'FROM' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-SUBTRACT'? 
+  |  \subtract-statement-c3: 'SUBTRACT' Corresponding Identifier 'FROM' Identifier 'ROUNDED'? On_size_error_statement_list? Not_on_size_error_statement_list? 'END-SUBTRACT'? 
   ;
 
 syntax Add_statement_2 =
-  \add-statement-2: 'ADD' Id_or_lit+ To_id_or_lit? 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-ADD'? 
+   \add-statement-2: 'ADD' Id_or_lit+ 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-ADD'?
+ |  \add-statement-2: 'ADD' Id_or_lit+ 'TO' Id_or_lit  'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-ADD'? 
   ;
 
 syntax Perform_statement_2 =
@@ -904,19 +969,22 @@ syntax Perform_statement_2 =
   ;
 
 syntax Inspect_statement =
-  \inspect-statement-c1: Inspect_statement_3 
-  | \inspect-statement-c4: Inspect_statement_4 
-  | \inspect-statement-c3: Inspect_statement_2 
-  | \inspect-statement-c2: Inspect_statement_1 
+   \inspect-statement-c1: 'INSPECT' Identifier 'TALLYING' Tallying_argument+ 'REPLACING' Inspect_replacing_phrase+ 
+  |  \inspect-statement-c4: 'INSPECT' Identifier 'REPLACING' Inspect_replacing_phrase+ 
+  |  \inspect-statement-c3: 'INSPECT' Identifier 'CONVERTING' Id_or_lit 'TO' Id_or_lit Before_after_phrase* 
+  |  \inspect-statement-c2: 'INSPECT' Identifier 'TALLYING' Tallying_argument+ 
   ;
 
 syntax Write_exceptions =
-  \write-exceptions: At_end_of_page_statement_list? Not_at_end_of_page_statement_list? Invalid_key_statement_list? Not_invalid_key_statement_list? 
+   \write-exceptions: Invalid_key_statement_list? Not_invalid_key_statement_list?
+ |  \write-exceptions: 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?
+ |  \write-exceptions: 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?
+ |  \write-exceptions: 'AT'? End_of_page Statement_list  'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list? 
   ;
 
 syntax Perform_statement_3_alts =
-  \perform-statement-3-alts-c1: Perform_statement_3_procedure 
-  | \perform-statement-3-alts-c2: Perform_statement_3_statement_list 
+   \perform-statement-3-alts-c1: Procedure_name Through_procedure_name? Cobword_int 'TIMES' 
+  |  \perform-statement-3-alts-c2: Cobword_int 'TIMES' Statement_list 'END-PERFORM' 
   ;
 
 syntax Rel_op =
@@ -934,7 +1002,7 @@ syntax Multiply_statement_2 =
   ;
 
 syntax Alt_no_rewind_lock =
-  \alt-no-rewind-lock-c1: No_rewind 
+   \alt-no-rewind-lock-c1: 'NO' 'REWIND' 
   | \alt-no-rewind-lock-c2: 'LOCK' 
   ;
 
@@ -943,8 +1011,8 @@ syntax Perform_statement_4_statement_list =
   ;
 
 syntax Close_statement_options =
-  \close-statement-options-c2: Close_statement_options_2 
-  | \close-statement-options-c1: Close_statement_options_1 
+   \close-statement-options-c2: 'WITH'? Alt_no_rewind_lock 
+  |  \close-statement-options-c1: Alt_reel_unit Alt_removal_no_rewind? 
   ;
 
 syntax Set_src =
@@ -956,8 +1024,8 @@ syntax Set_src =
   ;
 
 syntax Alt_procedures_all_procedures =
-  \alt-procedures-all-procedures-c2: All_procedures 
-  | \alt-procedures-all-procedures-c1: Procedure_names 
+   \alt-procedures-all-procedures-c2: 'ALL' 'PROCEDURES' 
+  |  \alt-procedures-all-procedures-c1: Procedure_name+ 
   ;
 
 syntax Alt_reversed_with_no_rewind =
@@ -983,8 +1051,8 @@ syntax Perform_statement_4 =
   ;
 
 syntax Perform_statement_1_alts =
-  \perform-statement-1-alts-c1: Perform_statement_1_procedure 
-  | \perform-statement-1-alts-c2: Perform_statement_1_statement_list 
+   \perform-statement-1-alts-c1: Procedure_name Through_procedure_name? 
+  |  \perform-statement-1-alts-c2: Statement_list 'END-PERFORM' 
   ;
 
 syntax Set_statement_phrase =
@@ -1012,5 +1080,6 @@ syntax Perform_varying_phrase =
   ;
 
 syntax Read_statement =
-  \read-statement: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Key_is_qualified_data_name? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'? 
+   \read-statement: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'?
+ |  \read-statement: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? 'KEY' 'IS'? Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'? 
   ;

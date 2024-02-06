@@ -19,7 +19,7 @@ syntax Memory_size =
   ;
 
 syntax Special_names_paragraph =
-  \special-names-paragraph: 'SPECIAL-NAMES' "." Special_names_paragraph_phrase* Special_names_paragraph_clauses "."? 
+   \special-names-paragraph: 'SPECIAL-NAMES' "." Special_names_paragraph_phrase* Special_names_paragraph_clause*  "."? 
   ;
 
 syntax On_status =
@@ -40,7 +40,9 @@ syntax Decimal_point_clause =
   ;
 
 syntax Source_computer_paragraph =
-  \source-computer-paragraph: 'SOURCE-COMPUTER' "." Source_computer_name? 
+   \source-computer-paragraph: 'SOURCE-COMPUTER' "."
+ |  \source-computer-paragraph: 'SOURCE-COMPUTER' "." Computer_name "."
+ |  \source-computer-paragraph: 'SOURCE-COMPUTER' "." Computer_name 'WITH'? 'DEBUGGING' 'MODE'  "." 
   ;
 
 syntax Alphabet_type_also =
@@ -52,7 +54,7 @@ syntax Currency_sign_clause =
   ;
 
 syntax Special_names_paragraph_phrase =
-  \special-names-paragraph-phrase: Environment_name Special_names_paragraph_phrase_tail 
+   \special-names-paragraph-phrase: System_name Special_names_paragraph_phrase_tail 
   ;
 
 syntax Program_collating_sequence =
@@ -60,8 +62,10 @@ syntax Program_collating_sequence =
   ;
 
 syntax Special_names_paragraph_status_phrase =
-  \special-names-paragraph-status-phrase-c1: Special_names_paragraph_status_phrase_1 
-  | \special-names-paragraph-status-phrase-c2: Special_names_paragraph_status_phrase_2 
+   \special-names-paragraph-status-phrase-c1: 'ON' 'STATUS'? 'IS'? Condition
+ |  \special-names-paragraph-status-phrase-c1: 'ON' 'STATUS'? 'IS'? Condition 'OFF' 'STATUS'? 'IS'? Condition 
+  |  \special-names-paragraph-status-phrase-c2: 'OFF' 'STATUS'? 'IS'? Condition
+ |  \special-names-paragraph-status-phrase-c2: 'OFF' 'STATUS'? 'IS'? Condition 'ON' 'STATUS'? 'IS'? Condition 
   ;
 
 syntax In_alphabet_name =
@@ -69,15 +73,16 @@ syntax In_alphabet_name =
   ;
 
 syntax Special_names_paragraph_clause =
-  \special-names-paragraph-clause-c5: Decimal_point_clause 
-  | \special-names-paragraph-clause-c3: Class_clause 
-  | \special-names-paragraph-clause-c2: Symbolic_characters_clause 
-  | \special-names-paragraph-clause-c4: Currency_sign_clause 
-  | \special-names-paragraph-clause-c1: Alphabet_clause 
+   \special-names-paragraph-clause-c5: 'DECIMAL-POINT' 'IS'? 'COMMA' 
+  |  \special-names-paragraph-clause-c3: 'CLASS' Class_name 'IS'? Literal_through_literal+ 
+  |  \special-names-paragraph-clause-c2: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+
+ |  \special-names-paragraph-clause-c2: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ 'IN' Alphabet_name 
+  |  \special-names-paragraph-clause-c4: 'CURRENCY' 'SIGN'? 'IS'? Literal 
+  |  \special-names-paragraph-clause-c1: 'ALPHABET' Alphabet_name 'IS'? Alphabet_type 
   ;
 
 syntax Configuration_section =
-  \configuration-section: 'CONFIGURATION' 'SECTION' "." Configuration_section_paragraphs 
+   \configuration-section: 'CONFIGURATION' 'SECTION' "." Configuration_section_paragraph* 
   ;
 
 syntax Alphabet_type_others =
@@ -89,7 +94,7 @@ syntax Alphabet_type_alsos =
   ;
 
 syntax Is_mnemonic_name =
-  \is-mnemonic-name: 'IS'? Mnemonic_name Special_names_paragraph_status_phrase? 
+   \is-mnemonic-name: 'IS'? Alphabetic_user_defined_word  Special_names_paragraph_status_phrase? 
   ;
 
 syntax Alphabet_type_other =
@@ -97,7 +102,8 @@ syntax Alphabet_type_other =
   ;
 
 syntax Symbolic_characters_clause =
-  \symbolic-characters-clause: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ In_alphabet_name? 
+   \symbolic-characters-clause: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+
+ |  \symbolic-characters-clause: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ 'IN' Alphabet_name 
   ;
 
 syntax Class_clause =
@@ -109,7 +115,7 @@ syntax Special_names_paragraph_clauses =
   ;
 
 syntax Special_names_paragraph_phrase_tail =
-  \special-names-paragraph-phrase-tail-c1: Is_mnemonic_name 
+   \special-names-paragraph-phrase-tail-c1: 'IS'? Alphabetic_user_defined_word  Special_names_paragraph_status_phrase? 
   | \special-names-paragraph-phrase-tail-c2: Special_names_paragraph_status_phrase 
   ;
 
@@ -118,7 +124,8 @@ syntax Configuration_section_paragraphs =
   ;
 
 syntax Special_names_paragraph_status_phrase_2 =
-  \special-names-paragraph-status-phrase-2: 'OFF' 'STATUS'? 'IS'? Condition On_status? 
+   \special-names-paragraph-status-phrase-2: 'OFF' 'STATUS'? 'IS'? Condition
+ |  \special-names-paragraph-status-phrase-2: 'OFF' 'STATUS'? 'IS'? Condition 'ON' 'STATUS'? 'IS'? Condition 
   ;
 
 syntax Symbolic_character_mapping =
@@ -126,21 +133,41 @@ syntax Symbolic_character_mapping =
   ;
 
 syntax Configuration_section_paragraph =
-  \configuration-section-paragraph-c2: Object_computer_paragraph 
-  | \configuration-section-paragraph-c1: Source_computer_paragraph 
-  | \configuration-section-paragraph-c3: Special_names_paragraph 
+   \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "."
+ |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Computer_name "."
+ |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Computer_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Computer_name 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name "."
+ |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Computer_name 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type "."
+ |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name "."
+ |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "." 
+  |  \configuration-section-paragraph-c1: 'SOURCE-COMPUTER' "."
+ |  \configuration-section-paragraph-c1: 'SOURCE-COMPUTER' "." Computer_name "."
+ |  \configuration-section-paragraph-c1: 'SOURCE-COMPUTER' "." Computer_name 'WITH'? 'DEBUGGING' 'MODE'  "." 
+  |  \configuration-section-paragraph-c3: 'SPECIAL-NAMES' "." Special_names_paragraph_phrase* Special_names_paragraph_clause*  "."? 
   ;
 
 syntax Source_computer_name =
-  \source-computer-name: Computer_name With_debugging_mode? "." 
+   \source-computer-name: Computer_name "."
+ |  \source-computer-name: Computer_name 'WITH'? 'DEBUGGING' 'MODE'  "." 
   ;
 
 syntax Special_names_paragraph_status_phrase_1 =
-  \special-names-paragraph-status-phrase-1: 'ON' 'STATUS'? 'IS'? Condition Off_status? 
+   \special-names-paragraph-status-phrase-1: 'ON' 'STATUS'? 'IS'? Condition
+ |  \special-names-paragraph-status-phrase-1: 'ON' 'STATUS'? 'IS'? Condition 'OFF' 'STATUS'? 'IS'? Condition 
   ;
 
 syntax Object_computer_paragraph =
-  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Object_computer_name? 
+   \object-computer-paragraph: 'OBJECT-COMPUTER' "."
+ |  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Computer_name "."
+ |  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Computer_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Computer_name 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name "."
+ |  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Computer_name 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type "."
+ |  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name "."
+ |  \object-computer-paragraph: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "." 
   ;
 
 syntax Segment_limit =
@@ -148,11 +175,21 @@ syntax Segment_limit =
   ;
 
 syntax Object_computer_name =
-  \object-computer-name: Computer_name Memory_size? Object_computer_paragraph_sequence_phrase "." 
+   \object-computer-name: Computer_name "."
+ |  \object-computer-name: Computer_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \object-computer-name: Computer_name 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name "."
+ |  \object-computer-name: Computer_name 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \object-computer-name: Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type "."
+ |  \object-computer-name: Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  \object-computer-name: Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name "."
+ |  \object-computer-name: Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "." 
   ;
 
 syntax Object_computer_paragraph_sequence_phrase =
-  \object-computer-paragraph-sequence-phrase: Program_collating_sequence? Segment_limit? 
+   \object-computer-paragraph-sequence-phrase: 
+ |  \object-computer-paragraph-sequence-phrase: 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name
+ |  \object-computer-paragraph-sequence-phrase: 'SEGMENT-LIMIT' 'IS'? Priority_number
+ |  \object-computer-paragraph-sequence-phrase: 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name  'SEGMENT-LIMIT' 'IS'? Priority_number 
   ;
 
 syntax Off_status =
@@ -164,10 +201,10 @@ syntax Alphabet_type =
   | \alphabet-type-c4: 'EBCDIC' 
   | \alphabet-type-c2: "STANDARD-2" 
   | \alphabet-type-c1: "STANDARD-1" 
-  | \alphabet-type-c5: Alphabet_type_others 
+  |  \alphabet-type-c5: Alphabet_type_other+ 
   ;
 
 syntax Alphabet_type_also_through =
-  \alphabet-type-also-through-c2: Alphabet_type_alsos 
+   \alphabet-type-also-through-c2: Alphabet_type_also+ 
   | \alphabet-type-also-through-c1: Through_literal 
   ;

@@ -5,8 +5,11 @@ extend lang::vscobolii::\VSC-lex;
 
 
 syntax Identifier =
-  \identifier-c2: Identifier_2 
-  | \identifier-c1: Identifier_1 
+   \identifier-c2: 'LINAGE-COUNTER'
+ |  \identifier-c2: 'LINAGE-COUNTER' In File_name 
+  |  \identifier-c1: Qualified_data_name Subscript_parentheses*
+ |  \identifier-c1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression  ":" ")"
+ |  \identifier-c1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression  ":" Arithmetic_expression  ")" 
   ;
 
 syntax Subscript =
@@ -15,7 +18,8 @@ syntax Subscript =
 
 syntax Subscript_expression =
   \subscript-expression-c1: Literal 
-  | \subscript-expression-c2: Subscript_expression_ambiguous 
+  |  \subscript-expression-c2: Qualified_data_name
+ |  \subscript-expression-c2: Qualified_data_name Alt_plus_minus Integer 
   ;
 
 syntax Data_name =
@@ -27,7 +31,8 @@ syntax Through_qualified_data_name =
   ;
 
 syntax Subscript_expression_ambiguous =
-  \subscript-expression-ambiguous: Qualified_data_name Plus_minus_integer? 
+   \subscript-expression-ambiguous: Qualified_data_name
+ |  \subscript-expression-ambiguous: Qualified_data_name Alt_plus_minus Integer 
   ;
 
 syntax Record_name =
@@ -51,7 +56,9 @@ syntax System_name =
   ;
 
 syntax Identifier_1 =
-  \identifier-1: Qualified_data_name Subscript_parentheses* Reference_modification? 
+   \identifier-1: Qualified_data_name Subscript_parentheses*
+ |  \identifier-1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression  ":" ")"
+ |  \identifier-1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression  ":" Arithmetic_expression  ")" 
   ;
 
 syntax Special_register_1 =
@@ -63,9 +70,9 @@ syntax Text_name =
   ;
 
 syntax Qualified_data_name =
-  \qualified-data-name-c3: Special_register_2 
-  | \qualified-data-name-c2: Special_register_1 
-  | \qualified-data-name-c1: Qualified_data_name_1 
+   \qualified-data-name-c3: 'LENGTH' 'OF' Identifier 
+  |  \qualified-data-name-c2: 'ADDRESS' 'OF' Data_name 
+  |  \qualified-data-name-c1: Data_name In_data_or_file_name* 
   ;
 
 syntax Assignment_name =
@@ -77,7 +84,8 @@ syntax Symbolic_character =
   ;
 
 syntax Identifier_2 =
-  \identifier-2: 'LINAGE-COUNTER' In_file_name? 
+   \identifier-2: 'LINAGE-COUNTER'
+ |  \identifier-2: 'LINAGE-COUNTER' In File_name 
   ;
 
 syntax Paragraph_name =
@@ -96,7 +104,7 @@ syntax Copy_operand =
   ;
 
 syntax Figurative_constant =
-  \figurative-constant-c2: Figurative_constant_all 
+   \figurative-constant-c2: 'ALL' Literal 
   | \figurative-constant-c1: Figurative_constant_simple 
   ;
 
@@ -111,7 +119,7 @@ syntax Integer =
 syntax Basis =
   \basis-c1: Literal 
   | \basis-c2: Identifier 
-  | \basis-c3: Basis_1 
+  |  \basis-c3: "(" Arithmetic_expression ")" 
   ;
 
 syntax Paragraph_or_section_name =
@@ -120,7 +128,8 @@ syntax Paragraph_or_section_name =
   ;
 
 syntax Reference_modification =
-  \reference-modification: "(" Leftmost_character_position ":" Length? ")" 
+   \reference-modification: "(" Arithmetic_expression  ":" ")"
+ |  \reference-modification: "(" Arithmetic_expression  ":" Arithmetic_expression  ")" 
   ;
 
 syntax Basis_1 =
@@ -166,7 +175,7 @@ syntax Through_literal =
   ;
 
 syntax Alt_library_name_literal =
-  \alt-library-name-literal-c1: Library_name 
+   \alt-library-name-literal-c1: User_defined_word 
   | \alt-library-name-literal-c2: Literal 
   ;
 
@@ -183,7 +192,7 @@ syntax In_file_name =
   ;
 
 syntax Alt_text_name_literal =
-  \alt-text-name-literal-c1: Text_name 
+   \alt-text-name-literal-c1: User_defined_word 
   | \alt-text-name-literal-c2: Literal 
   ;
 
@@ -200,7 +209,8 @@ syntax Alphabet_name =
   ;
 
 syntax Procedure_name =
-  \procedure-name: Paragraph_or_section_name In_section_name? 
+   \procedure-name: Paragraph_or_section_name
+ |  \procedure-name: Paragraph_or_section_name In Section_name 
   ;
 
 syntax Mnemonic_name =
@@ -220,7 +230,7 @@ syntax Plus_minus_integer =
   ;
 
 syntax In_data_or_file_name =
-  \in-data-or-file-name: In Data_or_file_name 
+   \in-data-or-file-name: In Alphabetic_user_defined_word 
   ;
 
 syntax Numeric =
@@ -248,7 +258,7 @@ syntax Computer_name =
   ;
 
 syntax Literal =
-  \literal-c2: Numeric 
+   \literal-c2: Num 
   | \literal-c1: Nonnumeric 
   | \literal-c3: Figurative_constant 
   ;
@@ -258,7 +268,7 @@ syntax File_name =
   ;
 
 syntax In_data_or_file_or_mnemonic_name =
-  \in-data-or-file-or-mnemonic-name: In Data_or_file_or_mnemonic_name 
+   \in-data-or-file-or-mnemonic-name: In Alphabetic_user_defined_word 
   ;
 
 syntax In_library =
@@ -320,7 +330,10 @@ syntax Power =
   ;
 
 syntax Copy_statement =
-  \copy-statement: 'COPY' Alt_text_name_literal In_library? 'SUPPRESS'? Copy_statement_replacing_phrase? "." 
+   \copy-statement: 'COPY' Alt_text_name_literal 'SUPPRESS'? "."
+ |  \copy-statement: 'COPY' Alt_text_name_literal 'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+  "."
+ |  \copy-statement: 'COPY' Alt_text_name_literal In Alt_library_name_literal  'SUPPRESS'? "."
+ |  \copy-statement: 'COPY' Alt_text_name_literal In Alt_library_name_literal  'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+  "." 
   ;
 
 syntax In =
@@ -349,11 +362,11 @@ syntax Length =
   ;
 
 syntax Subscript_parentheses =
-  \subscript-parentheses: "(" Subscript ")" 
+   \subscript-parentheses: "(" Subscript_expression+  ")" 
   ;
 
 syntax Equal_to =
-  \equal-to-c1: Equal_to_1 
+   \equal-to-c1: 'EQUAL' 'TO'? 
   | \equal-to-c2: "=" 
   ;
 
