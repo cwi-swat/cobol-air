@@ -1,10 +1,6 @@
-   module lang::vscobolii::\VSC-stat  extend lang::vscobolii::\VSC-cond;
+    module lang::vscobolii::\VSC-stat  extend lang::vscobolii::\VSC-cond;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr; 
-syntax Advancing_phrase =
-  \advancing-phrase: Alt_before_after 'ADVANCING'? Page_phrase 
-  ;
-
 syntax On_key_phrase =
   \on-key-phrase: 'ON'? Alt_ascending_descending 'KEY'? Qualified_data_name+ 
   ; 
@@ -215,9 +211,6 @@ syntax Open_statement_input_file_name =
 syntax Close_statement_file_name =
   \close-statement-file-name: File_name Close_statement_options? 
   ; 
-syntax Not_on_overflow_statement_list =
-  \not-on-overflow-statement-list: 'NOT' 'ON'? 'OVERFLOW' Statement_list 
-  ; 
 syntax Initialize_replacing_type =
   \initialize-replacing-type-c1: 'ALPHABETIC' 
   | \initialize-replacing-type-c5: 'NUMERIC-EDITED' 
@@ -294,10 +287,14 @@ syntax Statement =
  |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Key_is_qualified_data_name? Invalid_key_statement_list? 'NOT' 'INVALID' 'KEY'? Statement_list  At_end_statement_list? Not_at_end_statement_list? 'END-READ'?
  |   \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? 'INTO' Identifier  Key_is_qualified_data_name? Invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'?
  |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? 'INTO' Identifier  Key_is_qualified_data_name? Invalid_key_statement_list? 'NOT' 'INVALID' 'KEY'? Statement_list  At_end_statement_list? Not_at_end_statement_list? 'END-READ'? 
-  |    \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier Not_on_overflow_statement_list? 'END-STRING'?
- |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'ON'? 'OVERFLOW' Statement_list  Not_on_overflow_statement_list? 'END-STRING'?
- |   \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'WITH'? 'POINTER' Identifier Not_on_overflow_statement_list? 'END-STRING'?
- |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'WITH'? 'POINTER' Identifier 'ON'? 'OVERFLOW' Statement_list  Not_on_overflow_statement_list? 'END-STRING'? 
+  |     \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'END-STRING'?
+ |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'NOT' 'ON'? 'OVERFLOW' Statement_list  'END-STRING'?
+ |   \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'ON'? 'OVERFLOW' Statement_list 'END-STRING'?
+ |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'ON'? 'OVERFLOW' Statement_list 'NOT' 'ON'? 'OVERFLOW' Statement_list  'END-STRING'?
+ |    \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'WITH'? 'POINTER' Identifier 'END-STRING'?
+ |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'WITH'? 'POINTER' Identifier 'NOT' 'ON'? 'OVERFLOW' Statement_list  'END-STRING'?
+ |   \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'WITH'? 'POINTER' Identifier 'ON'? 'OVERFLOW' Statement_list 'END-STRING'?
+ |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'WITH'? 'POINTER' Identifier 'ON'? 'OVERFLOW' Statement_list 'NOT' 'ON'? 'OVERFLOW' Statement_list  'END-STRING'? 
   | \statement-c36: Subtract_statement 
   | \statement-c1: Move_statement 
   | \statement-c4: Go_to_statement 
@@ -312,17 +309,23 @@ syntax Statement =
   |  \statement-c12: 'CONTINUE' 
   |    \statement-c27: 'RELEASE' Qualified_data_name
  |  \statement-c27: 'RELEASE' Qualified_data_name 'FROM' Identifier 
-  |    \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
- |  \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
- |   \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'WITH'? 'POINTER' Identifier On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
- |  \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'WITH'? 'POINTER' Identifier 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'? 
+  |     \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ On_overflow_statement_list? 'END-UNSTRING'?
+ |  \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ On_overflow_statement_list? 'NOT' 'ON'? 'OVERFLOW' Statement_list  'END-UNSTRING'?
+ |   \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? 'END-UNSTRING'?
+ |  \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? 'NOT' 'ON'? 'OVERFLOW' Statement_list  'END-UNSTRING'?
+ |    \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'WITH'? 'POINTER' Identifier On_overflow_statement_list? 'END-UNSTRING'?
+ |  \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'WITH'? 'POINTER' Identifier On_overflow_statement_list? 'NOT' 'ON'? 'OVERFLOW' Statement_list  'END-UNSTRING'?
+ |   \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'WITH'? 'POINTER' Identifier 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? 'END-UNSTRING'?
+ |  \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'WITH'? 'POINTER' Identifier 'TALLYING' 'IN'? Identifier  On_overflow_statement_list? 'NOT' 'ON'? 'OVERFLOW' Statement_list  'END-UNSTRING'? 
   |  \statement-c10: 'CLOSE' Close_statement_file_name+ 
   | \statement-c2: If_statement 
   | \statement-c22: Inspect_statement 
   |   \statement-c32: 'SORT' File_name On_key_is_phrase+ With_duplicates_in_order? Sort_statement_in Sort_statement_out
  |  \statement-c32: 'SORT' File_name On_key_is_phrase+ With_duplicates_in_order? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name  Sort_statement_in Sort_statement_out 
-  |    \statement-c38: 'WRITE' Qualified_data_name Advancing_phrase? Write_exceptions 'END-WRITE'?
- |  \statement-c38: 'WRITE' Qualified_data_name 'FROM' Identifier  Advancing_phrase? Write_exceptions 'END-WRITE'? 
+  |     \statement-c38: 'WRITE' Qualified_data_name Write_exceptions 'END-WRITE'?
+ |  \statement-c38: 'WRITE' Qualified_data_name Alt_before_after 'ADVANCING'? Page_phrase  Write_exceptions 'END-WRITE'?
+ |   \statement-c38: 'WRITE' Qualified_data_name 'FROM' Identifier Write_exceptions 'END-WRITE'?
+ |  \statement-c38: 'WRITE' Qualified_data_name 'FROM' Identifier Alt_before_after 'ADVANCING'? Page_phrase  Write_exceptions 'END-WRITE'? 
   |  \statement-c17: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ When_other_phrase? 'END-EVALUATE'? 
   |    \statement-c33: 'START' File_name Key_is_rel_op_qualified_data_name? 'END-START'?
  |  \statement-c33: 'START' File_name Key_is_rel_op_qualified_data_name? 'NOT' 'INVALID' 'KEY'? Statement_list  'END-START'?
