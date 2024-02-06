@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-expr  extend lang::vscobolii::\VSC-lex;
+  module lang::vscobolii::\VSC-expr  extend lang::vscobolii::\VSC-lex;
 
 
 syntax Identifier =
@@ -172,10 +172,6 @@ syntax In_data_or_file_or_mnemonic_name =
 syntax Alt_plus_minus =
   \alt-plus-minus-c1: "+" 
   | \alt-plus-minus-c2: '-' 
-  ;
-
-syntax Copy_statement_replacing_phrase =
-  \copy-statement-replacing-phrase: 'REPLACING' Copy_statement_by_phrase+ 
   ; 
 syntax Records =
   \records-c2: 'RECORDS' 
@@ -219,8 +215,10 @@ syntax Power =
   ;
 
 syntax Copy_statement =
-   \copy-statement: 'COPY' Alt_text_name_literal 'SUPPRESS'? Copy_statement_replacing_phrase? "."
- |  \copy-statement: 'COPY' Alt_text_name_literal In Alt_library_name_literal  'SUPPRESS'? Copy_statement_replacing_phrase? "." 
+    \copy-statement: 'COPY' Alt_text_name_literal 'SUPPRESS'? "."
+ |  \copy-statement: 'COPY' Alt_text_name_literal 'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+  "."
+ |   \copy-statement: 'COPY' Alt_text_name_literal In Alt_library_name_literal  'SUPPRESS'? "."
+ |  \copy-statement: 'COPY' Alt_text_name_literal In Alt_library_name_literal  'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+  "." 
   ;
 
 syntax In =

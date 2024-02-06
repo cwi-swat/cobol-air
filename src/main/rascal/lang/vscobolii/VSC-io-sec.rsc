@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-io-sec  extend lang::vscobolii::\VSC-fd-entry;
+  module lang::vscobolii::\VSC-io-sec  extend lang::vscobolii::\VSC-fd-entry;
 extend lang::vscobolii::\VSC-expr;
 
 
@@ -34,12 +34,7 @@ syntax Qsam_or_sam_or_vsam_i_o_control_entries =
 syntax Every_phrase =
    \every-phrase-c2: 'END' 'OF'? Alt_reel_unit 
   |  \every-phrase-c1: Integer 'RECORDS' 
-  ;
-
-syntax I_o_sort_merge =
-   \i-o-sort-merge: Rerun_on? Same_area+ "." 
-  ;
-
+  ; 
 syntax Fce_phrase =
    \fce-phrase-c4: 'RECORD' 'KEY'? 'IS'? Qualified_data_name 
   |  \fce-phrase-c3: 'ACCESS' 'MODE'? 'IS'? Alt_sequential_random_dynamic Relative_key_clause? 
@@ -47,15 +42,10 @@ syntax Fce_phrase =
   |  \fce-phrase-c7: 'FILE'? 'STATUS' 'IS'? Qualified_data_name Qualified_data_name? 
   |  \fce-phrase-c8: 'PADDING' 'CHARACTER'? 'IS'? Alt_qualified_data_name_literal 
   |  \fce-phrase-c2: Organization_is? Alt_indexed_relative_sequential 
-  | \fce-phrase-c5: Password_clause 
-  |  \fce-phrase-c6: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause? With_duplicates? 
+  |  \fce-phrase-c5: 'PASSWORD' 'IS'? Data_name 
+  |   \fce-phrase-c6: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name With_duplicates?
+ |  \fce-phrase-c6: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name 'PASSWORD' 'IS'? Data_name  With_duplicates? 
   |  \fce-phrase-c1: 'RESERVE' Integer Areas? 
-  ; 
-syntax Password_clause =
-  \password-clause: 'PASSWORD' 'IS'? Data_name 
-  ; 
-syntax Select_clause =
-  \select-clause: 'SELECT' 'OPTIONAL'? File_name 
   ; 
 syntax Alt_assignment_name_literal =
   \alt-assignment-name-literal-c2: Literal 
@@ -66,7 +56,7 @@ syntax Alt_assignment_name_file_name =
   | \alt-assignment-name-file-name-c2: File_name 
   ; 
 syntax File_control_entry =
-   \file-control-entry: Select_clause 'ASSIGN' 'TO'? Alt_assignment_name_literal+  Fce_phrase* "." 
+    \file-control-entry: 'SELECT' 'OPTIONAL'? File_name 'ASSIGN' 'TO'? Alt_assignment_name_literal+  Fce_phrase* "." 
   ;
 
 syntax Alt_sequential_random_dynamic =
@@ -81,8 +71,10 @@ syntax Areas =
   ;
 
 syntax I_o_control_paragraph =
-   \i-o-control-paragraph: 'I-O-CONTROL' "." I_o_sort_merge?
- |  \i-o-control-paragraph: 'I-O-CONTROL' "." Qsam_or_sam_or_vsam_i_o_control_entries+ "."  I_o_sort_merge? 
+    \i-o-control-paragraph: 'I-O-CONTROL' "."
+ |  \i-o-control-paragraph: 'I-O-CONTROL' "." Rerun_on? Same_area+ "."
+ |   \i-o-control-paragraph: 'I-O-CONTROL' "." Qsam_or_sam_or_vsam_i_o_control_entries+ "."
+ |  \i-o-control-paragraph: 'I-O-CONTROL' "." Qsam_or_sam_or_vsam_i_o_control_entries+ "." Rerun_on? Same_area+ "." 
   ; 
 syntax Same_area =
   \same-area: 'SAME' Record_sort 'AREA'? 'FOR'? File_name File_name+ 
