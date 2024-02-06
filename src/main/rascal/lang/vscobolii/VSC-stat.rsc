@@ -290,8 +290,10 @@ syntax Set_oper =
   | \set-oper-c1: 'TO' 
   ; 
 syntax If_statement =
-  \if-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' 'END-IF'? 
-  |  \if-else-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence  'END-IF'? 
+  \if-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' 'END-IF'
+  | \if-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' () >> "."
+  |  \if-else-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence  'END-IF' 
+  |  \if-else-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence  () >> "."
   ; 
 syntax Statement =
    \statement-c18: 'EXIT' 'PROGRAM' 
