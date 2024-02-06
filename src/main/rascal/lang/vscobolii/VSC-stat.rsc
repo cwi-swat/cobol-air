@@ -317,8 +317,10 @@ syntax Statement =
  |  \statement-c14: 'DISPLAY' Id_or_lit+ 'WITH'? 'NO' 'ADVANCING'
  |  \statement-c14: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords
  |  \statement-c14: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords 'WITH'? 'NO' 'ADVANCING' 
-  |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'?
- |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? 'KEY' 'IS'? Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'? 
+  |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'
+  |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? () >> "."
+ |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? 'KEY' 'IS'? Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'
+ |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? 'KEY' 'IS'? Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? () >> "."
   |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-STRING'? 
   | \statement-c36: Subtract_statement 
   | \statement-c1: Move_statement 
@@ -350,15 +352,18 @@ syntax Statement =
  |  \statement-c38: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'AT'? End_of_page Statement_list 'NOT' 'AT'? End_of_page Statement_list  Invalid_key_statement_list? Not_invalid_key_statement_list?  'END-WRITE'? 
   |  \statement-c17: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ 'END-EVALUATE'?
  |  \statement-c17: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ 'WHEN' 'OTHER' Statement_list  'END-EVALUATE'? 
-  |  \statement-c33: 'START' File_name Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'?
- |  \statement-c33: 'START' File_name 'KEY' 'IS'? Rel_op Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'? 
+  |  \statement-c33: 'START' File_name Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'
+  |  \statement-c33: 'START' File_name Invalid_key_statement_list? Not_invalid_key_statement_list? () >> "."
+ |  \statement-c33: 'START' File_name 'KEY' 'IS'? Rel_op Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START' 
+ |  \statement-c33: 'START' File_name 'KEY' 'IS'? Rel_op Qualified_data_name  Invalid_key_statement_list? Not_invalid_key_statement_list? () >> "." 
   |  \statement-c28: 'RETURN' File_name 'RECORD'? Into_identifier? 'AT'? 'END' Statement_list Not_at_end_statement_list? 'END-RETURN'? 
   | \statement-c3: Perform_statement 
   |  \statement-c16: 'ENTRY' Literal Using_data_name_pluslist? 
   |  \statement-c9: 'CANCEL' Id_or_lit+ 
   |  \statement-c25: 'OPEN' Open_statement_phrase+ 
   | \statement-c24: Multiply_statement 
-  |  \statement-c29: 'REWRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-REWRITE'? 
+  |  \statement-c29: 'REWRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-REWRITE' 
+  |  \statement-c29: 'REWRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? () >> "."
   ;
 
 syntax Not_on_size_error_statement_list =
