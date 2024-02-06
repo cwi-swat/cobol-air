@@ -25,6 +25,7 @@ syntax Qsam_or_sam_or_vsam_i_o_control_entries =
   |  \qsam-or-sam-or-vsam-i-o-control-entries-c2: 'SAME' 'RECORD'? 'AREA'? 'FOR'? File_name File_name+ 
   |  \qsam-or-sam-or-vsam-i-o-control-entries-c4: 'APPLY' 'WRITE-ONLY' 'ON'? File_name+ 
   |  \qsam-or-sam-or-vsam-i-o-control-entries-c3: 'MULTIPLE' 'FILE' 'TAPE'? 'CONTAINS'? File_name_position+ 
+  | Same_area
   ; 
 syntax Every_phrase =
    \every-phrase-c2: 'END' 'OF'? Alt_reel_unit 
