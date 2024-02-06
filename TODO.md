@@ -1,5 +1,11 @@
 
 
+Language
+- FUNCTIONS
+- Identification section currently does not allow contents (e.g. AUTHOR/Date Compiled)
+- case sensivity
+
+
 Grammar massaging:
 - inline spurious non-terminals
 - add proper priorities
@@ -17,3 +23,4 @@ COBOL Preprocessor
 - case sensitivity
 - comment entries
 - EXEC
+

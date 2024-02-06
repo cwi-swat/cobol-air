@@ -34,6 +34,8 @@ void smokeTest() {
             pt = parseVSCobolII(src, allowAmbiguity=true);
             success += 1;
             println("success!");
+            int numOfAmbs = ( 0 | it + 1 | /amb(_) := pt );
+            println("ambs: <numOfAmbs>");
         }
         catch Ambiguity(loc l, str sym, str txt): {
             println("ambiguity: <l>");

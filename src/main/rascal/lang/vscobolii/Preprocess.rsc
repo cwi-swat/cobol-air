@@ -2,6 +2,7 @@ module lang::vscobolii::Preprocess
 
 import String;
 import List;
+import IO;
 
 str preprocess(str src) {
     list[str] lines = split("\n", src);
@@ -14,5 +15,9 @@ str preprocess(str src) {
         }
         append line;
     }
+
+    
     return intercalate("\n", lines) + "\n";
 }
+
+
