@@ -1,7 +1,4 @@
-module lang::vscobolii::\VSC-expr 
-
-
-extend lang::vscobolii::\VSC-lex;
+ module lang::vscobolii::\VSC-expr  extend lang::vscobolii::\VSC-lex;
 
 
 syntax Identifier =
@@ -10,12 +7,7 @@ syntax Identifier =
   |  \identifier-c1: Qualified_data_name Subscript_parentheses*
  |  \identifier-c1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression  ":" ")"
  |  \identifier-c1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression  ":" Arithmetic_expression  ")" 
-  ;
-
-syntax Subscript =
-  subscript: Subscript_expression+ 
-  ;
-
+  ; 
 syntax Subscript_expression =
   \subscript-expression-c1: Literal 
   |  \subscript-expression-c2: Qualified_data_name
@@ -24,17 +16,7 @@ syntax Subscript_expression =
 
 syntax Data_name =
   \data-name: Alphabetic_user_defined_word 
-  ;
-
-syntax Through_qualified_data_name =
-  \through-qualified-data-name: Through Qualified_data_name 
-  ;
-
-syntax Subscript_expression_ambiguous =
-   \subscript-expression-ambiguous: Qualified_data_name
- |  \subscript-expression-ambiguous: Qualified_data_name Alt_plus_minus Integer 
-  ;
-
+  ; 
 syntax Record_name =
   \record-name: Qualified_data_name 
   ;
@@ -45,30 +27,10 @@ syntax Times_div =
 
 syntax Index_name =
   \index-name: Alphabetic_user_defined_word 
-  ;
-
-syntax Equal_to_1 =
-  \equal-to-1: 'EQUAL' 'TO'? 
-  ;
-
+  ; 
 syntax System_name =
   \system-name: Cobword \ CobwordKeywords 
-  ;
-
-syntax Identifier_1 =
-   \identifier-1: Qualified_data_name Subscript_parentheses*
- |  \identifier-1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression  ":" ")"
- |  \identifier-1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression  ":" Arithmetic_expression  ")" 
-  ;
-
-syntax Special_register_1 =
-  \special-register-1: 'ADDRESS' 'OF' Data_name 
-  ;
-
-syntax Text_name =
-  \text-name: User_defined_word 
-  ;
-
+  ; 
 syntax Qualified_data_name =
    \qualified-data-name-c3: 'LENGTH' 'OF' Identifier 
   |  \qualified-data-name-c2: 'ADDRESS' 'OF' Data_name 
@@ -81,22 +43,11 @@ syntax Assignment_name =
 
 syntax Symbolic_character =
   \symbolic-character: Alphabetic_user_defined_word 
-  ;
-
-syntax Identifier_2 =
-   \identifier-2: 'LINAGE-COUNTER'
- |  \identifier-2: 'LINAGE-COUNTER' In File_name 
-  ;
-
+  ; 
 syntax Paragraph_name =
   \paragraph-name-c1: User_defined_word 
   | \paragraph-name-c2: Integer 
-  ;
-
-syntax Special_register_2 =
-  \special-register-2: 'LENGTH' 'OF' Identifier 
-  ;
-
+  ; 
 syntax Copy_operand =
   \copy-operand-c3: Literal 
   | \copy-operand-c2: Identifier 
@@ -106,12 +57,7 @@ syntax Copy_operand =
 syntax Figurative_constant =
    \figurative-constant-c2: 'ALL' Literal 
   | \figurative-constant-c1: Figurative_constant_simple 
-  ;
-
-syntax In_section_name =
-  \in-section-name: In Section_name 
-  ;
-
+  ; 
 syntax Integer =
   integer: Num 
   ;
@@ -125,21 +71,7 @@ syntax Basis =
 syntax Paragraph_or_section_name =
   \paragraph-or-section-name-c2: Integer 
   | \paragraph-or-section-name-c1: User_defined_word 
-  ;
-
-syntax Reference_modification =
-   \reference-modification: "(" Arithmetic_expression  ":" ")"
- |  \reference-modification: "(" Arithmetic_expression  ":" Arithmetic_expression  ")" 
-  ;
-
-syntax Basis_1 =
-  \basis-1: "(" Arithmetic_expression ")" 
-  ;
-
-syntax Through_arithmetic_expression =
-  \through-arithmetic-expression: Through Arithmetic_expression 
-  ;
-
+  ; 
 syntax Alt_reel_unit =
   \alt-reel-unit-c1: 'REEL' 
   | \alt-reel-unit-c2: 'UNIT' 
@@ -181,25 +113,11 @@ syntax Alt_library_name_literal =
 
 syntax User_defined_word =
   \user-defined-word: Cobword \ CobwordKeywords 
-  ;
-
-syntax Leftmost_character_position =
-  \leftmost-character-position: Arithmetic_expression 
-  ;
-
-syntax In_file_name =
-  \in-file-name: In File_name 
-  ;
-
+  ; 
 syntax Alt_text_name_literal =
    \alt-text-name-literal-c1: User_defined_word 
   | \alt-text-name-literal-c2: Literal 
-  ;
-
-syntax Environment_name =
-  \environment-name: System_name 
-  ;
-
+  ; 
 syntax Times_div_tail =
   \times-div-tail: Alt_times_div Power 
   ;
@@ -211,48 +129,16 @@ syntax Alphabet_name =
 syntax Procedure_name =
    \procedure-name: Paragraph_or_section_name
  |  \procedure-name: Paragraph_or_section_name In Section_name 
-  ;
-
-syntax Mnemonic_name =
-  \mnemonic-name: Alphabetic_user_defined_word 
-  ;
-
-syntax Data_or_file_or_mnemonic_name =
-  \data-or-file-or-mnemonic-name: Alphabetic_user_defined_word 
-  ;
-
+  ; 
 syntax Power_tail =
   \power-tail: "**" Basis 
-  ;
-
-syntax Plus_minus_integer =
-  \plus-minus-integer: Alt_plus_minus Integer 
-  ;
-
+  ; 
 syntax In_data_or_file_name =
    \in-data-or-file-name: In Alphabetic_user_defined_word 
-  ;
-
-syntax Numeric =
-  numeric: Num 
-  ;
-
+  ; 
 syntax Arithmetic_expression =
   \arithmetic-expression: Times_div Arithmetic_expression_tail* 
-  ;
-
-syntax Condition_name =
-  \condition-name: Alphabetic_user_defined_word 
-  ;
-
-syntax Library_name =
-  \library-name: User_defined_word 
-  ;
-
-syntax Qualified_data_name_1 =
-  \qualified-data-name-1: Data_name In_data_or_file_name* 
-  ;
-
+  ; 
 syntax Computer_name =
   \computer-name: System_name 
   ;
@@ -269,25 +155,11 @@ syntax File_name =
 
 syntax In_data_or_file_or_mnemonic_name =
    \in-data-or-file-or-mnemonic-name: In Alphabetic_user_defined_word 
-  ;
-
-syntax In_library =
-  \in-library: In Alt_library_name_literal 
-  ;
-
+  ; 
 syntax Alt_plus_minus =
   \alt-plus-minus-c1: "+" 
   | \alt-plus-minus-c2: '-' 
-  ;
-
-syntax Copy_statement_replacing_phrase =
-  \copy-statement-replacing-phrase: 'REPLACING' Copy_statement_by_phrase+ 
-  ;
-
-syntax Figurative_constant_all =
-  \figurative-constant-all: 'ALL' Literal 
-  ;
-
+  ; 
 syntax Records =
   \records-c2: 'RECORDS' 
   | \records-c1: 'RECORD' 
@@ -343,24 +215,10 @@ syntax In =
 
 syntax Priority_number =
   \priority-number: Num 
-  ;
-
-syntax Level_number =
-  \level-number: Num 
-  ;
-
-syntax Data_or_file_name =
-  \data-or-file-name: Alphabetic_user_defined_word 
-  ;
-
+  ; 
 syntax Copy_statement_by_phrase =
   \copy-statement-by-phrase: Copy_operand 'BY' Copy_operand 
-  ;
-
-syntax Length =
-  length: Arithmetic_expression 
-  ;
-
+  ; 
 syntax Subscript_parentheses =
    \subscript-parentheses: "(" Subscript_expression+  ")" 
   ;

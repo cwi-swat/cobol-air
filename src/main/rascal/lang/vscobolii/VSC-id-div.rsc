@@ -1,55 +1,13 @@
-module lang::vscobolii::\VSC-id-div 
-
-extend lang::vscobolii::\VSC-expr;
+ module lang::vscobolii::\VSC-id-div  extend lang::vscobolii::\VSC-expr;
 
 
 syntax Identification_division_content =
   \identification-division-content: Identification_division_phrase* 
-  ;
-
-syntax Identification_division =
-   \identification-division: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name "."?  Identification_division_content
- |  \identification-division: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name 'IS'? 'INITIAL' 'PROGRAM'?  "."?  Identification_division_content 
-  ;
-
-syntax Remarks =
-  remarks: 'REMARKS' "."? MetaDataContentLine*
-  ;
-
-syntax Program_id_cobol_source_program =
-   \program-id-cobol-source-program: 'PROGRAM-ID' "."? Program_name "."?
- |  \program-id-cobol-source-program: 'PROGRAM-ID' "."? Program_name 'IS'? 'INITIAL' 'PROGRAM'?  "."? 
-  ;
-
-syntax Initial_program =
-  \initial-program: 'IS'? 'INITIAL' 'PROGRAM'? 
-  ;
-
-syntax Author =
-  author: 'AUTHOR' "."?  MetaDataContentLine*
-  ;
-
+  ; 
 syntax Identification =
   \identification-c2: 'ID' 
   | \identification-c1: 'IDENTIFICATION' 
-  ;
-
-syntax Security =
-  security: 'SECURITY' "."?  MetaDataContentLine*
-  ;
-
-syntax Date_compiled =
-  \date-compiled: 'DATE-COMPILED' "."?  MetaDataContentLine*
-  ;
-
-syntax Date_written =
-  \date-written: 'DATE-WRITTEN' "."? MetaDataContentLine*
-  ;
-
-syntax Installation =
-  installation: 'INSTALLATION' "."? MetaDataContentLine*
-  ;
-
+  ; 
 lexical MetaDataContentLine
    = Word \ NoIDKeyword  ![\n]* [\n]; // $ seems to trigger bug
 
