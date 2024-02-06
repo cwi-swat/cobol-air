@@ -1,9 +1,4 @@
- module lang::vscobolii::\VSC-id-div  extend lang::vscobolii::\VSC-expr;
-
-
-syntax Identification_division_content =
-  \identification-division-content: Identification_division_phrase* 
-  ; 
+  module lang::vscobolii::\VSC-id-div  extend lang::vscobolii::\VSC-expr; 
 syntax Identification =
   \identification-c2: 'ID' 
   | \identification-c1: 'IDENTIFICATION' 

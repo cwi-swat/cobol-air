@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-dd-entry  extend lang::vscobolii::\VSC-conf-sec;
+  module lang::vscobolii::\VSC-dd-entry  extend lang::vscobolii::\VSC-conf-sec;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr;
 
@@ -20,7 +20,7 @@ syntax External_clause =
   \external-clause: 'IS'? 'EXTERNAL' 
   ; 
 syntax Data_description_entry =
-   \data-description-entry-c1: Level_number Alt_data_name_filler? Data_description_entry_clauses "."? 
+    \data-description-entry-c1: NumAlt_data_name_filler? Data_description_entry_clauses "."? 
   | \data-description-entry-c2: Copy_statement 
   ; 
 syntax Alt_left_right =
@@ -47,12 +47,14 @@ syntax Data_description_entry_clause =
   | \data-description-entry-clause-c5: Global_clause 
   |  \data-description-entry-clause-c9: Synchronized Alt_left_right? 
   |  \data-description-entry-clause-c3: 'BLANK' 'WHEN'? Zeroes 
-  |  \data-description-entry-clause-c8: Sign_is? Alt_leading_trailing Separate_character? 
+  |   \data-description-entry-clause-c8: Sign_is? Alt_leading_trailing
+|  \data-description-entry-clause-c8: Sign_is? Alt_leading_trailing 'SEPARATE' 'CHARACTER'? 
   |  \data-description-entry-clause-c12: Values_are Literal_through_literal+ 
   |  \data-description-entry-clause-c1: Picture 'IS'? Picture_string 
   |  \data-description-entry-clause-c2: 'REDEFINES' Data_name 
   |  \data-description-entry-clause-c10: Usage_is? Usage 
-  |  \data-description-entry-clause-c11: 'RENAMES' Qualified_data_name Through_qualified_data_name? 
+  |   \data-description-entry-clause-c11: 'RENAMES' Qualified_data_name
+|  \data-description-entry-clause-c11: 'RENAMES' Qualified_data_name Through Qualified_data_name 
   |  \data-description-entry-clause-c6: Justified 'RIGHT'? 
   | \data-description-entry-clause-c7: Occurs_clause 
   ;
@@ -64,10 +66,6 @@ syntax Global_clause =
 syntax Alt_leading_trailing =
   \alt-leading-trailing-c2: 'TRAILING' 
   | \alt-leading-trailing-c1: 'LEADING' 
-  ;
-
-syntax Separate_character =
-  \separate-character: 'SEPARATE' 'CHARACTER'? 
   ; 
 syntax Usage =
   \usage-c3: "COMP-1" 
@@ -87,18 +85,16 @@ syntax Usage =
   | \usage-c13: "DISPLAY-1" 
   | \usage-c10: "COMPUTATIONAL-3" 
   ; 
-syntax Indexed_by =
-  \indexed-by: 'INDEXED' 'BY'? Index_name+ 
-  ;
-
 syntax Alt_data_name_filler =
   \alt-data-name-filler-c2: 'FILLER' 
   | \alt-data-name-filler-c1: Data_name 
   ;
 
 syntax Occurs_clause =
-   \occurs-clause-c1: 'OCCURS' Integer_to? Integer 'TIMES'? 'DEPENDING' 'ON'? Qualified_data_name Occurs_clause_key* Indexed_by? 
-  |  \occurs-clause-c2: 'OCCURS' Integer 'TIMES'? Occurs_clause_key* Indexed_by? 
+    \occurs-clause-c1: 'OCCURS' Integer_to? Integer 'TIMES'? 'DEPENDING' 'ON'? Qualified_data_name Occurs_clause_key*
+|  \occurs-clause-c1: 'OCCURS' Integer_to? Integer 'TIMES'? 'DEPENDING' 'ON'? Qualified_data_name Occurs_clause_key* 'INDEXED' 'BY'? Index_name+ 
+  |   \occurs-clause-c2: 'OCCURS' Integer 'TIMES'? Occurs_clause_key*
+|  \occurs-clause-c2: 'OCCURS' Integer 'TIMES'? Occurs_clause_key* 'INDEXED' 'BY'? Index_name+ 
   ;
 
 syntax Occurs_clause_key =

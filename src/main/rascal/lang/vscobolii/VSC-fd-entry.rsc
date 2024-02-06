@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-fd-entry  extend lang::vscobolii::\VSC-dd-entry;
+  module lang::vscobolii::\VSC-fd-entry  extend lang::vscobolii::\VSC-dd-entry;
 extend lang::vscobolii::\VSC-conf-sec;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr; 
@@ -19,12 +19,9 @@ syntax Alt_fd_sd =
 syntax Record_clause_tail =
    \record-clause-tail-c1: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'? 
   |  \record-clause-tail-c2: 'CONTAINS'? Integer 'CHARACTERS'? 
-  |  \record-clause-tail-c3: Record_varying_phrase Depending_on? 
+  |   \record-clause-tail-c3: Record_varying_phrase
+|  \record-clause-tail-c3: Record_varying_phrase 'DEPENDING' 'ON'? Data_name 
   ; 
-syntax Depending_on =
-  \depending-on: 'DEPENDING' 'ON'? Data_name 
-  ;
-
 syntax Lines_bottom =
   \lines-bottom: 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer 
   ; 
@@ -38,21 +35,17 @@ syntax Lines_top =
   ;
 
 syntax File_and_sort_description_entry_clause =
-   \file-and-sort-description-entry-clause-c5: 'LABEL' Records_are Label_records_clause_tail 
+    \file-and-sort-description-entry-clause-c5: 'LABEL' Records Are? Label_records_clause_tail 
   |  \file-and-sort-description-entry-clause-c3: 'BLOCK' 'CONTAINS'? Integer_to? Integer Alt_characters_records? 
   |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? Linage_footing_phrase 
   |  \file-and-sort-description-entry-clause-c9: 'RECORDING' 'MODE'? 'IS'? Cobword \ CobwordKeywords 
   | \file-and-sort-description-entry-clause-c2: Global_clause 
   |  \file-and-sort-description-entry-clause-c4: 'RECORD' Record_clause_tail 
-  |  \file-and-sort-description-entry-clause-c7: 'DATA' Records_are Data_name+ 
+  |   \file-and-sort-description-entry-clause-c7: 'DATA' Records Are? Data_name+ 
   |  \file-and-sort-description-entry-clause-c6: 'VALUE' 'OF' Value_of_clause_tail+ 
   |  \file-and-sort-description-entry-clause-c10: 'CODE-SET' 'IS'? Alphabet_name 
   | \file-and-sort-description-entry-clause-c1: External_clause 
   ; 
-syntax Records_are =
-  \records-are: Records Are? 
-  ;
-
 syntax Alt_qualified_data_name_literal =
   \alt-qualified-data-name-literal-c2: Literal 
   | \alt-qualified-data-name-literal-c1: Qualified_data_name 

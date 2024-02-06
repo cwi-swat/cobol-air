@@ -1,16 +1,14 @@
- module lang::vscobolii::\VSC-proc-div  extend lang::vscobolii::\VSC-stat;
+  module lang::vscobolii::\VSC-proc-div  extend lang::vscobolii::\VSC-stat;
 extend lang::vscobolii::\VSC-expr;
 
 
 syntax Procedure_division =
-   \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase Declaratives? Paragraphs Section_with_header* 
+    \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase Paragraphs Section_with_header*
+|  \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase 'DECLARATIVES' "." Declaratives_content+ 'END' 'DECLARATIVES' "." Paragraphs Section_with_header* 
   ; 
 syntax Using_phrase =
    \using-phrase-c2: Using_data_names? Copy_statement 
   |  \using-phrase-c1: Using_data_name_pluslist? "." 
-  ; 
-syntax Declaratives =
-  declaratives: 'DECLARATIVES' "." Declaratives_content+ 'END' 'DECLARATIVES' "." 
   ; 
 syntax Section_with_header =
   \section-with-header: Section_header "." Paragraphs 

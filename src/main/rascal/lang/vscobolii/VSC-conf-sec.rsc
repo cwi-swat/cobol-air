@@ -38,7 +38,7 @@ syntax Alphabet_type_other =
   \alphabet-type-other: Literal Alphabet_type_also_through? 
   ; 
 syntax Special_names_paragraph_phrase_tail =
-   \special-names-paragraph-phrase-tail-c1: 'IS'? Mnemonic_name Special_names_paragraph_status_phrase? 
+    \special-names-paragraph-phrase-tail-c1: 'IS'? Alphabetic_user_defined_word Special_names_paragraph_status_phrase? 
   | \special-names-paragraph-phrase-tail-c2: Special_names_paragraph_status_phrase 
   ; 
 syntax Symbolic_character_mapping =
