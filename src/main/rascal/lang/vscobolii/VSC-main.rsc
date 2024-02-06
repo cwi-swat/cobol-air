@@ -8,7 +8,7 @@ syntax Common_initial =
   |  \common-initial-c1: 'COMMON' 'INITIAL'? 
   ; 
 syntax Nested_cobol_source_program =
-   \nested-cobol-source-program: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name Common_initial_program? "."? Identification_division_content? Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "." 
+    \nested-cobol-source-program: Identification 'DIVISION' "." 'PROGRAM-ID' "."? User_defined_word Common_initial_program? "."? Identification_division_content? Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "." 
   ; 
 syntax Programs =
   programs: Cobol_source_program+ 

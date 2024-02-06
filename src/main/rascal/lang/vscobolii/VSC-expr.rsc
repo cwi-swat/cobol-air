@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-expr  extend lang::vscobolii::\VSC-lex;
+  module lang::vscobolii::\VSC-expr  extend lang::vscobolii::\VSC-lex;
 
 
 syntax Identifier =
@@ -13,10 +13,6 @@ syntax Subscript_expression =
 syntax Data_name =
   \data-name: Alphabetic_user_defined_word 
   ; 
-syntax Record_name =
-  \record-name: Qualified_data_name 
-  ;
-
 syntax Times_div =
   \times-div: Power Times_div_tail* 
   ;
@@ -205,10 +201,6 @@ syntax Copy_statement =
 syntax In =
   \in-c1: 'OF' 
   | \in-c2: 'IN' 
-  ;
-
-syntax Priority_number =
-  \priority-number: Num 
   ; 
 syntax Copy_statement_by_phrase =
   \copy-statement-by-phrase: Copy_operand 'BY' Copy_operand 
@@ -220,8 +212,4 @@ syntax Subscript_parentheses =
 syntax Equal_to =
    \equal-to-c1: 'EQUAL' 'TO'? 
   | \equal-to-c2: "=" 
-  ;
-
-syntax Program_name =
-  \program-name: User_defined_word 
   ;

@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-stat  extend lang::vscobolii::\VSC-cond;
+  module lang::vscobolii::\VSC-stat  extend lang::vscobolii::\VSC-cond;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr; 
 syntax On_key_phrase =
@@ -11,9 +11,6 @@ syntax Accept_statement =
 syntax Search_statement =
    \search-statement-c2: 'SEARCH' 'ALL' Identifier At_end_statement_list? 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence 'END-SEARCH'? 
   |  \search-statement-c1: 'SEARCH' Identifier Varying_identifier? At_end_statement_list? When_condition_stats+ 'END-SEARCH'? 
-  ; 
-syntax Perform_until_phrase =
-  \perform-until-phrase: With_test? 'UNTIL' Condition 
   ; 
 syntax Search_statement_condition_tail =
   \search-statement-condition-tail: 'AND' Search_statement_condition 
@@ -42,10 +39,6 @@ syntax Sort_statement_out =
   \sort-statement-out-c1: Giving_file_names 
   | \sort-statement-out-c2: Output_procedure 
   ; 
-syntax Collating_sequence =
-  \collating-sequence: 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 
-  ;
-
 syntax Before_after_phrase =
   \before-after-phrase: Alt_before_after 'INITIAL'? Id_or_lit 
   ;
@@ -83,10 +76,6 @@ syntax Alt_beginning_ending =
 syntax When_phrase =
   \when-phrase: 'WHEN' Evaluate_phrase When_phrase_also_phrase* 
   ; 
-syntax From_identifier =
-  \from-identifier: 'FROM' Identifier 
-  ;
-
 syntax Open_statement_phrase =
    \open-statement-phrase-c3: 'I-O' File_name+ 
   |  \open-statement-phrase-c1: 'INPUT' Open_statement_input_file_name+ 
@@ -159,12 +148,7 @@ syntax Alt_all_leading =
   ; 
 syntax Using_data_name_pluslist =
   \using-data-name-pluslist: 'USING' Data_name+ 
-  ;
-
-syntax Not_at_end_statement_list =
-  \not-at-end-statement-list: 'NOT' 'AT'? 'END' Statement_list 
-  ;
-
+  ; 
 syntax Alt_file_names_i_o =
    \alt-file-names-i-o-c1: File_name+ 
   | \alt-file-names-i-o-c3: 'OUTPUT' 
@@ -218,9 +202,6 @@ syntax Open_statement_input_file_name =
 syntax Close_statement_file_name =
   \close-statement-file-name: File_name Close_statement_options? 
   ; 
-syntax Not_on_overflow_statement_list =
-  \not-on-overflow-statement-list: 'NOT' 'ON'? 'OVERFLOW' Statement_list 
-  ; 
 syntax Initialize_replacing_type =
   \initialize-replacing-type-c1: 'ALPHABETIC' 
   | \initialize-replacing-type-c5: 'NUMERIC-EDITED' 
@@ -243,10 +224,6 @@ syntax Giving_file_names =
 syntax Sort_statement_in =
    \sort-statement-in-c1: 'USING' File_name+ 
   |  \sort-statement-in-c2: 'INPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name? 
-  ;
-
-syntax Invalid_key_statement_list =
-  \invalid-key-statement-list: 'INVALID' 'KEY'? Statement_list 
   ; 
 syntax When_condition_stats =
   \when-condition-stats: 'WHEN' Condition Alt_statement_list_next_sentence 
@@ -270,13 +247,6 @@ syntax Divide_statement =
   |  \divide-statement-c1: 'DIVIDE' Id_or_lit 'INTO' Id_or_lit 'GIVING' Identifier 'ROUNDED'? 'REMAINDER' Identifier On_size_error_statement_list? Not_on_size_error_statement_list? 'END-DIVIDE'? 
   |  \divide-statement-c4: 'DIVIDE' Id_or_lit 'BY' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-DIVIDE'? 
   ; 
-syntax Into_identifier =
-  \into-identifier: 'INTO' Identifier 
-  ; 
-syntax On_overflow_statement_list =
-  \on-overflow-statement-list: 'ON'? 'OVERFLOW' Statement_list 
-  ;
-
 syntax With_test =
   \with-test: 'WITH'? 'TEST' Alt_before_after 
   ;
@@ -294,7 +264,8 @@ syntax If_statement =
   ; 
 syntax Statement =
    \statement-c18: 'EXIT' 'PROGRAM' 
-  |  \statement-c23: 'MERGE' File_name On_key_phrase+ Collating_sequence? 'USING' File_name File_name+ Merge_statement_tail 
+  |   \statement-c23: 'MERGE' File_name On_key_phrase+ 'USING' File_name File_name+ Merge_statement_tail
+|  \statement-c23: 'MERGE' File_name On_key_phrase+ 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'USING' File_name File_name+ Merge_statement_tail 
   | \statement-c30: Search_statement 
   |  \statement-c11: 'COMPUTE' Cobword_rounded+ Equal Arithmetic_expression On_size_error_statement_list? Not_on_size_error_statement_list? 'END-COMPUTE'? 
   |  \statement-c19: 'EXIT' 
@@ -304,33 +275,40 @@ syntax Statement =
   |  \statement-c34: 'STOP' Alt_run_literal 
   | \statement-c15: Divide_statement 
   |  \statement-c14: 'DISPLAY' Id_or_lit+ Upon_environment_name? With_no_advancing? 
-  |  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Key_is_qualified_data_name? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'? 
-  |  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-STRING'? 
+  |   \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? Key_is_qualified_data_name? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'?
+|  \statement-c26: 'READ' File_name 'NEXT'? 'RECORD'? 'INTO' Identifier Key_is_qualified_data_name? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? 'END-READ'? 
+  |   \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier On_overflow_statement_list? Not_on_overflow_statement_list? 'END-STRING'?
+|  \statement-c35: 'STRING' Delimited_by_phrase+ 'INTO' Identifier 'WITH'? 'POINTER' Identifier On_overflow_statement_list? Not_on_overflow_statement_list? 'END-STRING'? 
   | \statement-c36: Subtract_statement 
   | \statement-c1: Move_statement 
   | \statement-c4: Go_to_statement 
   |  \statement-c20: 'GOBACK' 
   | \statement-c6: Add_statement 
   | \statement-c5: Accept_statement 
-  |  \statement-c13: 'DELETE' File_name 'RECORD'? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-DELETE'? 
+  |   \statement-c13: 'DELETE' File_name 'RECORD'? Not_invalid_key_statement_list? 'END-DELETE'?
+|  \statement-c13: 'DELETE' File_name 'RECORD'? 'INVALID' 'KEY'? Statement_list Not_invalid_key_statement_list? 'END-DELETE'? 
   |  \statement-c21: 'INITIALIZE' Identifier+ Initialize_replacing_phrase? 
   |  \statement-c12: 'CONTINUE' 
-  |  \statement-c27: 'RELEASE' Record_name From_identifier? 
-  |  \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ With_pointer_identifier? Tallying_in_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'? 
+  |   \statement-c27: 'RELEASE' Qualified_data_name From_identifier? 
+  |   \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ Tallying_in_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'?
+|  \statement-c37: 'UNSTRING' Identifier Delimited_by_all_phrase? 'INTO' Unstring_statement_dst+ 'WITH'? 'POINTER' Identifier Tallying_in_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? 'END-UNSTRING'? 
   |  \statement-c10: 'CLOSE' Close_statement_file_name+ 
   | \statement-c2: If_statement 
   | \statement-c22: Inspect_statement 
-  |  \statement-c32: 'SORT' File_name On_key_is_phrase+ With_duplicates_in_order? Collating_sequence? Sort_statement_in Sort_statement_out 
-  |  \statement-c38: 'WRITE' Record_name From_identifier? Advancing_phrase? Write_exceptions 'END-WRITE'? 
+  |   \statement-c32: 'SORT' File_name On_key_is_phrase+ With_duplicates_in_order? Sort_statement_in Sort_statement_out
+|  \statement-c32: 'SORT' File_name On_key_is_phrase+ With_duplicates_in_order? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name Sort_statement_in Sort_statement_out 
+  |   \statement-c38: 'WRITE' Qualified_data_name From_identifier? Advancing_phrase? Write_exceptions 'END-WRITE'? 
   |  \statement-c17: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ When_other_phrase? 'END-EVALUATE'? 
-  |  \statement-c33: 'START' File_name Key_is_rel_op_qualified_data_name? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-START'? 
-  |  \statement-c28: 'RETURN' File_name 'RECORD'? Into_identifier? 'AT'? 'END' Statement_list Not_at_end_statement_list? 'END-RETURN'? 
+  |   \statement-c33: 'START' File_name Key_is_rel_op_qualified_data_name? Not_invalid_key_statement_list? 'END-START'?
+|  \statement-c33: 'START' File_name Key_is_rel_op_qualified_data_name? 'INVALID' 'KEY'? Statement_list Not_invalid_key_statement_list? 'END-START'? 
+  |   \statement-c28: 'RETURN' File_name 'RECORD'? 'AT'? 'END' Statement_list Not_at_end_statement_list? 'END-RETURN'?
+|  \statement-c28: 'RETURN' File_name 'RECORD'? 'INTO' Identifier 'AT'? 'END' Statement_list Not_at_end_statement_list? 'END-RETURN'? 
   | \statement-c3: Perform_statement 
   |  \statement-c16: 'ENTRY' Literal Using_data_name_pluslist? 
   |  \statement-c9: 'CANCEL' Id_or_lit+ 
   |  \statement-c25: 'OPEN' Open_statement_phrase+ 
   | \statement-c24: Multiply_statement 
-  |  \statement-c29: 'REWRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-REWRITE'? 
+  |   \statement-c29: 'REWRITE' Qualified_data_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? 'END-REWRITE'? 
   ;
 
 syntax Not_on_size_error_statement_list =
@@ -376,8 +354,8 @@ syntax Tallying_for_id_or_lit =
   \tallying-for-id-or-lit: Id_or_lit Before_after_phrase* 
   ; 
 syntax Perform_statement_4_alts =
-   \perform-statement-4-alts-c2: Perform_until_phrase Statement_list 'END-PERFORM' 
-  |  \perform-statement-4-alts-c1: Procedure_name Through_procedure_name? Perform_until_phrase 
+    \perform-statement-4-alts-c2: With_test? 'UNTIL' ConditionStatement_list 'END-PERFORM' 
+  |   \perform-statement-4-alts-c1: Procedure_name Through_procedure_name? With_test? 'UNTIL' Condition 
   ;
 
 syntax On_size_error_statement_list =
@@ -392,12 +370,7 @@ syntax Alt_all_leading_first =
 syntax Alt_exception_error =
   \alt-exception-error-c1: 'EXCEPTION' 
   | \alt-exception-error-c2: 'ERROR' 
-  ;
-
-syntax Not_invalid_key_statement_list =
-  \not-invalid-key-statement-list: 'NOT' 'INVALID' 'KEY'? Statement_list 
-  ;
-
+  ; 
 syntax Go_to_statement =
    \go-to-statement-c3: 'GO' 'TO'? 'MORE-LABELS' 
   |  \go-to-statement-c2: 'GO' 'TO'? Procedure_name 
@@ -411,11 +384,8 @@ syntax Alt_run_literal =
   | \alt-run-literal-c2: Literal 
   ; 
 syntax Perform_statement_2_alts =
-   \perform-statement-2-alts-c1: Procedure_name Through_procedure_name? Perform_varying_phrase Perform_after_phrase* 
-  |  \perform-statement-2-alts-c2: Perform_varying_phrase Statement_list 'END-PERFORM' 
-  ; 
-syntax With_pointer_identifier =
-  \with-pointer-identifier: 'WITH'? 'POINTER' Identifier 
+    \perform-statement-2-alts-c1: Procedure_name Through_procedure_name? With_test? 'VARYING' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Condition Perform_after_phrase* 
+  |   \perform-statement-2-alts-c2: With_test? 'VARYING' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' ConditionStatement_list 'END-PERFORM' 
   ; 
 syntax Subtract_statement =
    \subtract-statement-c2: 'SUBTRACT' Id_or_lit+ 'FROM' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? 'END-SUBTRACT'? 
@@ -480,7 +450,4 @@ syntax Set_statement_phrase =
 
 syntax Tallying_argument =
   \tallying-argument: Identifier 'FOR' Tallying_for_argument+ 
-  ; 
-syntax Perform_varying_phrase =
-  \perform-varying-phrase: With_test? 'VARYING' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Condition 
   ;

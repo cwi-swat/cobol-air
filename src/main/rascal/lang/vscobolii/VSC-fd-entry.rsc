@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-fd-entry  extend lang::vscobolii::\VSC-dd-entry;
+  module lang::vscobolii::\VSC-fd-entry  extend lang::vscobolii::\VSC-dd-entry;
 extend lang::vscobolii::\VSC-conf-sec;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr; 
@@ -22,21 +22,17 @@ syntax Alt_characters_records =
   | \alt-characters-records-c3: 'RECORD' 
   ; 
 syntax File_and_sort_description_entry_clause =
-   \file-and-sort-description-entry-clause-c5: 'LABEL' Records_are Label_records_clause_tail 
+    \file-and-sort-description-entry-clause-c5: 'LABEL' Records Are? Label_records_clause_tail 
   |  \file-and-sort-description-entry-clause-c3: 'BLOCK' 'CONTAINS'? Integer_to? Integer Alt_characters_records? 
   |  \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? Linage_footing_phrase 
   |  \file-and-sort-description-entry-clause-c9: 'RECORDING' 'MODE'? 'IS'? Cobword \ CobwordKeywords 
   | \file-and-sort-description-entry-clause-c2: Global_clause 
   |  \file-and-sort-description-entry-clause-c4: 'RECORD' Record_clause_tail 
-  |  \file-and-sort-description-entry-clause-c7: 'DATA' Records_are Data_name+ 
+  |   \file-and-sort-description-entry-clause-c7: 'DATA' Records Are? Data_name+ 
   |  \file-and-sort-description-entry-clause-c6: 'VALUE' 'OF' Value_of_clause_tail+ 
   |  \file-and-sort-description-entry-clause-c10: 'CODE-SET' 'IS'? Alphabet_name 
   | \file-and-sort-description-entry-clause-c1: External_clause 
   ; 
-syntax Records_are =
-  \records-are: Records Are? 
-  ;
-
 syntax Alt_qualified_data_name_literal =
   \alt-qualified-data-name-literal-c2: Literal 
   | \alt-qualified-data-name-literal-c1: Qualified_data_name 

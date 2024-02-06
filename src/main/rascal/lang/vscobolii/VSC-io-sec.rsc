@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-io-sec  extend lang::vscobolii::\VSC-fd-entry;
+  module lang::vscobolii::\VSC-io-sec  extend lang::vscobolii::\VSC-fd-entry;
 extend lang::vscobolii::\VSC-expr;
 
 
@@ -37,12 +37,10 @@ syntax Fce_phrase =
   |  \fce-phrase-c7: 'FILE'? 'STATUS' 'IS'? Qualified_data_name Qualified_data_name? 
   |  \fce-phrase-c8: 'PADDING' 'CHARACTER'? 'IS'? Alt_qualified_data_name_literal 
   |  \fce-phrase-c2: Organization_is? Alt_indexed_relative_sequential 
-  | \fce-phrase-c5: Password_clause 
-  |  \fce-phrase-c6: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause? With_duplicates? 
+  |  \fce-phrase-c5: 'PASSWORD' 'IS'? Data_name 
+  |   \fce-phrase-c6: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name With_duplicates?
+|  \fce-phrase-c6: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name 'PASSWORD' 'IS'? Data_name With_duplicates? 
   |  \fce-phrase-c1: 'RESERVE' Integer Areas? 
-  ; 
-syntax Password_clause =
-  \password-clause: 'PASSWORD' 'IS'? Data_name 
   ; 
 syntax Alt_assignment_name_literal =
   \alt-assignment-name-literal-c2: Literal 

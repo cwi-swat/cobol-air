@@ -1,4 +1,4 @@
- module lang::vscobolii::\VSC-dd-entry  extend lang::vscobolii::\VSC-conf-sec;
+  module lang::vscobolii::\VSC-dd-entry  extend lang::vscobolii::\VSC-conf-sec;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr;
 
@@ -78,18 +78,16 @@ syntax Usage =
   | \usage-c13: "DISPLAY-1" 
   | \usage-c10: "COMPUTATIONAL-3" 
   ; 
-syntax Indexed_by =
-  \indexed-by: 'INDEXED' 'BY'? Index_name+ 
-  ;
-
 syntax Alt_data_name_filler =
   \alt-data-name-filler-c2: 'FILLER' 
   | \alt-data-name-filler-c1: Data_name 
   ;
 
 syntax Occurs_clause =
-   \occurs-clause-c1: 'OCCURS' Integer_to? Integer 'TIMES'? 'DEPENDING' 'ON'? Qualified_data_name Occurs_clause_key* Indexed_by? 
-  |  \occurs-clause-c2: 'OCCURS' Integer 'TIMES'? Occurs_clause_key* Indexed_by? 
+    \occurs-clause-c1: 'OCCURS' Integer_to? Integer 'TIMES'? 'DEPENDING' 'ON'? Qualified_data_name Occurs_clause_key*
+|  \occurs-clause-c1: 'OCCURS' Integer_to? Integer 'TIMES'? 'DEPENDING' 'ON'? Qualified_data_name Occurs_clause_key* 'INDEXED' 'BY'? Index_name+ 
+  |   \occurs-clause-c2: 'OCCURS' Integer 'TIMES'? Occurs_clause_key*
+|  \occurs-clause-c2: 'OCCURS' Integer 'TIMES'? Occurs_clause_key* 'INDEXED' 'BY'? Index_name+ 
   ;
 
 syntax Occurs_clause_key =
