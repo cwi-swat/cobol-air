@@ -1,4 +1,4 @@
-  module lang::vscobolii::\VSC-dd-entry  extend lang::vscobolii::\VSC-conf-sec;
+   module lang::vscobolii::\VSC-dd-entry  extend lang::vscobolii::\VSC-conf-sec;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr;
 
@@ -20,7 +20,7 @@ syntax External_clause =
   \external-clause: 'IS'? 'EXTERNAL' 
   ; 
 syntax Data_description_entry =
-    \data-description-entry-c1: NumAlt_data_name_filler? Data_description_entry_clauses "."? 
+     \data-description-entry-c1: NumAlt_data_name_filler? Data_description_entry_clause* "."? 
   | \data-description-entry-c2: Copy_statement 
   ; 
 syntax Alt_left_right =
@@ -31,12 +31,7 @@ syntax Alt_left_right =
 syntax Justified =
   \justified-c1: 'JUSTIFIED' 
   | \justified-c2: 'JUST' 
-  ;
-
-syntax Data_description_entry_clauses =
-  \data-description-entry-clauses: Data_description_entry_clause* 
-  ;
-
+  ; 
 syntax Synchronized =
   \synchronized-c1: 'SYNCHRONIZED' 
   | \synchronized-c2: 'SYNC' 
