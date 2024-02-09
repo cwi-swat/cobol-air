@@ -9,20 +9,26 @@ extend lang::vscobolii::\VSC-layout;
 // todo check precede restriction
 // todo: check keywords not allowed in pic strings.
 lexical Picture_string =
-  [\t-\n\ ] << Picture_contents \ CobwordKeywords !>> ![\t-\n\ ,.l] 
+  [\t-\n\ ,.;] << Picture_contents \ CobwordKeywords !>> ![\t-\n\ ,.;] 
   ;
 
 lexical Picture_contents
-  = ((  [, . ;]  ![\t-\n \ ]  ) | ![\t-\n \  , . ;])+ 
+  = Picture_char+ 
+  ;
+
+lexical Picture_char
+  = [, . ;]  ![\t-\n \ ] 
+  | ![\t-\n \  , . ;]
   ;
 
 lexical Quoted_pseudo_text =
   "==" ![=]* "==" 
   ;
 
-lexical Id =
-    ([\- 0-9 A-Z a-z] !<< [\- 0-9]* [A-Z a-z] [\- _ 0-9 A-Z a-z]* !>> [\- 0-9 A-Z a-z]) \ CobwordKeywords
-  | [0-9] !<< [0-9]+ (  [\-]  [0-9]+  )+ !>> [0-9]
+lexical Id 
+  = ([\- 0-9 A-Z a-z] !<< [\- 0-9]* [A-Z a-z] [\- _ 0-9 A-Z a-z]* !>> [\- 0-9 A-Z a-z]) \ CobwordKeywords
+  //| [0-9] !<< [0-9]+ (  [\-]  [0-9]+  )+ !>> [0-9]
+//  = [0-9 A-Z a-z] !<< Id_ !>> [0-9 A-Z a-z]
   ;
 
 
@@ -62,9 +68,16 @@ lexical SingleStrChar
 
 lexical Num
   = [0-9\-+] !<<  [0-9]*  [,.]  [0-9]+ !>> [0-9] 
-  | [0-9\-+.] !<<  [0-9]+ !>> [0-9]
   | [0-9A-Za-z.] !<< [+ \-]  [0-9]*  [,.]  [0-9]+ !>> [0-9] 
-  | [0-9A-Za-z.] !<< [+ \-]  [0-9]+ !>> [0-9]
+  | Int
+  ;
+
+lexical Nat
+  = [0-9\-+.A-Za-z] !<<  [0-9]+ !>> [0-9];
+
+lexical Int
+  = [0-9A-Za-z.] !<< [+ \-]  [0-9]+ !>> [0-9]
+  | Nat
   ;
 
 syntax Cobword =
