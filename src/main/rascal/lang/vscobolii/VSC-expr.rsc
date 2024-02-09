@@ -158,7 +158,7 @@ syntax In_data_or_file_or_mnemonic_name =
   ; 
 syntax Alt_plus_minus =
   \alt-plus-minus-c1: "+" 
-  | \alt-plus-minus-c2: '-' 
+  | \alt-plus-minus-c2: [a-zA-Z] !<< "-" !>> [a-zA-Z]
   ; 
 syntax Records =
   \records-c2: 'RECORDS' 
