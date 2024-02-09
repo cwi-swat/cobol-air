@@ -8,22 +8,24 @@ import util::FileSystem;
 import Set;
 import Exception;
 
-start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false) {
-    return parse(#start[VSCobolII], preprocess(readFile(org)), org, allowAmbiguity=allowAmbiguity);
+start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false, bool pre=true) {
+    str src = readFile(org);
+    return parse(#start[VSCobolII], pre ? preprocess(src) : src, org, allowAmbiguity=allowAmbiguity);
 }
 
 
 void smokeTest() {
     cbls = [ f | loc f <- files(|project://cobol-air/examples/NIST/|), f.extension in {"CBL", "SUBPRG", "SUBRTN"}];
 
-    set[loc] bugTriggering = {|project://cobol-air/examples/NIST/IX/IX109A.CBL|, |project://cobol-air/examples/NIST/IX/IX108A.CBL|,
-                    |project://cobol-air/examples/NIST/IX/IX105A.CBL|, |project://cobol-air/examples/NIST/NC/NC201A.CBL|,
-                    |project://cobol-air/examples/NIST/IX/IX113A.CBL|, |project://cobol-air/examples/NIST/RL/RL210A.CBL|,
-                    |project://cobol-air/examples/NIST/NC/NC210A.CBL|, |project://cobol-air/examples/NIST/IX/IX118A.SUBPRG|,
-                    |project://cobol-air/examples/NIST/IX/IX119A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX120A.SUBPRG|,
-                    |project://cobol-air/examples/NIST/IX/IX114A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX115A.SUBPRG|,
-                    |project://cobol-air/examples/NIST/IX/IX116A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX117A.SUBPRG|,
-                    |project://cobol-air/examples/NIST/NC/NC211A.CBL|};
+    set[loc] bugTriggering = {} ;
+    //  {|project://cobol-air/examples/NIST/IX/IX109A.CBL|, |project://cobol-air/examples/NIST/IX/IX108A.CBL|,
+    //                 |project://cobol-air/examples/NIST/IX/IX105A.CBL|, |project://cobol-air/examples/NIST/NC/NC201A.CBL|,
+    //                 |project://cobol-air/examples/NIST/IX/IX113A.CBL|, |project://cobol-air/examples/NIST/RL/RL210A.CBL|,
+    //                 |project://cobol-air/examples/NIST/NC/NC210A.CBL|, |project://cobol-air/examples/NIST/IX/IX118A.SUBPRG|,
+    //                 |project://cobol-air/examples/NIST/IX/IX119A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX120A.SUBPRG|,
+    //                 |project://cobol-air/examples/NIST/IX/IX114A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX115A.SUBPRG|,
+    //                 |project://cobol-air/examples/NIST/IX/IX116A.SUBPRG|, |project://cobol-air/examples/NIST/IX/IX117A.SUBPRG|,
+    //                 |project://cobol-air/examples/NIST/NC/NC211A.CBL|};
     
     int success = 0;
     int errors = 0;
@@ -31,7 +33,7 @@ void smokeTest() {
     for (loc src <- cbls, src notin bugTriggering) {
         try {
             println("parsing <src>");
-            pt = parseVSCobolII(src, allowAmbiguity=true);
+            pt = parseVSCobolII(src, allowAmbiguity=false);
             success += 1;
             println("success!");
             // int numOfAmbs = ( 0 | it + 1 | /amb(_) := pt );
@@ -41,6 +43,7 @@ void smokeTest() {
             println("ambiguity: <l>");
             println("symbol: <sym>");
             println("source: `<txt>`");
+            //return ;
             ambs += 1;
         }
         catch ParseError(loc l): {
