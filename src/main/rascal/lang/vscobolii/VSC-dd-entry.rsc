@@ -21,7 +21,7 @@ syntax External_clause =
   ; 
 syntax Data_description_entry =
   // the follow restriction ensures that digits are eaten up by picture strings.
-   \data-description-entry-c1: Num !>> "." Alt_data_name_filler? Data_description_entry_clause*  "."? 
+   \data-description-entry-c1: Nat !>> "." Alt_data_name_filler? Data_description_entry_clause*  "."? 
   | \data-description-entry-c2: Copy_statement 
   ; 
 syntax Alt_left_right =
