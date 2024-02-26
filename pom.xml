@@ -26,11 +26,16 @@
   </pluginRepositories>
 
   <dependencies>
-    <dependency>
-      <groupId>org.rascalmpl</groupId>
-      <artifactId>rascal</artifactId>
-      <version>0.33.8</version>
-    </dependency>
+      <dependency>
+          <groupId>org.rascalmpl</groupId>
+          <artifactId>rascal</artifactId>
+          <version>0.33.8</version>
+      </dependency>
+      <dependency>
+          <groupId>org.rascalmpl</groupId>
+          <artifactId>drambiguity</artifactId>
+          <version>0.2.0</version>
+      </dependency>
   </dependencies>
 
   <build>
