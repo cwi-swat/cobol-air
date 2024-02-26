@@ -1,5 +1,6 @@
 Manifest-Version: 0.0.1
-Project-Name: cobol-air2
+Project-Name: cobol-air
 Source: src/main/rascal
-Require-Libraries: 
+Require-Libraries: |lib://drambiguity|
+
     
