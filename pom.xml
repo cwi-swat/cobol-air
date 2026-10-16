@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.rascalmpl</groupId>
-  <artifactId>cobol-air2</artifactId>
+  <artifactId>cobol-air</artifactId>
   <version>0.1.0-SNAPSHOT</version>
 
   <properties>
@@ -29,12 +29,12 @@
       <dependency>
           <groupId>org.rascalmpl</groupId>
           <artifactId>rascal</artifactId>
-          <version>0.43.0-RC1</version>
+          <version>0.43.0</version>
       </dependency>
       <dependency>
           <groupId>org.rascalmpl</groupId>
           <artifactId>drambiguity</artifactId>
-          <version>0.3.2</version>
+          <version>0.4.0</version>
       </dependency>
   </dependencies>
 
@@ -52,14 +52,54 @@
       <plugin>
         <groupId>org.rascalmpl</groupId>
         <artifactId>rascal-maven-plugin</artifactId>
-        <version>0.8.2</version>
+        <version>0.32.2</version>
         <configuration>
           <errorsAsWarnings>true</errorsAsWarnings>
           <bin>${project.build.outputDirectory}</bin>
           <srcs>
             <src>${project.basedir}/src/main/rascal</src>
           </srcs>
-        </configuration>
+      </configuration>
+      <executions>
+          <execution>
+              <id>cobol-compile</id>
+              <phase>compile</phase>
+              <goals>
+                  <goal>compile</goal>
+              </goals>
+          </execution>
+          <execution>
+              <id>cobol-package</id>
+              <phase>prepare-package</phase>
+              <goals>
+                  <goal>package</goal>
+              </goals>
+          </execution>
+          <execution>
+              <id>cobol-test</id>
+              <phase>test</phase>
+              <goals>
+                  <goal>test</goal>
+              </goals>
+          </execution>
+          <execution>
+              <id>default-cli</id>
+              <phase>compile</phase>
+              <goals>
+                  <goal>tutor</goal>
+              </goals>
+              <configuration>
+                  <bin>${project.build.outputDirectory}</bin>
+                  <sources>|http://github.com/cwi-swat/cobol-air/blob/main|</sources>
+                  <issues>|http://github.com/cwi-swat/cobol-air/issues|</issues>
+                  <srcs>
+                      <src>${project.basedir}/src</src>
+                  </srcs>
+                  <ignores>
+                  </ignores>
+              </configuration>
+          </execution>
+      </executions>
       </plugin>
     </plugins>
   </build>

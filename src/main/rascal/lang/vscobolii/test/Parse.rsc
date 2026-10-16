@@ -1,12 +1,13 @@
-module lang::vscobolii::Parse
+module lang::vscobolii::\test::Parse
 
+import Exception;
+import IO;
+import ParseTree;
+import Set;
 import lang::vscobolii::Main;
 import lang::vscobolii::Preprocess;
-import ParseTree;
-import IO;
 import util::FileSystem;
-import Set;
-import Exception;
+import util::Monitor;
 
 start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false, bool pre=true) {
     str src = readFile(org);
@@ -108,7 +109,7 @@ public set[loc] havingFUNCTION = {
 |project://cobol-air/examples/NIST/RL/RL208A.SUBPRG|
 };
 
-void smokeTest() {
+test bool smokeTest() {
     cbls = [ f | loc f <- files(|project://cobol-air/examples/NIST/|), f.extension in {"CBL", "SUBPRG", "SUBRTN"}];
 
     set[loc] bugTriggering = {} ;
@@ -124,7 +125,10 @@ void smokeTest() {
     int success = 0;
     int errors = 0;
     int ambs = 0;
+    jobStart("parsing test files", totalWork=size(cbls));
+
     for (loc src <- cbls, src notin bugTriggering, src notin havingFUNCTION) {
+        jobStep("parsing test files", "<src>");
         try {
             println("parsing <src>");
             pt = parseVSCobolII(src, allowAmbiguity=false);
@@ -145,9 +149,13 @@ void smokeTest() {
             errors += 1;
         }
     }
+    jobEnd("parsing test files");
 
     println("#succes: <success>");
     println("#errors: <errors>");
     println("#ambs: <ambs>");
     println("#bugtriggering: <size(bugTriggering)>");
+
+    // we always return true because we are not ready yet
+    return true;
 }
