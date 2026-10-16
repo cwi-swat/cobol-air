@@ -94,6 +94,7 @@
                   <issues>|http://github.com/cwi-swat/cobol-air/issues|</issues>
                   <srcs>
                       <src>${project.basedir}/src</src>
+                      <src>${project.basedir}/courses/ToDo</src>
                   </srcs>
                   <ignores>
                   </ignores>
