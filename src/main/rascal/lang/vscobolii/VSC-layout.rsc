@@ -8,9 +8,9 @@ layout LAYOUTLIST  =
 
 lexical LAYOUT
   // "%" ![\n]* [\n] 
-  = @category="Comment" "*"@7 ![\n]* $
-  | @category="Comment" "/"@7 ![\n]* $
-  | ^ Spaces "-"@7 // a line continuation
+  = @category="Comment" "*"@6 ![\n]* $
+  | @category="Comment" "/"@6 ![\n]* $
+  | ^ Spaces "-"@6 // a line continuation
   | [\t-\n \ ;, ] 
   // | ", " 
   // | ",\n" 
