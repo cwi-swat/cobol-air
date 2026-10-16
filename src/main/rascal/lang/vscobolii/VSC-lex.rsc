@@ -1,86 +1,71 @@
-module lang::vscobolii::\VSC-lex 
-
-
+module lang::vscobolii::\VSC-lex
 
 extend lang::vscobolii::KEYWORDS;
 extend lang::vscobolii::\VSC-layout;
 
-
 // todo check precede restriction
 // todo: check keywords not allowed in pic strings.
-lexical Picture_string =
-  [\t-\n\ ,.;] << Picture_contents \ CobwordKeywords !>> ![\t-\n\ ,.;] 
-  ;
+lexical Picture_string = [\t-\n\ ,.;] << Picture_contents \ CobwordKeywords !>> ![\t-\n\ ,.;];
 
-lexical Picture_contents
-  = Picture_char+ 
-  ;
+lexical Picture_contents = Picture_char+;
 
 lexical Picture_char
-  = [, . ;]  ![\t-\n \ ] 
-  | ![\t-\n \  , . ;]
+  = [,.;] ![\t-\n\ ]
+  | ![\t-\n\ ,.;]
   ;
 
-lexical Quoted_pseudo_text =
-  "==" ![=]* "==" 
-  ;
+lexical Quoted_pseudo_text = "==" ![=]* "==";
 
-lexical Id 
-  = ([\- 0-9 A-Z a-z] !<< [\- 0-9]* [A-Z a-z] [\- _ 0-9 A-Z a-z]* !>> [\- 0-9 A-Z a-z]) \ CobwordKeywords
+lexical Id = ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za-z]* !>> [\-0-9A-Za-z]) \ CobwordKeywords
   //| [0-9] !<< [0-9]+ (  [\-]  [0-9]+  )+ !>> [0-9]
-//  = [0-9 A-Z a-z] !<< Id_ !>> [0-9 A-Z a-z]
+  //  = [0-9 A-Z a-z] !<< Id_ !>> [0-9 A-Z a-z]
   ;
-
 
 syntax Nonnumeric
   = NonnumericWhole
   | NonnumericPart+ NonnumericWhole
   ;
 
-lexical NonnumericWhole = 
-    [\"] DoubleStrChar* [\"] 
-  | [\'] SingleStrChar* [\'] ;
+lexical NonnumericWhole
+  = [\"] DoubleStrChar* [\"]
+  | [\'] SingleStrChar* [\']
+  ;
 
 lexical NonnumericPart
-  = [\"] DoubleStrChar* $
-  | [\'] SingleStrChar* $
+  = [\"] DoubleStrChar*$
+  | [\'] SingleStrChar*$
   ;
 
 lexical DoubleStrChar
   = ![\"\n]
-  | [\"][\"]
+  | [\"] [\"]
   ;
 
 lexical SingleStrChar
   = ![\'\n]
-  | [\'][\'] // assuming same convention as for "
+  | [\'] [\']
+  // assuming same convention as for "
   ;
 
 // lexical Nonnumeric_ =
-//   [\"] ![\"]* [\"] 
-//   | [\'] ![\']* [\'] 
+//   [\"] ![\"]* [\"]
+//   | [\'] ![\']* [\']
 //   ;
-
 // lexical Num_ =
-//   [0-9\-+] !<< 
+//   [0-9\-+] !<<
 //     [+ \-]? (  ( [0-9]*  [, .]  [0-9]+  ) | [0-9]+) !>> [0-9]
 //   ;
-
 lexical Num
-  = [0-9\-+] !<<  [0-9]*  [,.]  [0-9]+ !>> [0-9] 
-  | [0-9A-Za-z.] !<< [+ \-]  [0-9]*  [,.]  [0-9]+ !>> [0-9] 
+  = [0-9\-+] !<< [0-9]* [,.] [0-9]+ !>> [0-9]
+  | [0-9A-Za-z.] !<< [+\-] [0-9]* [,.] [0-9]+ !>> [0-9]
   | Int
   ;
 
-lexical Nat
-  = [0-9\-+.A-Za-z] !<<  [0-9]+ !>> [0-9];
+lexical Nat = [0-9\-+.A-Za-z] !<< [0-9]+ !>> [0-9];
 
 lexical Int
-  = [0-9A-Za-z.] !<< [+ \-]  [0-9]+ !>> [0-9]
+  = [0-9A-Za-z.] !<< [+\-] [0-9]+ !>> [0-9]
   | Nat
   ;
 
-syntax Cobword =
-  Id 
-  ;
-
+syntax Cobword = Id;

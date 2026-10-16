@@ -1,18 +1,17 @@
- module lang::vscobolii::\VSC-id-div  extend lang::vscobolii::\VSC-expr;
+module lang::vscobolii::\VSC-id-div
 
+extend lang::vscobolii::\VSC-expr;
 
-syntax Identification_division_content =
-  \identification-division-content: Identification_division_phrase* 
-  ; 
-syntax Identification =
-  \identification-c2: 'ID' 
-  | \identification-c1: 'IDENTIFICATION' 
-  ; 
-lexical MetaDataContentLine
-   = Word \ NoIDKeyword  ![\n]* [\n]; // $ seems to trigger bug
+syntax Identification_division_content = \identification-division-content: Identification_division_phrase*;
+syntax Identification
+  = \identification-c2: 'ID'
+  | \identification-c1: 'IDENTIFICATION'
+  ;
+  
+lexical MetaDataContentLine = Word \ NoIDKeyword ![\n]* [\n];
 
-lexical Word
-  = [a-zA-Z0-9\"()\-]+ !>> [a-zA-Z0-9\"()\-];
+// $ seems to trigger bug
+lexical Word = [a-zA-Z0-9\"()\-]+ !>> [a-zA-Z0-9\"()\-];
 
 keyword NoIDKeyword
   = 'DATE-WRITTEN'
@@ -26,11 +25,11 @@ keyword NoIDKeyword
   | 'PROCEDURE'
   ;
 
-syntax Identification_division_phrase =
-   \identification-division-phrase-c5: 'SECURITY' "."?  MetaDataContentLine* 
-  |  \identification-division-phrase-c4: 'DATE-COMPILED' "."?  MetaDataContentLine* 
-  |  \identification-division-phrase-c1: 'AUTHOR' "."?  MetaDataContentLine* 
-  |  \identification-division-phrase-c3: 'DATE-WRITTEN' "."? MetaDataContentLine* 
-  |  \identification-division-phrase-c6: 'REMARKS' "."? MetaDataContentLine* 
-  |  \identification-division-phrase-c2: 'INSTALLATION' "."? MetaDataContentLine* 
+syntax Identification_division_phrase
+  = \identification-division-phrase-c5: 'SECURITY' "."? MetaDataContentLine*
+  | \identification-division-phrase-c4: 'DATE-COMPILED' "."? MetaDataContentLine*
+  | \identification-division-phrase-c1: 'AUTHOR' "."? MetaDataContentLine*
+  | \identification-division-phrase-c3: 'DATE-WRITTEN' "."? MetaDataContentLine*
+  | \identification-division-phrase-c6: 'REMARKS' "."? MetaDataContentLine*
+  | \identification-division-phrase-c2: 'INSTALLATION' "."? MetaDataContentLine*
   ;
