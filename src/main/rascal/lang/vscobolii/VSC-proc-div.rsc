@@ -13,10 +13,14 @@ syntax Using_phrase
   | \using-phrase-c1: Using_data_name_pluslist? "."
   ;
 syntax Section_with_header = \section-with-header: Section_header "." Paragraphs;
-syntax Paragraphs = paragraphs: Sentence* Paragraph*;
+syntax Paragraphs = paragraphs: Paragraph_item* Paragraph*;
 syntax Paragraph
-  = \paragraph-c2: Paragraph_name "." Sentence*
+  = \paragraph-c2: Paragraph_name "." Paragraph_item*
   | \paragraph-c1: Paragraph_name "." 'GO' 'TO'? "."
+  ;
+syntax Paragraph_item
+  = \paragraph-item-sentence: Sentence
+  | \paragraph-item-replace: Replace_directive
   ;
 syntax Sentence
   = \sentence-c1: Statement_list "."+

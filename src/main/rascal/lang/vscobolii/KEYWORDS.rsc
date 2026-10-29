@@ -71,6 +71,7 @@ keyword CobwordKeywords =
   | 'END-REWRITE'
   | 'QUOTE'
   | 'REPLACING'
+  | 'REPLACE'
   | 'SD'
   | 'OPEN'
   | 'SENTENCE'

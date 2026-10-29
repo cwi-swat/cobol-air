@@ -16,6 +16,12 @@ lexical Picture_char
 
 lexical Quoted_pseudo_text = "==" ![=]* "==";
 
+syntax Replace_pseudo_text_pair = \replace-pseudo-text-pair: Quoted_pseudo_text 'BY' Quoted_pseudo_text;
+syntax Replace_directive
+  = \replace-directive-off: 'REPLACE' 'OFF' "."
+  | \replace-directive: 'REPLACE' Replace_pseudo_text_pair+ "."
+  ;
+
 lexical Id = ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za-z]* !>> [\-_0-9A-Za-z]) \ CobwordKeywords
   ;
 
