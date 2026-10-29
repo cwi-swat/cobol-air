@@ -23,7 +23,8 @@ syntax Alt_indexed_relative_sequential
   ;
 syntax Qsam_or_sam_or_vsam_i_o_control_entries
   = \qsam-or-sam-or-vsam-i-o-control-entries-c1: 'RERUN' 'ON' Alt_assignment_name_file_name 'EVERY'? Every_phrase 'OF'? File_name
-  | \qsam-or-sam-or-vsam-i-o-control-entries-c2: 'SAME' 'RECORD'? 'AREA'? 'FOR'? File_name File_name+
+  // SAME SORT AREA FOR SQ-FS1 ST-FS1,
+  | \qsam-or-sam-or-vsam-i-o-control-entries-c2: 'SAME' Record_sort? 'AREA'? 'FOR'? File_name File_name+
   | \qsam-or-sam-or-vsam-i-o-control-entries-c4: 'APPLY' 'WRITE-ONLY' 'ON'? File_name+
   | \qsam-or-sam-or-vsam-i-o-control-entries-c3: 'MULTIPLE' 'FILE' 'TAPE'? 'CONTAINS'? File_name_position+
   ;
