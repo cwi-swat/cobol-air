@@ -9,9 +9,11 @@ import lang::vscobolii::Preprocess;
 import util::FileSystem;
 import util::Monitor;
 
-start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false, bool pre=true) {
+private bool debug = true;
+
+start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false, bool allowRecovery=false, bool pre=true) {
     str src = readFile(org);
-    return parse(#start[VSCobolII], pre ? preprocess(src) : src, org, allowAmbiguity=allowAmbiguity);
+    return parse(#start[VSCobolII], pre ? preprocess(src) : src, org, allowAmbiguity=allowAmbiguity, allowRecovery=allowRecovery);
 }
 
 public set[loc] havingFUNCTION = {
@@ -143,10 +145,16 @@ test bool smokeTest() {
             println("source: `<txt>`");
             //return ;
             ambs += 1;
+            if (debug) {
+                return false;
+            }
         }
         catch ParseError(loc l): {
             println("parse error: <l>");
             errors += 1;
+            if (debug) {
+                return false;
+            }
         }
     }
     jobEnd("parsing test files");
