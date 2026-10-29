@@ -3,7 +3,7 @@ module lang::vscobolii::\VSC-layout
 
 
 layout LAYOUTLIST  =
-  LAYOUT* !>> [\t-\n \  * ,;] 
+  LAYOUT* !>> [\t-\n \  ,;] 
   ;
 
 lexical LAYOUT

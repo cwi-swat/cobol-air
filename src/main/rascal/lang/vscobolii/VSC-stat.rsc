@@ -291,6 +291,9 @@ syntax EndRead
 
 syntax Statement
   = \statement-c18: 'EXIT' 'PROGRAM'
+  | \statement-communication-receive: 'RECEIVE' File_name 'MESSAGE'? 'INTO' Identifier No_data_statement?
+  | \statement-communication-enable: 'ENABLE' Communication_io_mode File_name Communication_key_phrase?
+  | \statement-communication-disable: 'DISABLE' Communication_io_mode File_name Communication_key_phrase?
   | \statement-c23: 'MERGE' File_name On_key_phrase+ Collating_sequence? 'USING' File_name File_name+ Merge_statement_tail
   | \statement-c30: Search_statement
   | \statement-c11: 'COMPUTE' Cobword_rounded+ Equal Arithmetic_expression On_size_error_statement_list? Not_on_size_error_statement_list? EndCompute
@@ -320,6 +323,8 @@ syntax Statement
   | \statement-c20: 'GOBACK'
   | \statement-c6: Add_statement
   | \statement-c5: Accept_statement
+  | \statement-communication-accept-message-count: 'ACCEPT' File_name 'MESSAGE' 'COUNT'
+  | \statement-communication-accept-count: 'ACCEPT' File_name 'COUNT'
   | \statement-c13: 'DELETE' File_name 'RECORD'? Invalid_key_statement_list? Not_invalid_key_statement_list? EndDelete
   | \statement-c21: 'INITIALIZE' Identifier+
   | \statement-c21: 'INITIALIZE' Identifier+ 'REPLACING' Initialize_replacing_argument+
@@ -354,6 +359,15 @@ syntax Statement
   | \statement-c24: Multiply_statement
   | \statement-c29: 'REWRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? EndRewrite
   ;
+
+syntax Communication_io_mode
+  = \communication-io-mode-input: 'INPUT'
+  | \communication-io-mode-output: 'OUTPUT'
+  ;
+
+syntax Communication_key_phrase = \communication-key-phrase: 'WITH'? 'KEY' Id_or_lit;
+
+syntax No_data_statement = \no-data-statement: 'NO' 'DATA' Statement;
 
 syntax Not_on_size_error_statement_list = \not-on-size-error-statement-list: 'NOT' 'ON'? 'SIZE' 'ERROR' Statement_list;
 syntax On_key_is_phrase

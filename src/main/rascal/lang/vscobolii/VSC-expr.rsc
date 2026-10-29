@@ -105,7 +105,7 @@ syntax Procedure_name
   = \procedure-name: Paragraph_or_section_name
   | \procedure-name: Paragraph_or_section_name In Section_name
   ;
-syntax Power_tail = \power-tail: "**" Basis;
+syntax Power_tail = \power-tail: "**" !>> "*" Basis;
 syntax In_data_or_file_name = \in-data-or-file-name: In Alphabetic_user_defined_word;
 syntax Arithmetic_expression = \arithmetic-expression: Times_div Arithmetic_expression_tail*;
 syntax Computer_name = \computer-name: System_name;
@@ -121,7 +121,7 @@ syntax File_name = \file-name: Alphabetic_user_defined_word;
 syntax In_data_or_file_or_mnemonic_name = \in-data-or-file-or-mnemonic-name: In Alphabetic_user_defined_word;
 syntax Alt_plus_minus
   = \alt-plus-minus-c1: "+"
-  | \alt-plus-minus-c2: [a-zA-Z] !<< "-" !>> [a-zA-Z]
+  | \alt-plus-minus-c2: "-"
   ;
 syntax Records
   = \records-c2: 'RECORDS'
@@ -138,7 +138,7 @@ syntax Values
 syntax Arithmetic_expression_tail = \arithmetic-expression-tail: Alt_plus_minus Times_div;
 
 syntax Alt_times_div
-  = \alt-times-div-c1: "*"
+  = \alt-times-div-c1: "*" !>> "*"
   | \alt-times-div-c2: "/"
   ;
 

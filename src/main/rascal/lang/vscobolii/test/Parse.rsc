@@ -9,7 +9,7 @@ import lang::vscobolii::Preprocess;
 import util::FileSystem;
 import util::Monitor;
 
-private bool debug = true;
+private bool debug = false;
 
 start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false, bool allowRecovery=false, bool pre=true) {
     str src = readFile(org);
