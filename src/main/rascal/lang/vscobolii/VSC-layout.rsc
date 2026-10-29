@@ -7,13 +7,10 @@ layout LAYOUTLIST  =
   ;
 
 lexical LAYOUT
-  // "%" ![\n]* [\n] 
-  = @category="Comment" "*"@6 ![\n]* $
-  | @category="Comment" "/"@6 ![\n]* $
+  = @category="comment" "*"@6 ![\n]* $
+  | @category="comment" "/"@6 ![\n]* $
   | ^ Spaces "-"@6 // a line continuation
   | [\t-\n \ ;, ] 
-  // | ", " 
-  // | ",\n" 
   ;
 
 lexical Spaces

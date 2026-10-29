@@ -16,9 +16,7 @@ lexical Picture_char
 
 lexical Quoted_pseudo_text = "==" ![=]* "==";
 
-lexical Id = ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za-z]* !>> [\-0-9A-Za-z]) \ CobwordKeywords
-  //| [0-9] !<< [0-9]+ (  [\-]  [0-9]+  )+ !>> [0-9]
-  //  = [0-9 A-Z a-z] !<< Id_ !>> [0-9 A-Z a-z]
+lexical Id = ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za-z]* !>> [\-_0-9A-Za-z]) \ CobwordKeywords
   ;
 
 syntax Nonnumeric
