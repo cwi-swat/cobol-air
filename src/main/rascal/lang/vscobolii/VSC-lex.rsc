@@ -14,7 +14,7 @@ lexical Picture_char
   | ![\t-\n\ ,.;]
   ;
 
-lexical Quoted_pseudo_text = "==" ![=]* "==";
+lexical Quoted_pseudo_text = "==" (![=] | ("=" ![=]))* "==";
 
 syntax Replace_pseudo_text_pair = \replace-pseudo-text-pair: Quoted_pseudo_text 'BY' Quoted_pseudo_text;
 syntax Replace_directive

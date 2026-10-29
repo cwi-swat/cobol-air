@@ -16,6 +16,10 @@ start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false, bool allowRe
     return parse(#start[VSCobolII], pre ? preprocess(src) : src, org, allowAmbiguity=allowAmbiguity, allowRecovery=allowRecovery);
 }
 
+public set[loc] needsReplace = {
+    |project://cobol-air/examples/NIST/SM/SM208A.CBL|
+};
+
 public set[loc] havingFUNCTION = {
 |project://cobol-air/examples/NIST/OB/OBIC1A.CBL|,
 |project://cobol-air/examples/NIST/OB/OBNC1M.CBL|,
@@ -129,7 +133,7 @@ test bool smokeTest() {
     int ambs = 0;
     jobStart("parsing test files", totalWork=size(cbls));
 
-    for (loc src <- cbls, src notin bugTriggering, src notin havingFUNCTION) {
+    for (loc src <- cbls, src notin bugTriggering,  src notin needsReplace) {
         jobStep("parsing test files", "<src>");
         try {
             println("parsing <src>");
