@@ -6,12 +6,11 @@ layout LAYOUTLIST  =
   LAYOUT* !>> [\t-\n \  ,;] 
   ;
 
+// the preprocessor puts 6 spaces before the indicator column
 lexical LAYOUT
-  = @category="comment" "*"@6 ![\n]* $
-  | @category="comment" "/"@6 ![\n]* $
-  | ^ Spaces "-"@6 // a line continuation
-  | [\t-\n \ ;, ] 
-  ;
 
-lexical Spaces
-  = [\ ]*;
+  = @category="comment" ^ "      *" ![\n]* !>> ![\n] $ 
+  | @category="comment" ^ "      /" ![\n]* !>> ![\n] $
+  | ^ "      -" // a line continuation
+  | [\t-\n \ ;, ]
+  ;
