@@ -227,6 +227,7 @@ syntax Parameter
 syntax Page_phrase
   = \page-phrase-c2: 'PAGE'
   | \page-phrase-c1: Cobword_int Lines?
+  | \page-phrase-c3: Zeroes Lines?
   ;
 
 syntax EndDivide = 'END-DIVIDE'?;
@@ -293,8 +294,11 @@ syntax EndRead
 syntax Statement
   = \statement-c18: 'EXIT' 'PROGRAM'
   | \statement-communication-receive: 'RECEIVE' File_name 'MESSAGE'? 'INTO' Identifier No_data_statement?
+  | \statement-communication-receive: 'RECEIVE' File_name 'SEGMENT' 'INTO' Identifier No_data_statement?
   | \statement-communication-enable: 'ENABLE' Communication_io_mode File_name Communication_key_phrase?
   | \statement-communication-disable: 'DISABLE' Communication_io_mode File_name Communication_key_phrase?
+  | \statement-communication-send: 'SEND' File_name From_identifier? Send_with_phrase? Send_advancing_phrase? Send_replacing_line?
+  | \statement-communication-purge: 'PURGE' File_name
   | \statement-c23: 'MERGE' File_name On_key_phrase+ Collating_sequence? 'USING' File_name File_name+ Merge_statement_tail
   | \statement-c30: Search_statement
   | \statement-c11: 'COMPUTE' Cobword_rounded+ Equal Arithmetic_expression On_size_error_statement_list? Not_on_size_error_statement_list? EndCompute
@@ -362,11 +366,22 @@ syntax Statement
   ;
 
 syntax Communication_io_mode
-  = \communication-io-mode-input: 'INPUT'
+  = \communication-io-mode-input: 'INPUT' 'TERMINAL'?
   | \communication-io-mode-output: 'OUTPUT'
   ;
 
 syntax Communication_key_phrase = \communication-key-phrase: 'WITH'? 'KEY' Id_or_lit;
+
+syntax Send_with_phrase
+  = \send-with-phrase-esi: 'WITH' 'ESI'
+  | \send-with-phrase-emi: 'WITH' 'EMI'
+  | \send-with-phrase-egi: 'WITH' 'EGI'
+  | \send-with-phrase-identifier: 'WITH' Identifier
+  ;
+
+syntax Send_advancing_phrase = \send-advancing-phrase: Alt_before_after 'ADVANCING'? Page_phrase;
+
+syntax Send_replacing_line = \send-replacing-line: 'REPLACING' 'LINE';
 
 syntax No_data_statement = \no-data-statement: 'NO' 'DATA' Statement;
 

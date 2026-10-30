@@ -324,4 +324,9 @@ keyword CobwordKeywords =
   | 'BEGINNING'
   | 'CONTINUE'
   | 'DOWN'
+  | 'SEND'
+  | 'PURGE'
+  | 'ESI'
+  | 'EMI'
+  | 'EGI'
   ;
