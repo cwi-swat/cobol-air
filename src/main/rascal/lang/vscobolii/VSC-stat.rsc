@@ -274,8 +274,10 @@ syntax EndWrite = 'END-WRITE'?;
 // | () >> ".";
 syntax EndEvaluate = 'END-EVALUATE'?;
 // | () >> ".";
-syntax EndReturn = 'END-RETURN'?;
-// | () >> ".";
+syntax EndReturn
+  = 'END-RETURN'
+  | () >> "."
+  ;
 syntax EndStart
   = 'END-START'
   | () >> "."
@@ -383,7 +385,21 @@ syntax Date
   ;
 syntax Cobword_rounded = \cobword-rounded: Identifier 'ROUNDED'?;
 
-syntax Statement_list = \statement-list: Statement+;
+syntax Statement_list = \statement-list: Statement+ EndStatementList;
+
+// a statement list extends to the end of the sentence, a scope terminator, or the next phrase of its enclosing statement
+syntax EndStatementList
+  = () >> "."
+  | () >> 'END'
+  | () >> 'NOT'
+  | () >> 'ELSE'
+  | () >> 'WHEN'
+  | () >> 'INVALID'
+  | () >> 'AT'
+  | () >> 'ON'
+  | () >> 'OVERFLOW'
+  | () >> 'COPY'
+  ;
 syntax Move_statement
   = \move-statement-c2: 'MOVE' Corresponding Identifier 'TO' Identifier+
   | \move-statement-c1: 'MOVE' Id_or_lit 'TO' Identifier+
