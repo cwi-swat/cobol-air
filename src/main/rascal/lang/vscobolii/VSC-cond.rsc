@@ -33,7 +33,7 @@ syntax Greater_than =
   |  \greater-than-c1: 'GREATER' 'THAN'? 
   ; 
 syntax Condition =
-  \condition-c2: Combinable_condition 
+  singleCondition: Combinable_condition 
   |  \condition-c1: Combinable_condition And_or_combinable_condition+ 
   ; 
 syntax Relational_operator =
@@ -41,7 +41,7 @@ syntax Relational_operator =
   ;
 
 syntax Combinable_condition =
-  \combinable-condition-c1: Simple_condition 
+  simpleCondition: Simple_condition 
   |  \combinable-condition-c2: 'NOT' Combinable_condition 
   ;
 
@@ -55,8 +55,11 @@ syntax Sign_type =
 
 syntax Simple_condition =
    \simple-condition-c2: Arithmetic_expression Relational_operator Simple_condition 
-  | \simple-condition-c5: Arithmetic_expression 
-  |  \simple-condition-c4: "(" Condition ")" 
+  | bareExpression: Arithmetic_expression 
+  // condition brackets only around real conditions; brackets around a bare expression are expression brackets
+  |  \simple-condition-c4: "(" Condition!singleCondition ")"
+  |  \simple-condition-c4: "(" Combinable_condition!simpleCondition ")"
+  |  \simple-condition-c4: "(" Simple_condition!bareExpression ")"
   |  \simple-condition-c1: Identifier Is_or_is_not Class_type 
   |  \simple-condition-c3: Arithmetic_expression Is_or_is_not Sign_type 
   ; 

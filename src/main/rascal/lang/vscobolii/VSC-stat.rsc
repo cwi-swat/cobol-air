@@ -64,7 +64,7 @@ syntax Id_or_lit
 syntax Evaluate_phrase
   = \evaluate-phrase-c4: 'NOT'? Arithmetic_expression Through Arithmetic_expression
   | \evaluate-phrase-c2: 'TRUE'
-  | \evaluate-phrase-c5: Condition // also covers [NOT] value, via simple-condition-c5; the EVALUATE subject decides which it is
+  | \evaluate-phrase-c5: Condition // also covers [NOT] value, via bareExpression; the EVALUATE subject decides which it is
   | \evaluate-phrase-c3: 'FALSE'
   | \evaluate-phrase-c1: 'ANY'
   ;
