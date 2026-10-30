@@ -12,5 +12,5 @@ lexical LAYOUT
   = @category="comment" ^ "      *" ![\n]* !>> ![\n] $ 
   | @category="comment" ^ "      /" ![\n]* !>> ![\n] $
   | ^ "      -" // a line continuation
-  | [\t-\n \ ;, ]
+  | [\t-\n \ ;,]
   ;
