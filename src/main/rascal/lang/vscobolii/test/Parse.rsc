@@ -168,6 +168,5 @@ test bool smokeTest() {
     println("#ambs: <ambs>");
     println("#bugtriggering: <size(bugTriggering)>");
 
-    // we always return true because we are not ready yet
-    return true;
+    return errors == 0 && ambs == 0;
 }
