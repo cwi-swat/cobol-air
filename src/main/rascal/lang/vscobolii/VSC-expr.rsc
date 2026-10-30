@@ -43,7 +43,7 @@ syntax Copy_operand
 
 syntax Figurative_constant
   = \figurative-constant-c2: 'ALL' Literal
-  | \figurative-constant-c1: Figurative_constant_simple
+  | \figurative-constant-c1: Figurative_constant_simple !>> [A-Za-z0-9\-] // a keyword ends at a word boundary: ZERO-NULL is a data name
   ;
 syntax Integer = integer: Num;
 

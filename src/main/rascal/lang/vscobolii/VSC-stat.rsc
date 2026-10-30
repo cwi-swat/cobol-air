@@ -333,8 +333,8 @@ syntax Statement
   | \statement-c27: 'RELEASE' Record_name From_identifier?
   | \statement-c37: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
   | \statement-c37: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
-  | \statement-c37: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? Id_or_lit Or_all_id_or_lit* 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
-  | \statement-c37: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? Id_or_lit Or_all_id_or_lit* 'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
+  | \statement-c37: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? NotAll Id_or_lit Or_all_id_or_lit* 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
+  | \statement-c37: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? NotAll Id_or_lit Or_all_id_or_lit* 'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
   | \statement-c10: 'CLOSE' Close_statement_file_name+
   | \statement-c2: If_statement
   | \statement-c22: Inspect_statement
@@ -417,7 +417,10 @@ syntax Unstring_statement_dst
   ;
 syntax With_no_rewind = \with-no-rewind: 'WITH'? 'NO' 'REWIND';
 
-syntax Tallying_for_id_or_lit = \tallying-for-id-or-lit: Id_or_lit Before_after_phrase*;
+syntax Tallying_for_id_or_lit = \tallying-for-id-or-lit: NotAll Id_or_lit Before_after_phrase*;
+
+// operands of INSPECT and UNSTRING can not be ALL literals; ALL is the keyword of the statement
+syntax NotAll = () !>> 'ALL ' !>> 'ALL\"';
 syntax Perform_statement_4_alts
   = \perform-statement-4-alts-c2: Perform_until_phrase Statement_list 'END-PERFORM'
   | \perform-statement-4-alts-c1: Procedure_name Through_procedure_name? Perform_until_phrase
@@ -442,7 +445,7 @@ syntax Go_to_statement
   | \go-to-statement-c2: 'GO' 'TO'? Procedure_name
   | \go-to-statement-c1: 'GO' 'TO'? Procedure_name+ 'DEPENDING' 'ON'? Identifier
   ;
-syntax Or_all_id_or_lit = \or-all-id-or-lit: 'OR' 'ALL'? Id_or_lit;
+syntax Or_all_id_or_lit = \or-all-id-or-lit: 'OR' 'ALL'? NotAll Id_or_lit;
 syntax Alt_run_literal
   = \alt-run-literal-c1: 'RUN'
   | \alt-run-literal-c2: Literal
