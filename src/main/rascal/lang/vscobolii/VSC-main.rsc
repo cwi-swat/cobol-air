@@ -5,6 +5,7 @@ extend lang::vscobolii::\VSC-id-div;
 extend lang::vscobolii::\VSC-env-div;
 extend lang::vscobolii::\VSC-data-div;
 extend lang::vscobolii::\VSC-expr;
+extend lang::vscobolii::Functions;
 syntax Common_initial
   = \common-initial-c2: 'INITIAL' 'COMMON'?
   | \common-initial-c1: 'COMMON' 'INITIAL'?
