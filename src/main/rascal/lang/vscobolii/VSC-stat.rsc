@@ -218,10 +218,16 @@ syntax Sort_statement_in
 syntax Invalid_key_statement_list = \invalid-key-statement-list: 'INVALID' 'KEY'? Statement_list;
 syntax When_condition_stats = \when-condition-stats: 'WHEN' Condition Alt_statement_list_next_sentence;
 syntax Inspect_replacing_argument = \inspect-replacing-argument: Inspect_by_argument 'BY' Inspect_by_argument Before_after_phrase*;
-syntax Parameter
+// a BY CONTENT or BY REFERENCE phrase applies to all the parameters that follow it, up to the next BY phrase;
+// parameters before the first BY phrase are passed by reference
+syntax Using_parameters
+  = \using-parameters: Identifier+ Parameter_group*
+  | \using-parameters: Parameter_group+
+  ;
+
+syntax Parameter_group
   = \parameter-c2: 'BY'? 'CONTENT' Content_parameter_value+
-  | \parameter-c1: Identifier
-  | \parameter-c1: 'BY'? 'REFERENCE' Identifier
+  | \parameter-c1: 'BY'? 'REFERENCE' Identifier+
   ;
 
 syntax Page_phrase
@@ -296,10 +302,10 @@ syntax Statement
   | \statement-c8: 'CALL' Id_or_lit 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
   | \statement-c8: 'CALL' Id_or_lit 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
   | \statement-c8: 'CALL' Id_or_lit 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
-  | \statement-c8: 'CALL' Id_or_lit 'USING' Parameter+ On_overflow_statement_list? EndCall
-  | \statement-c8: 'CALL' Id_or_lit 'USING' Parameter+ 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
-  | \statement-c8: 'CALL' Id_or_lit 'USING' Parameter+ 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
-  | \statement-c8: 'CALL' Id_or_lit 'USING' Parameter+ 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
+  | \statement-c8: 'CALL' Id_or_lit 'USING' Using_parameters On_overflow_statement_list? EndCall
+  | \statement-c8: 'CALL' Id_or_lit 'USING' Using_parameters 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
+  | \statement-c8: 'CALL' Id_or_lit 'USING' Using_parameters 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
+  | \statement-c8: 'CALL' Id_or_lit 'USING' Using_parameters 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
   | \statement-c31: 'SET' Set_statement_phrase+
   | \statement-c34: 'STOP' Alt_run_literal
   | \statement-c15: Divide_statement
