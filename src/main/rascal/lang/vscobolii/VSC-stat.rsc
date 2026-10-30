@@ -264,10 +264,7 @@ syntax EndCall = 'END-CALL'?;
 // | () >> ".";
 syntax EndString = 'END-STRING'?;
 // | () >> ".";
-syntax EndDelete
-  = 'END-DELETE'
-  | () >> "."
-  ;
+syntax EndDelete = 'END-DELETE'?;
 syntax EndUnString = 'END-UNSTRING'?;
 // | () >> ".";
 syntax EndWrite = 'END-WRITE'?;
@@ -278,18 +275,9 @@ syntax EndReturn
   = 'END-RETURN'
   | () >> "."
   ;
-syntax EndStart
-  = 'END-START'
-  | () >> "."
-  ;
-syntax EndRewrite
-  = 'END-REWRITE'
-  | () >> "."
-  ;
-syntax EndRead
-  = 'END-READ'
-  | () >> "."
-  ;
+syntax EndStart = 'END-START'?;
+syntax EndRewrite = 'END-REWRITE'?;
+syntax EndRead = 'END-READ'?;
 
 syntax Statement
   = \statement-c18: 'EXIT' 'PROGRAM'

@@ -15,4 +15,5 @@ extend lang::vscobolii::\VSC-expr;
 extend lang::vscobolii::\VSC-env-div;
 extend lang::vscobolii::\VSC-fd-entry;
 
-start syntax VSCobolII = Cobol_source_program;
+// a source file can contain several programs, each ending with END PROGRAM
+start syntax VSCobolII = Cobol_source_program+;
