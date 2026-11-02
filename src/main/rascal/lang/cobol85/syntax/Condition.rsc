@@ -25,25 +25,6 @@ keyword CobwordKeywords
   | 'ZEROS'
   ;
 
-syntax And_or_combinable_condition =
-  \and-or-combinable-condition: Alt_and_or Relational_operator? Combinable_condition 
-  ;
-
-syntax Relational_operator_tail =
-   \relational-operator-tail-c2: 'LESS' !>> [A-Za-z0-9\-] Than 'OR' 'EQUAL' 'TO'? 
-  | \relational-operator-tail-c4: "\>=" 
-  |  \relational-operator-tail-c1: 'GREATER' !>> [A-Za-z0-9\-] Than 'OR' 'EQUAL' 'TO'? 
-  |  \relational-operator-tail-c3: "\<" "=" 
-  |  \relational-operator-tail-c5: 'NOT'? Relational_operator_rest 
-  ; 
-// GREATER and LESS end at a word boundary: `EQUAL TO ZEROS AND GREATERZERO` has the condition name GREATERZERO
-syntax Relational_operator_rest =
-   \relational-operator-rest-c3: 'LESS' !>> [A-Za-z0-9\-] Than 
-  | \relational-operator-rest-c2: "\>" 
-  | \relational-operator-rest-c4: "\<" 
-  | \relational-operator-rest-c5: Equal_to 
-  |  \relational-operator-rest-c1: 'GREATER' !>> [A-Za-z0-9\-] Than 
-  ; 
 syntax Greater_than_or_equal_to =
    \greater-than-or-equal-to-c1: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'? 
   |  \greater-than-or-equal-to-c2: 'NOT' 'LESS' 'THAN'? 
@@ -59,40 +40,65 @@ syntax Greater_than =
   \greater-than-c2: "\>" 
   |  \greater-than-c1: 'GREATER' 'THAN'? 
   ; 
-syntax Condition =
-  singleCondition: Combinable_condition 
-  |  \condition-c1: Combinable_condition And_or_combinable_condition+ 
+// relations bind stronger than NOT, NOT stronger than AND, and AND stronger than OR (COBOL-85)
+syntax Condition
+  = bareExpression: Arithmetic_expression 
+  | classCondition: Identifier Is_or_is_not Class_type 
+  | signCondition: Arithmetic_expression Is_or_is_not Sign_type 
+  // condition brackets only around real conditions; brackets around a bare expression are expression brackets
+  | brackets: "(" Condition!bareExpression ")"
+  // GREATER and LESS end at a word boundary: `EQUAL TO ZEROS AND GREATERZERO` has the condition name GREATERZERO
+  > right (
+      greaterThan: Condition 'IS'? 'GREATER' !>> [A-Za-z0-9\-] Than Condition
+    | greaterThan: Condition 'IS'? "\>" NotEqualSign Condition
+    | notGreaterThan: Condition 'IS'? 'NOT' 'GREATER' !>> [A-Za-z0-9\-] Than Condition
+    | notGreaterThan: Condition 'IS'? 'NOT' "\>" NotEqualSign Condition
+    | lessThan: Condition 'IS'? 'LESS' !>> [A-Za-z0-9\-] Than Condition
+    | lessThan: Condition 'IS'? "\<" NotEqualSign Condition
+    | notLessThan: Condition 'IS'? 'NOT' 'LESS' !>> [A-Za-z0-9\-] Than Condition
+    | notLessThan: Condition 'IS'? 'NOT' "\<" NotEqualSign Condition
+    | equal: Condition 'IS'? 'EQUAL' 'TO'? Condition
+    | equal: Condition 'IS'? "=" Condition
+    | notEqual: Condition 'IS'? 'NOT' 'EQUAL' 'TO'? Condition
+    | notEqual: Condition 'IS'? 'NOT' "=" Condition
+    | greaterThanOrEqual: Condition 'IS'? 'GREATER' !>> [A-Za-z0-9\-] Than 'OR' 'EQUAL' 'TO'? Condition
+    | greaterThanOrEqual: Condition 'IS'? "\>=" Condition
+    | lessThanOrEqual: Condition 'IS'? 'LESS' !>> [A-Za-z0-9\-] Than 'OR' 'EQUAL' 'TO'? Condition
+    | lessThanOrEqual: Condition 'IS'? "\<" "=" Condition
+    )
+  // abbreviated combined relation conditions leave out the subject: `A > B AND < C` means `A > B AND A < C`;
+  // `AND NOT < C` is the negation of `< C`. Below the full relations, so `A >= B` is not `A > (= B)`
+  > non-assoc (
+      greaterThan: 'IS'? 'GREATER' !>> [A-Za-z0-9\-] Than Condition
+    | greaterThan: 'IS'? "\>" NotEqualSign Condition
+    | notGreaterThan: 'IS' 'NOT' 'GREATER' !>> [A-Za-z0-9\-] Than Condition
+    | notGreaterThan: 'IS' 'NOT' "\>" NotEqualSign Condition
+    | lessThan: 'IS'? 'LESS' !>> [A-Za-z0-9\-] Than Condition
+    | lessThan: 'IS'? "\<" NotEqualSign Condition
+    | notLessThan: 'IS' 'NOT' 'LESS' !>> [A-Za-z0-9\-] Than Condition
+    | notLessThan: 'IS' 'NOT' "\<" NotEqualSign Condition
+    | equal: 'IS'? 'EQUAL' 'TO'? Condition
+    | equal: 'IS'? "=" Condition
+    | notEqual: 'IS' 'NOT' 'EQUAL' 'TO'? Condition
+    | notEqual: 'IS' 'NOT' "=" Condition
+    | greaterThanOrEqual: 'IS'? 'GREATER' !>> [A-Za-z0-9\-] Than 'OR' 'EQUAL' 'TO'? Condition
+    | greaterThanOrEqual: 'IS'? "\>=" Condition
+    | lessThanOrEqual: 'IS'? 'LESS' !>> [A-Za-z0-9\-] Than 'OR' 'EQUAL' 'TO'? Condition
+    | lessThanOrEqual: 'IS'? "\<" "=" Condition
+    )
+  > negation: 'NOT' Condition 
+  > left conjunction: Condition 'AND' Condition 
+  > left disjunction: Condition 'OR' Condition 
   ; 
-syntax Relational_operator =
-  \relational-operator: 'IS'? Relational_operator_tail 
-  ;
 
-syntax Combinable_condition =
-  simpleCondition: Simple_condition 
-  |  \combinable-condition-c2: 'NOT' Combinable_condition 
-  ;
-
+// priorities do not keep the abbreviated `= B` out of `A < = B` and `A > = B`, so `<` and `>` exclude it here
+syntax NotEqualSign = () !>> "=";
 syntax Sign_type =
   \sign-type-c3: 'ZERO' 
   | \sign-type-c4: 'ZEROES' 
   | \sign-type-c5: 'ZEROS' 
   | \sign-type-c1: 'POSITIVE' 
   | \sign-type-c2: 'NEGATIVE' 
-  ;
-
-syntax Simple_condition =
-   \simple-condition-c2: Arithmetic_expression Relational_operator Simple_condition 
-  | bareExpression: Arithmetic_expression 
-  // condition brackets only around real conditions; brackets around a bare expression are expression brackets
-  |  \simple-condition-c4: "(" Condition!singleCondition ")"
-  |  \simple-condition-c4: "(" Combinable_condition!simpleCondition ")"
-  |  \simple-condition-c4: "(" Simple_condition!bareExpression ")"
-  |  \simple-condition-c1: Identifier Is_or_is_not Class_type 
-  |  \simple-condition-c3: Arithmetic_expression Is_or_is_not Sign_type 
-  ; 
-syntax Alt_and_or =
-  \alt-and-or-c2: 'OR' 
-  | \alt-and-or-c1: 'AND' 
   ;
 
 syntax Class_type =
