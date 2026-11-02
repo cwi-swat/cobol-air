@@ -1,9 +1,9 @@
-module lang::vscobolii::Util
+module lang::vscobolii::grammar::Util
 
 import IO;
 import util::Reflective;
 import lang::rascal::\syntax::Rascal;
-import lang::vscobolii::ToInline;
+import lang::vscobolii::grammar::ToInline;
 
 void inlineDummies() {
 

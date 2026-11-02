@@ -1,4 +1,4 @@
-module lang::vscobolii::ToInline
+module lang::vscobolii::grammar::ToInline
 
 import lang::vscobolii::Main;
 import Grammar;
