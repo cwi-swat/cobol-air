@@ -260,9 +260,12 @@ syntax If_statement
   | \if-else-statement: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence EndIf
   ;
 
+// an IF without END-IF ends at the period, or at the ELSE or WHEN of an enclosing IF or EVALUATE
 syntax EndIf
   = 'END-IF'
   | () >> "."
+  | () >> 'ELSE'
+  | () >> 'WHEN'
   ;
 syntax EndCompute = 'END-COMPUTE'?;
 // | () >> ".";
@@ -465,13 +468,13 @@ syntax Perform_statement_2_alts
   ;
 syntax With_pointer_identifier = \with-pointer-identifier: 'WITH'? 'POINTER' Identifier;
 
-syntax EndSubstract = 'END-SUBSTRACT'?;
+syntax EndSubtract = 'END-SUBTRACT'?;
 
 // | () >> ".";
 syntax Subtract_statement
-  = \subtract-statement-c2: 'SUBTRACT' Id_or_lit+ 'FROM' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndSubstract
-  | \subtract-statement-c1: 'SUBTRACT' Id_or_lit+ 'FROM' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndSubstract
-  | \subtract-statement-c3: 'SUBTRACT' Corresponding Identifier 'FROM' Identifier 'ROUNDED'? On_size_error_statement_list? Not_on_size_error_statement_list? EndSubstract
+  = \subtract-statement-c2: 'SUBTRACT' Id_or_lit+ 'FROM' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndSubtract
+  | \subtract-statement-c1: 'SUBTRACT' Id_or_lit+ 'FROM' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndSubtract
+  | \subtract-statement-c3: 'SUBTRACT' Corresponding Identifier 'FROM' Identifier 'ROUNDED'? On_size_error_statement_list? Not_on_size_error_statement_list? EndSubtract
   ;
 
 syntax Inspect_statement
