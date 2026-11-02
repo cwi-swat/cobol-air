@@ -123,6 +123,12 @@ public set[loc] havingFUNCTION = {
 |project://cobol-air/examples/NIST/RL/RL208A.SUBPRG|
 };
 
+// uses the Report Writer clauses and statements that the NIST test set does not use; fails on a parse error or ambiguity
+test bool reportWriterTest() {
+    parseVSCobolII(|project://cobol-air/examples/ReportWriter/RWFULL.CBL|);
+    return true;
+}
+
 test bool smokeTest() {
     cbls = [ f | loc f <- files(|project://cobol-air/examples/NIST/|), f.extension in {"CBL", "SUBPRG", "SUBRTN"}];
 
