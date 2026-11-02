@@ -4,18 +4,19 @@ syntax And_or_combinable_condition =
   ;
 
 syntax Relational_operator_tail =
-   \relational-operator-tail-c2: 'LESS' Than 'OR' 'EQUAL' 'TO'? 
+   \relational-operator-tail-c2: 'LESS' !>> [A-Za-z0-9\-] Than 'OR' 'EQUAL' 'TO'? 
   | \relational-operator-tail-c4: "\>=" 
-  |  \relational-operator-tail-c1: 'GREATER' Than 'OR' 'EQUAL' 'TO'? 
+  |  \relational-operator-tail-c1: 'GREATER' !>> [A-Za-z0-9\-] Than 'OR' 'EQUAL' 'TO'? 
   |  \relational-operator-tail-c3: "\<" "=" 
   |  \relational-operator-tail-c5: 'NOT'? Relational_operator_rest 
   ; 
+// GREATER and LESS end at a word boundary: `EQUAL TO ZEROS AND GREATERZERO` has the condition name GREATERZERO
 syntax Relational_operator_rest =
-   \relational-operator-rest-c3: 'LESS' Than 
+   \relational-operator-rest-c3: 'LESS' !>> [A-Za-z0-9\-] Than 
   | \relational-operator-rest-c2: "\>" 
   | \relational-operator-rest-c4: "\<" 
   | \relational-operator-rest-c5: Equal_to 
-  |  \relational-operator-rest-c1: 'GREATER' Than 
+  |  \relational-operator-rest-c1: 'GREATER' !>> [A-Za-z0-9\-] Than 
   ; 
 syntax Greater_than_or_equal_to =
    \greater-than-or-equal-to-c1: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'? 
