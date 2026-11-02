@@ -56,7 +56,8 @@ syntax Alt_assignment_name_file_name
   | \alt-assignment-name-file-name-c2: File_name
   ;
 syntax File_control_entry
-  = \file-control-entry: 'SELECT' 'OPTIONAL'? File_name 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* "."
+  // the clauses may come in any order, also before ASSIGN (as in `SELECT SQ-FS4 RESERVE 1 ASSIGN "SEQ1.DAT"`)
+  = \file-control-entry: 'SELECT' 'OPTIONAL'? File_name Fce_phrase* 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* "."
   | \file-control-entry-copy: Copy_statement
   ;
 
