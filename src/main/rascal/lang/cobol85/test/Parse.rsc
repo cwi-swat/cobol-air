@@ -1,19 +1,19 @@
-module lang::vscobolii::\test::Parse
+module lang::cobol85::\test::Parse
 
 import Exception;
 import IO;
 import ParseTree;
 import Set;
-import lang::vscobolii::Main;
-import lang::vscobolii::Preprocess;
+import lang::cobol85::\syntax::Main;
+import lang::cobol85::\syntax::Preprocess;
 import util::FileSystem;
 import util::Monitor;
 
 private bool debug = false;
 
-start[VSCobolII] parseVSCobolII(loc org, bool allowAmbiguity=false, bool allowRecovery=false, bool pre=true) {
+start[Cobol85] parseCobol85(loc org, bool allowAmbiguity=false, bool allowRecovery=false, bool pre=true) {
     str src = readFile(org);
-    return parse(#start[VSCobolII], pre ? preprocess(src) : src, org, allowAmbiguity=allowAmbiguity, allowRecovery=allowRecovery);
+    return parse(#start[Cobol85], pre ? preprocess(src) : src, org, allowAmbiguity=allowAmbiguity, allowRecovery=allowRecovery);
 }
 
 public set[loc] needsReplace = {
@@ -125,7 +125,7 @@ public set[loc] havingFUNCTION = {
 
 // uses the Report Writer clauses and statements that the NIST test set does not use; fails on a parse error or ambiguity
 test bool reportWriterTest() {
-    parseVSCobolII(|project://cobol-air/examples/ReportWriter/RWFULL.CBL|);
+    parseCobol85(|project://cobol-air/examples/ReportWriter/RWFULL.CBL|);
     return true;
 }
 
@@ -151,7 +151,7 @@ test bool smokeTest() {
         jobStep("parsing test files", "<src>");
         try {
             println("parsing <src>");
-            pt = parseVSCobolII(src, allowAmbiguity=false);
+            pt = parseCobol85(src, allowAmbiguity=false);
             success += 1;
             println("success!");
             // int numOfAmbs = ( 0 | it + 1 | /amb(_) := pt );

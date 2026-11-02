@@ -1,5 +1,5 @@
- module lang::vscobolii::\VSC-conf-sec  extend lang::vscobolii::\VSC-cond;
-extend lang::vscobolii::\VSC-expr; 
+ module lang::cobol85::\syntax::ConfigurationSection  extend lang::cobol85::\syntax::Condition;
+extend lang::cobol85::\syntax::Expression; 
 
 // the reserved words of this module
 keyword CobwordKeywords

@@ -1,7 +1,7 @@
-module lang::vscobolii::\VSC-proc-div
+module lang::cobol85::\syntax::ProcedureDivision
 
-extend lang::vscobolii::\VSC-stat;
-extend lang::vscobolii::\VSC-expr;
+extend lang::cobol85::\syntax::Statement;
+extend lang::cobol85::\syntax::Expression;
 
 // the reserved words of this module
 keyword CobwordKeywords

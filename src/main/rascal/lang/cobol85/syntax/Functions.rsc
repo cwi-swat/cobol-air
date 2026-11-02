@@ -1,4 +1,4 @@
-module lang::vscobolii::Functions
+module lang::cobol85::\syntax::Functions
 
 // Intrinsic functions, as in `COMPUTE X = FUNCTION SQRT(Y)` or `MOVE FUNCTION CURRENT-DATE(1:8) TO D`.
 //
@@ -7,7 +7,7 @@ module lang::vscobolii::Functions
 // functions below. IBM first supported it in COBOL/370; later standards (COBOL 2002, 2014)
 // added many more functions that are not included here.
 
-extend lang::vscobolii::\VSC-expr;
+extend lang::cobol85::\syntax::Expression;
 
 keyword CobwordKeywords
   = 'ALL'

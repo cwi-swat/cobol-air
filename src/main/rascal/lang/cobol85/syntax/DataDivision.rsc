@@ -1,8 +1,8 @@
-module lang::vscobolii::\VSC-data-div
+module lang::cobol85::\syntax::DataDivision
 
-extend lang::vscobolii::\VSC-fd-entry;
-extend lang::vscobolii::\VSC-dd-entry;
-extend lang::vscobolii::\VSC-comm-sec;
+extend lang::cobol85::\syntax::FileDescriptionEntry;
+extend lang::cobol85::\syntax::DataDescriptionEntry;
+extend lang::cobol85::\syntax::CommunicationSection;
 
 // the reserved words of this module
 keyword CobwordKeywords

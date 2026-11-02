@@ -1,7 +1,7 @@
-module lang::vscobolii::\VSC-io-sec
+module lang::cobol85::\syntax::InputOutputSection
 
-extend lang::vscobolii::\VSC-fd-entry;
-extend lang::vscobolii::\VSC-expr;
+extend lang::cobol85::\syntax::FileDescriptionEntry;
+extend lang::cobol85::\syntax::Expression;
 
 // the reserved words of this module
 keyword CobwordKeywords

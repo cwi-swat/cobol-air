@@ -1,4 +1,4 @@
-module lang::vscobolii::Preprocess
+module lang::cobol85::\syntax::Preprocess
 
 import String;
 import List;

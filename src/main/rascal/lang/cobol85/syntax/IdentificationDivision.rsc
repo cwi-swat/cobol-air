@@ -1,6 +1,6 @@
-module lang::vscobolii::\VSC-id-div
+module lang::cobol85::\syntax::IdentificationDivision
 
-extend lang::vscobolii::\VSC-expr;
+extend lang::cobol85::\syntax::Expression;
 
 // the reserved words of this module
 keyword CobwordKeywords

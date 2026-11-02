@@ -1,8 +1,8 @@
-module lang::vscobolii::\VSC-stat
+module lang::cobol85::\syntax::Statement
 
-extend lang::vscobolii::\VSC-cond;
-extend lang::vscobolii::\VSC-lex;
-extend lang::vscobolii::\VSC-expr;
+extend lang::cobol85::\syntax::Condition;
+extend lang::cobol85::\syntax::Lexical;
+extend lang::cobol85::\syntax::Expression;
 
 // the reserved words of this module
 keyword CobwordKeywords

@@ -1,5 +1,5 @@
- module lang::vscobolii::\VSC-env-div  extend lang::vscobolii::\VSC-conf-sec;
-extend lang::vscobolii::\VSC-io-sec;
+ module lang::cobol85::\syntax::EnvironmentDivision  extend lang::cobol85::\syntax::ConfigurationSection;
+extend lang::cobol85::\syntax::InputOutputSection;
 
 // the reserved words of this module
 keyword CobwordKeywords

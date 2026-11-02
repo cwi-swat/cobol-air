@@ -1,4 +1,4 @@
-module lang::vscobolii::\VSC-layout 
+module lang::cobol85::\syntax::Layout 
 
 
 

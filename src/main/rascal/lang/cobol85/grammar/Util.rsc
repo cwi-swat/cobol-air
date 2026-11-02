@@ -1,9 +1,9 @@
-module lang::vscobolii::grammar::Util
+module lang::cobol85::grammar::Util
 
 import IO;
 import util::Reflective;
 import lang::rascal::\syntax::Rascal;
-import lang::vscobolii::grammar::ToInline;
+import lang::cobol85::grammar::ToInline;
 
 void inlineDummies() {
 
@@ -11,7 +11,7 @@ void inlineDummies() {
     map[str,set[str]] inline = toInline();
 
 
-    for (loc modul <- |project://cobol-air/src/main/rascal/lang/vscobolii|.ls, modul.extension == "rsc", /^VSC/ := modul.file) {
+    for (loc modul <- |project://cobol-air/src/main/rascal/lang/cobol85/syntax|.ls, modul.extension == "rsc", modul.file notin {"Main.rsc", "Preprocess.rsc"}) {
         start[Module] m = parseModuleWithSpaces(modul);
         for (str u <- inline, str i <- inline[u]) {
             Nonterminal inlineeNT = [Nonterminal]i; 
@@ -36,7 +36,7 @@ void inlineDummies() {
     }
 
 
-    for (loc modul <- |project://cobol-air/src/main/rascal/lang/vscobolii|.ls, modul.extension == "rsc", /^VSC/ := modul.file) {
+    for (loc modul <- |project://cobol-air/src/main/rascal/lang/cobol85/syntax|.ls, modul.extension == "rsc", modul.file notin {"Main.rsc", "Preprocess.rsc"}) {
         start[Module] m = parseModuleWithSpaces(modul);
 
         solve (m) {
@@ -86,7 +86,7 @@ void inlineDummies() {
 
 void removeUnused() {
     set[str] unused = unusedNTs();
-    for (loc modul <- |project://cobol-air/src/main/rascal/lang/vscobolii|.ls, modul.extension == "rsc", /^VSC/ := modul.file) {
+    for (loc modul <- |project://cobol-air/src/main/rascal/lang/cobol85/syntax|.ls, modul.extension == "rsc", modul.file notin {"Main.rsc", "Preprocess.rsc"}) {
         start[Module] m = parseModuleWithSpaces(modul);
         solve (m) {
             m = top-down visit (m) {

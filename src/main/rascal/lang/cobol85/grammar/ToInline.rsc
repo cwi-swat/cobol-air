@@ -1,12 +1,12 @@
-module lang::vscobolii::grammar::ToInline
+module lang::cobol85::grammar::ToInline
 
-import lang::vscobolii::Main;
+import lang::cobol85::\syntax::Main;
 import Grammar;
 import IO;
 
 
 set[str] unusedNTs() {
-    g = grammar(#VSCobolII);
+    g = grammar(#Cobol85);
 
     set[Symbol] usedIn(Symbol s) {
         // note: /s -- this is different from toInline, because we don't want to remove prods that are still used in * things etc.
@@ -19,7 +19,7 @@ set[str] unusedNTs() {
 }
 
 map[str, set[str]] toInline() {
-    g = grammar(#VSCobolII);
+    g = grammar(#Cobol85);
 
     set[Symbol] usedIn(Symbol s) {
         return { u | Symbol u <- g.rules, Production a <- g.rules[u].alternatives, s in a.symbols || opt(s) in a.symbols };

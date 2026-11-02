@@ -1,11 +1,11 @@
-module lang::vscobolii::\VSC-main
+module lang::cobol85::\syntax::Program
 
-extend lang::vscobolii::\VSC-proc-div;
-extend lang::vscobolii::\VSC-id-div;
-extend lang::vscobolii::\VSC-env-div;
-extend lang::vscobolii::\VSC-data-div;
-extend lang::vscobolii::\VSC-expr;
-extend lang::vscobolii::Functions;
+extend lang::cobol85::\syntax::ProcedureDivision;
+extend lang::cobol85::\syntax::IdentificationDivision;
+extend lang::cobol85::\syntax::EnvironmentDivision;
+extend lang::cobol85::\syntax::DataDivision;
+extend lang::cobol85::\syntax::Expression;
+extend lang::cobol85::\syntax::Functions;
 
 // the reserved words of this module
 keyword CobwordKeywords

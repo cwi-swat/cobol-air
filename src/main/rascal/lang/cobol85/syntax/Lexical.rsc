@@ -1,6 +1,6 @@
-module lang::vscobolii::\VSC-lex
+module lang::cobol85::\syntax::Lexical
 
-extend lang::vscobolii::\VSC-layout;
+extend lang::cobol85::\syntax::Layout;
 
 // the reserved words of this module
 keyword CobwordKeywords

@@ -1,4 +1,4 @@
-module lang::vscobolii::ReportSection
+module lang::cobol85::\syntax::ReportSection
 
 // The Report Writer: the REPORT clause of FD entries, the REPORT SECTION with RD entries and report group
 // descriptions, the INITIATE, GENERATE, TERMINATE and SUPPRESS statements, USE BEFORE REPORTING, and the
@@ -9,8 +9,8 @@ module lang::vscobolii::ReportSection
 // dropped it; IBM offered a separate Report Writer precompiler instead. COBOL 2002 added more clauses
 // (e.g. OCCURS and PRESENT WHEN in report groups) that are not included here.
 
-extend lang::vscobolii::\VSC-data-div;
-extend lang::vscobolii::\VSC-stat;
+extend lang::cobol85::\syntax::DataDivision;
+extend lang::cobol85::\syntax::Statement;
 
 // the reserved words of the Report Writer module
 keyword CobwordKeywords

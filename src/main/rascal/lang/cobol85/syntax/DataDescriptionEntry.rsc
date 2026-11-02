@@ -1,8 +1,8 @@
-module lang::vscobolii::\VSC-dd-entry
+module lang::cobol85::\syntax::DataDescriptionEntry
 
-extend lang::vscobolii::\VSC-conf-sec;
-extend lang::vscobolii::\VSC-lex;
-extend lang::vscobolii::\VSC-expr;
+extend lang::cobol85::\syntax::ConfigurationSection;
+extend lang::cobol85::\syntax::Lexical;
+extend lang::cobol85::\syntax::Expression;
 
 // the reserved words of this module
 keyword CobwordKeywords

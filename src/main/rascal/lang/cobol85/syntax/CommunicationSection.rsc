@@ -1,6 +1,6 @@
-module lang::vscobolii::\VSC-comm-sec
+module lang::cobol85::\syntax::CommunicationSection
 
-extend lang::vscobolii::\VSC-expr;
+extend lang::cobol85::\syntax::Expression;
 
 // the reserved words of this module
 keyword CobwordKeywords
