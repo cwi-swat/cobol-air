@@ -51,7 +51,8 @@ syntax Identifier
 syntax Subscript_expression
   = \subscript-expression-c1: Literal
   | \subscript-expression-c2: Qualified_data_name
-  | \subscript-expression-c2: Qualified_data_name Alt_plus_minus Integer
+  | plus: Qualified_data_name "+" Integer
+  | minus: Qualified_data_name "-" Integer
   ;
 
 syntax Data_name = \data-name: Alphabetic_user_defined_word;
@@ -169,10 +170,6 @@ syntax Literal
 syntax File_name = \file-name: Alphabetic_user_defined_word;
 
 syntax In_data_or_file_or_mnemonic_name = \in-data-or-file-or-mnemonic-name: In Alphabetic_user_defined_word;
-syntax Alt_plus_minus
-  = \alt-plus-minus-c1: "+"
-  | \alt-plus-minus-c2: "-"
-  ;
 syntax Records
   = \records-c2: 'RECORDS'
   | \records-c1: 'RECORD'
