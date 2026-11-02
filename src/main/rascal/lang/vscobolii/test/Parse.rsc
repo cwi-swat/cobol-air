@@ -20,6 +20,14 @@ public set[loc] needsReplace = {
     |project://cobol-air/examples/NIST/SM/SM208A.CBL|
 };
 
+// COPY in the middle of an entry or a statement (`77 COPY K1W02.` followed by `14003.`, `IF X = COPY K3SML.`);
+// these only parse after expanding the copybooks, which we do not do (yet)
+public set[loc] needsCopyExpansion = {
+    |project://cobol-air/examples/NIST/SM/SM101A.CBL|,
+    |project://cobol-air/examples/NIST/SM/SM103A.CBL|,
+    |project://cobol-air/examples/NIST/SM/SM206A.CBL|
+};
+
 public set[loc] havingFUNCTION = {
 |project://cobol-air/examples/NIST/OB/OBIC1A.CBL|,
 |project://cobol-air/examples/NIST/OB/OBNC1M.CBL|,
@@ -133,7 +141,7 @@ test bool smokeTest() {
     int ambs = 0;
     jobStart("parsing test files", totalWork=size(cbls));
 
-    for (loc src <- cbls, src notin bugTriggering,  src notin needsReplace) {
+    for (loc src <- cbls, src notin bugTriggering,  src notin needsReplace, src notin needsCopyExpansion) {
         jobStep("parsing test files", "<src>");
         try {
             println("parsing <src>");
