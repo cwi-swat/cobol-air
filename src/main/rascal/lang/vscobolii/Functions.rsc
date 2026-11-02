@@ -21,7 +21,12 @@ syntax Function_argument = \function-argument: Arithmetic_expression EndFunction
 
 // longest match: an argument can not be followed by a binary operator or a subscript, so `MAX(1 - 2)` and `MAX(A (1))`
 // have one argument. A sign glued to its number starts the next argument, so `MAX(-1, -2)` has two.
-syntax EndFunctionArgument = () !>> [*/(] !>> "+ " !>> "- " !>> "+\n" !>> "-\n";
+// After a comma a bracket starts the next argument, so `MIN(A, (1 + 2) / 3)` has two.
+syntax EndFunctionArgument
+  = () !>> [*/(] !>> "+ " !>> "- " !>> "+\n" !>> "-\n"
+  | "," << () >> "("
+  | ", " << () >> "("
+  ;
 
 // the same amendment introduced ALL subscripts, to pass all elements of a table to a function: `FUNCTION MAX(T(ALL))`
 syntax Subscript_expression = \subscript-expression-all: 'ALL';

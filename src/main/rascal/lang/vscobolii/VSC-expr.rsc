@@ -170,7 +170,8 @@ syntax In
 
 syntax Priority_number = \priority-number: Num;
 syntax Copy_statement_by_phrase = \copy-statement-by-phrase: Copy_operand 'BY' Copy_operand;
-syntax Subscript_parentheses = \subscript-parentheses: "(" Subscript_expression+ ")";
+// a subscript does not follow a comma, so in `FUNCTION MIN(B, (C + 1) / 2)` the bracket starts the next argument
+syntax Subscript_parentheses = \subscript-parentheses: "," !<< ", " !<< "(" Subscript_expression+ ")";
 
 syntax Equal_to
   = \equal-to-c1: 'EQUAL' 'TO'?
