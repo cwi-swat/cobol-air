@@ -30,8 +30,8 @@ keyword CobwordKeywords
   | 'SIZE'
   | 'SOURCE-COMPUTER'
   | 'SPECIAL-NAMES'
-  | "STANDARD-1"
-  | "STANDARD-2"
+  | 'STANDARD-1'
+  | 'STANDARD-2'
   | 'STATUS'
   | 'SYMBOLIC'
   | 'WITH'
@@ -99,8 +99,8 @@ syntax Configuration_section_paragraph =
 syntax Alphabet_type =
   \alphabet-type-c3: 'NATIVE' 
   | \alphabet-type-c4: 'EBCDIC' 
-  | \alphabet-type-c2: "STANDARD-2" 
-  | \alphabet-type-c1: "STANDARD-1" 
+  | \alphabet-type-c2: 'STANDARD-2' 
+  | \alphabet-type-c1: 'STANDARD-1' 
   |  \alphabet-type-c5: Alphabet_type_other+ 
   ;
 

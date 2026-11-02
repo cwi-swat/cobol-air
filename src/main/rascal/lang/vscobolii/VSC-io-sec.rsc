@@ -43,7 +43,7 @@ keyword CobwordKeywords
   | 'SEQUENTIAL'
   | 'SORT'
   | 'SORT-MERGE'
-  | "STANDARD-1"
+  | 'STANDARD-1'
   | 'STATUS'
   | 'TAPE'
   | 'TO'
@@ -57,7 +57,7 @@ syntax File_name_position
   ;
 syntax Record_delimiter_name
   = \record-delimiter-name-c2: Assignment_name
-  | \record-delimiter-name-c1: "STANDARD-1"
+  | \record-delimiter-name-c1: 'STANDARD-1'
   ;
 syntax Record_sort
   = \record-sort-c2: 'SORT'

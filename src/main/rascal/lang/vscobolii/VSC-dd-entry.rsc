@@ -11,18 +11,18 @@ keyword CobwordKeywords
   | 'BY'
   | 'CHARACTER'
   | 'COMP'
-  | "COMP-1"
-  | "COMP-2"
-  | "COMP-3"
-  | "COMP-4"
+  | 'COMP-1'
+  | 'COMP-2'
+  | 'COMP-3'
+  | 'COMP-4'
   | 'COMPUTATIONAL'
-  | "COMPUTATIONAL-1"
-  | "COMPUTATIONAL-2"
-  | "COMPUTATIONAL-3"
-  | "COMPUTATIONAL-4"
+  | 'COMPUTATIONAL-1'
+  | 'COMPUTATIONAL-2'
+  | 'COMPUTATIONAL-3'
+  | 'COMPUTATIONAL-4'
   | 'DEPENDING'
   | 'DISPLAY'
-  | "DISPLAY-1"
+  | 'DISPLAY-1'
   | 'EXTERNAL'
   | 'FILLER'
   | 'GLOBAL'
@@ -116,22 +116,22 @@ syntax Alt_leading_trailing
   | \alt-leading-trailing-c1: 'LEADING'
   ;
 syntax Usage
-  = \usage-c3: "COMP-1"
+  = \usage-c3: 'COMP-1'
   | \usage-c12: 'DISPLAY'
   | \usage-c14: 'INDEX'
-  | \usage-c5: "COMP-3"
-  | \usage-c4: "COMP-2"
+  | \usage-c5: 'COMP-3'
+  | \usage-c4: 'COMP-2'
   | \usage-c16: 'POINTER'
-  | \usage-c11: "COMPUTATIONAL-4"
-  | \usage-c8: "COMPUTATIONAL-1"
-  | \usage-c9: "COMPUTATIONAL-2"
+  | \usage-c11: 'COMPUTATIONAL-4'
+  | \usage-c8: 'COMPUTATIONAL-1'
+  | \usage-c9: 'COMPUTATIONAL-2'
   | \usage-c1: 'BINARY'
   | \usage-c15: 'PACKED-DECIMAL'
   | \usage-c2: 'COMP'
   | \usage-c7: 'COMPUTATIONAL'
-  | \usage-c6: "COMP-4"
-  | \usage-c13: "DISPLAY-1"
-  | \usage-c10: "COMPUTATIONAL-3"
+  | \usage-c6: 'COMP-4'
+  | \usage-c13: 'DISPLAY-1'
+  | \usage-c10: 'COMPUTATIONAL-3'
   ;
 syntax Indexed_by = \indexed-by: 'INDEXED' 'BY'? Index_name+;
 
