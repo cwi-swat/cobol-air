@@ -513,7 +513,14 @@ syntax Set_src
 syntax Alt_procedures_all_procedures
   = \alt-procedures-all-procedures-c2: 'ALL' 'PROCEDURES'
   | \alt-procedures-all-procedures-c1: Procedure_name+
+  // `USE FOR DEBUGGING ON ALL REFERENCES OF A B ALL C`; the names without ALL stay procedure names, as in c1
+  | \alt-procedures-all-procedures-c3: Procedure_name* All_references_of (All_references_of | Procedure_name)*
   ;
+
+syntax All_references_of = \all-references-of: 'ALL' 'REFERENCES'? 'OF'? NotReferences Identifier;
+
+// REFERENCES is the keyword, not a data name qualified by the identifier (`REFERENCES OF FREC`)
+syntax NotReferences = () !>> 'REFERENCES ' !>> 'REFERENCES\n';
 
 syntax Alt_reversed_with_no_rewind
   = \alt-reversed-with-no-rewind-c1: 'REVERSED'

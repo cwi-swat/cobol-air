@@ -9,6 +9,11 @@ str preprocess(str src) {
     str prespace = "      ";
     lines = [ prespace + line[6..72] + "        " | str line <- lines ];
 
+    // Debugging lines (`D` in the indicator column) are code when the program is compiled `WITH DEBUGGING MODE`
+    // (a clause of SOURCE-COMPUTER), and comment lines otherwise.
+    str debugIndicator = /DEBUGGING\s+MODE/i := src ? " " : "*";
+    lines = [ line[6] in {"D", "d"} ? line[0..6] + debugIndicator + line[7..] : line | str line <- lines ];
+
     // A continuation line (`-` in the indicator column) that does not continue a literal continues the last word
     // of the previous code line, as in `PIC S9(` followed by `-  6)V9(6).`. We glue its text to the end of that
     // line and blank the continuation line, so the total length, and with it all offsets after it, stay the same.
