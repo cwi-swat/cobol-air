@@ -1,7 +1,13 @@
 module lang::vscobolii::\VSC-lex
 
-extend lang::vscobolii::KEYWORDS;
 extend lang::vscobolii::\VSC-layout;
+
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'BY'
+  | 'OFF'
+  | 'REPLACE'
+  ;
 
 // todo check precede restriction
 // todo: check keywords not allowed in pic strings.

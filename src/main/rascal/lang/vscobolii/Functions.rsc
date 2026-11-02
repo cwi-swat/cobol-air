@@ -9,7 +9,12 @@ module lang::vscobolii::Functions
 
 extend lang::vscobolii::\VSC-expr;
 
-keyword CobwordKeywords = 'FUNCTION';
+keyword CobwordKeywords
+  = 'ALL'
+  | 'FUNCTION'
+  | 'LENGTH'
+  | 'RANDOM'
+  ;
 
 syntax Identifier
   = \function-identifier: 'FUNCTION' Function_name !>> [A-Za-z0-9\-] Function_arguments? Reference_modification?

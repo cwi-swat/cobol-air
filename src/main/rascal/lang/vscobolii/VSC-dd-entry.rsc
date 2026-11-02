@@ -4,6 +4,59 @@ extend lang::vscobolii::\VSC-conf-sec;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr;
 
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'BINARY'
+  | 'BLANK'
+  | 'BY'
+  | 'CHARACTER'
+  | 'COMP'
+  | "COMP-1"
+  | "COMP-2"
+  | "COMP-3"
+  | "COMP-4"
+  | 'COMPUTATIONAL'
+  | "COMPUTATIONAL-1"
+  | "COMPUTATIONAL-2"
+  | "COMPUTATIONAL-3"
+  | "COMPUTATIONAL-4"
+  | 'DEPENDING'
+  | 'DISPLAY'
+  | "DISPLAY-1"
+  | 'EXTERNAL'
+  | 'FILLER'
+  | 'GLOBAL'
+  | 'INDEX'
+  | 'INDEXED'
+  | 'IS'
+  | 'JUST'
+  | 'JUSTIFIED'
+  | 'KEY'
+  | 'LEADING'
+  | 'LEFT'
+  | 'OCCURS'
+  | 'ON'
+  | 'PACKED-DECIMAL'
+  | 'PIC'
+  | 'PICTURE'
+  | 'POINTER'
+  | 'REDEFINES'
+  | 'RENAMES'
+  | 'RIGHT'
+  | 'SEPARATE'
+  | 'SIGN'
+  | 'SYNC'
+  | 'SYNCHRONIZED'
+  | 'TIMES'
+  | 'TO'
+  | 'TRAILING'
+  | 'USAGE'
+  | 'WHEN'
+  | 'ZERO'
+  | 'ZEROES'
+  | 'ZEROS'
+  ;
+
 syntax Integer_to = \integer-to: Integer 'TO';
 
 syntax Picture

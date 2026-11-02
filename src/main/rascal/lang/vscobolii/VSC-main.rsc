@@ -6,6 +6,17 @@ extend lang::vscobolii::\VSC-env-div;
 extend lang::vscobolii::\VSC-data-div;
 extend lang::vscobolii::\VSC-expr;
 extend lang::vscobolii::Functions;
+
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'COMMON'
+  | 'DIVISION'
+  | 'END'
+  | 'INITIAL'
+  | 'IS'
+  | 'PROGRAM'
+  | 'PROGRAM-ID'
+  ;
 syntax Common_initial
   = \common-initial-c2: 'INITIAL' 'COMMON'?
   | \common-initial-c1: 'COMMON' 'INITIAL'?

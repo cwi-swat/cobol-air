@@ -2,6 +2,21 @@ module lang::vscobolii::\VSC-id-div
 
 extend lang::vscobolii::\VSC-expr;
 
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'AUTHOR'
+  | 'DATA'
+  | 'DATE-COMPILED'
+  | 'DATE-WRITTEN'
+  | 'ENVIRONMENT'
+  | 'ID'
+  | 'IDENTIFICATION'
+  | 'INSTALLATION'
+  | 'PROCEDURE'
+  | 'REMARKS'
+  | 'SECURITY'
+  ;
+
 syntax Identification_division_content = \identification-division-content: Identification_division_phrase*;
 syntax Identification
   = \identification-c2: 'ID'

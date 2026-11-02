@@ -3,6 +3,54 @@ module lang::vscobolii::\VSC-io-sec
 extend lang::vscobolii::\VSC-fd-entry;
 extend lang::vscobolii::\VSC-expr;
 
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'ACCESS'
+  | 'ALTERNATE'
+  | 'APPLY'
+  | 'AREA'
+  | 'AREAS'
+  | 'ASSIGN'
+  | 'CHARACTER'
+  | 'CONTAINS'
+  | 'DELIMITER'
+  | 'DUPLICATES'
+  | 'DYNAMIC'
+  | 'END'
+  | 'EVERY'
+  | 'FILE'
+  | 'FOR'
+  | 'INDEXED'
+  | 'IS'
+  | 'KEY'
+  | 'MODE'
+  | 'MULTIPLE'
+  | 'OF'
+  | 'ON'
+  | 'OPTIONAL'
+  | 'ORGANIZATION'
+  | 'PADDING'
+  | 'PASSWORD'
+  | 'POSITION'
+  | 'RANDOM'
+  | 'RECORD'
+  | 'RECORDS'
+  | 'RELATIVE'
+  | 'RERUN'
+  | 'RESERVE'
+  | 'SAME'
+  | 'SELECT'
+  | 'SEQUENTIAL'
+  | 'SORT'
+  | 'SORT-MERGE'
+  | "STANDARD-1"
+  | 'STATUS'
+  | 'TAPE'
+  | 'TO'
+  | 'WITH'
+  | 'WRITE-ONLY'
+  ;
+
 syntax File_name_position
   = \file-name-position: File_name
   | \file-name-position: File_name 'POSITION' Integer

@@ -3,6 +3,18 @@ module lang::vscobolii::\VSC-proc-div
 extend lang::vscobolii::\VSC-stat;
 extend lang::vscobolii::\VSC-expr;
 
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'DECLARATIVES'
+  | 'DIVISION'
+  | 'END'
+  | 'GO'
+  | 'PROCEDURE'
+  | 'SECTION'
+  | 'TO'
+  | 'USING'
+  ;
+
 syntax Procedure_division
   = \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase Paragraphs Section_with_header*
   | \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase 'DECLARATIVES' "." Declaratives_content+ 'END' 'DECLARATIVES' "." Paragraphs Section_with_header*

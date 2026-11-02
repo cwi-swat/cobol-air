@@ -1,4 +1,30 @@
  module lang::vscobolii::\VSC-cond  extend lang::vscobolii::\VSC-expr; 
+
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'ALPHABETIC'
+  | 'ALPHABETIC-LOWER'
+  | 'ALPHABETIC-UPPER'
+  | 'AND'
+  | 'DBCS'
+  | 'EQUAL'
+  | 'GREATER'
+  | 'IS'
+  | 'KANJI'
+  | 'LESS'
+  | 'NEGATIVE'
+  | 'NOT'
+  | 'NUMERIC'
+  | 'OR'
+  | 'POSITIVE'
+  | 'THAN'
+  | 'THEN'
+  | 'TO'
+  | 'ZERO'
+  | 'ZEROES'
+  | 'ZEROS'
+  ;
+
 syntax And_or_combinable_condition =
   \and-or-combinable-condition: Alt_and_or Relational_operator? Combinable_condition 
   ;

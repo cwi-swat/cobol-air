@@ -1,6 +1,19 @@
  module lang::vscobolii::\VSC-env-div  extend lang::vscobolii::\VSC-conf-sec;
 extend lang::vscobolii::\VSC-io-sec;
 
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'CONFIGURATION'
+  | 'DIVISION'
+  | 'ENVIRONMENT'
+  | 'FILE-CONTROL'
+  | 'I-O-CONTROL'
+  | 'INPUT-OUTPUT'
+  | 'ON'
+  | 'RERUN'
+  | 'SECTION'
+  ;
+
 
 syntax Environment_division =
    \environment-division: 'ENVIRONMENT' 'DIVISION' "."

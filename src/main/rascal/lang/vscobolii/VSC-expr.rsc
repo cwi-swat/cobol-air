@@ -2,6 +2,45 @@ module lang::vscobolii::\VSC-expr
 
 extend lang::vscobolii::\VSC-lex;
 
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'ADDRESS'
+  | 'ALL'
+  | 'ASCENDING'
+  | 'BY'
+  | 'COPY'
+  | 'DESCENDING'
+  | 'EQUAL'
+  | 'HIGH-VALUE'
+  | 'HIGH-VALUES'
+  | 'IN'
+  | 'LENGTH'
+  | 'LINAGE-COUNTER'
+  | 'LOW-VALUE'
+  | 'LOW-VALUES'
+  | 'NULL'
+  | 'NULLS'
+  | 'OF'
+  | 'QUOTE'
+  | 'QUOTES'
+  | 'RECORD'
+  | 'RECORDS'
+  | 'REEL'
+  | 'REPLACING'
+  | 'SPACE'
+  | 'SPACES'
+  | 'SUPPRESS'
+  | 'THROUGH'
+  | 'THRU'
+  | 'TO'
+  | 'UNIT'
+  | 'VALUE'
+  | 'VALUES'
+  | 'ZERO'
+  | 'ZEROES'
+  | 'ZEROS'
+  ;
+
 syntax Identifier
   = \identifier-c2: 'LINAGE-COUNTER'
   | \identifier-c2: 'LINAGE-COUNTER' In File_name

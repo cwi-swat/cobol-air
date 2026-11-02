@@ -1,5 +1,42 @@
  module lang::vscobolii::\VSC-conf-sec  extend lang::vscobolii::\VSC-cond;
 extend lang::vscobolii::\VSC-expr; 
+
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'ALPHABET'
+  | 'ALSO'
+  | 'ARE'
+  | 'CHARACTERS'
+  | 'CLASS'
+  | 'COLLATING'
+  | 'COMMA'
+  | 'CURRENCY'
+  | 'DEBUGGING'
+  | 'DECIMAL-POINT'
+  | 'EBCDIC'
+  | 'IN'
+  | 'IS'
+  | 'MEMORY'
+  | 'MODE'
+  | 'MODULES'
+  | 'NATIVE'
+  | 'OBJECT-COMPUTER'
+  | 'OFF'
+  | 'ON'
+  | 'PROGRAM'
+  | 'SEGMENT-LIMIT'
+  | 'SEQUENCE'
+  | 'SIGN'
+  | 'SIZE'
+  | 'SOURCE-COMPUTER'
+  | 'SPECIAL-NAMES'
+  | "STANDARD-1"
+  | "STANDARD-2"
+  | 'STATUS'
+  | 'SYMBOLIC'
+  | 'WITH'
+  | 'WORDS'
+  ;
 syntax Memory_size_type =
   \memory-size-type-c2: 'CHARACTERS' 
   | \memory-size-type-c3: 'MODULES' 

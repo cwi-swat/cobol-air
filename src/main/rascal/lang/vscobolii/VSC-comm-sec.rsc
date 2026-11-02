@@ -2,6 +2,36 @@ module lang::vscobolii::\VSC-comm-sec
 
 extend lang::vscobolii::\VSC-expr;
 
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'CD'
+  | 'COMMUNICATION'
+  | 'COUNT'
+  | 'DATE'
+  | 'END'
+  | 'ERROR'
+  | 'FOR'
+  | 'INITIAL'
+  | 'INPUT'
+  | 'IS'
+  | 'KEY'
+  | 'LENGTH'
+  | 'MESSAGE'
+  | 'OCCURS'
+  | 'OUTPUT'
+  | 'QUEUE'
+  | 'SECTION'
+  | 'SOURCE'
+  | 'STATUS'
+  | 'SUB-QUEUE-1'
+  | 'SUB-QUEUE-2'
+  | 'SUB-QUEUE-3'
+  | 'SYMBOLIC'
+  | 'TEXT'
+  | 'TIME'
+  | 'TIMES'
+  ;
+
 syntax Communication_section = \communication-section: 'COMMUNICATION' 'SECTION' "." Communication_description_entry+;
 
 // a CD entry is followed by the record descriptions of its message area

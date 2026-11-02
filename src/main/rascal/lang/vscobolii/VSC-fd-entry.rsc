@@ -4,6 +4,41 @@ extend lang::vscobolii::\VSC-dd-entry;
 extend lang::vscobolii::\VSC-conf-sec;
 extend lang::vscobolii::\VSC-lex;
 extend lang::vscobolii::\VSC-expr;
+
+// the reserved words of this module
+keyword CobwordKeywords
+  = 'AT'
+  | 'BLOCK'
+  | 'BOTTOM'
+  | 'CHARACTERS'
+  | 'CODE-SET'
+  | 'CONTAINS'
+  | 'DATA'
+  | 'DEPENDING'
+  | 'FD'
+  | 'FOOTING'
+  | 'FROM'
+  | 'IN'
+  | 'IS'
+  | 'LABEL'
+  | 'LINAGE'
+  | 'LINES'
+  | 'MODE'
+  | 'OF'
+  | 'OMITTED'
+  | 'ON'
+  | 'RECORD'
+  | 'RECORDING'
+  | 'RECORDS'
+  | 'SD'
+  | 'SIZE'
+  | 'STANDARD'
+  | 'TO'
+  | 'TOP'
+  | 'VALUE'
+  | 'VARYING'
+  | 'WITH'
+  ;
 syntax Label_records_clause_tail
   = \label-records-clause-tail-c1: 'STANDARD'
   | \label-records-clause-tail-c2: 'OMITTED'
