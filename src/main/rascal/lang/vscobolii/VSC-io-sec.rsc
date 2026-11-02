@@ -55,7 +55,10 @@ syntax Alt_assignment_name_file_name
   = \alt-assignment-name-file-name-c1: Assignment_name
   | \alt-assignment-name-file-name-c2: File_name
   ;
-syntax File_control_entry = \file-control-entry: 'SELECT' 'OPTIONAL'? File_name 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* ".";
+syntax File_control_entry
+  = \file-control-entry: 'SELECT' 'OPTIONAL'? File_name 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* "."
+  | \file-control-entry-copy: Copy_statement
+  ;
 
 syntax Alt_sequential_random_dynamic
   = \alt-sequential-random-dynamic-c2: 'RANDOM'

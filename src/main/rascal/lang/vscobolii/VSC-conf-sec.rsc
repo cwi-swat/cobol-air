@@ -54,6 +54,10 @@ syntax Configuration_section_paragraph =
  |  \configuration-section-paragraph-c1: 'SOURCE-COMPUTER' "." Computer_name "."
  |  \configuration-section-paragraph-c1: 'SOURCE-COMPUTER' "." Computer_name 'WITH'? 'DEBUGGING' 'MODE'  "." 
   |  \configuration-section-paragraph-c3: 'SPECIAL-NAMES' "." Special_names_paragraph_phrase* Special_names_paragraph_clause*  "."? 
+  // the contents of a paragraph can come from a copybook
+  |  \configuration-section-paragraph-c2: 'OBJECT-COMPUTER' "." Copy_statement
+  |  \configuration-section-paragraph-c1: 'SOURCE-COMPUTER' "." Copy_statement
+  |  \configuration-section-paragraph-c3: 'SPECIAL-NAMES' "." Copy_statement
   ; 
 syntax Alphabet_type =
   \alphabet-type-c3: 'NATIVE' 
