@@ -57,8 +57,6 @@ syntax Subscript_expression
 syntax Data_name = \data-name: Alphabetic_user_defined_word;
 syntax Record_name = \record-name: Qualified_data_name;
 
-syntax Times_div = \times-div: Power Times_div_tail*;
-
 syntax Index_name = \index-name: Alphabetic_user_defined_word;
 syntax System_name = \system-name: Cobword \ CobwordKeywords;
 syntax Qualified_data_name
@@ -90,12 +88,6 @@ syntax Figurative_constant
   | \figurative-constant-c1: Figurative_constant_simple !>> [A-Za-z0-9\-] // a keyword ends at a word boundary: ZERO-NULL is a data name
   ;
 syntax Integer = integer: Num;
-
-syntax Basis
-  = \basis-c1: Literal
-  | \basis-c2: Identifier
-  | \basis-c3: "(" Arithmetic_expression ")"
-  ;
 
 syntax Paragraph_or_section_name
   = \paragraph-or-section-name-c2: Integer
@@ -141,17 +133,31 @@ syntax Alt_text_name_literal
   = \alt-text-name-literal-c1: User_defined_word
   | \alt-text-name-literal-c2: Literal
   ;
-syntax Times_div_tail = \times-div-tail: Alt_times_div Power;
-
 syntax Alphabet_name = \alphabet-name: Alphabetic_user_defined_word;
 
 syntax Procedure_name
   = \procedure-name: Paragraph_or_section_name
   | \procedure-name: Paragraph_or_section_name In Section_name
   ;
-syntax Power_tail = \power-tail: "**" !>> "*" Basis;
 syntax In_data_or_file_name = \in-data-or-file-name: In Alphabetic_user_defined_word;
-syntax Arithmetic_expression = \arithmetic-expression: Times_div Arithmetic_expression_tail*;
+// priorities follow COBOL-85: unary plus and minus, then exponentiation, then multiplication and division,
+// then addition and subtraction; operators of equal priority are evaluated from left to right
+syntax Arithmetic_expression
+  = literal: Literal
+  | identifier: Identifier
+  | brackets: "(" Arithmetic_expression ")"
+  > positive: "+" Arithmetic_expression
+  | negative: "-" Arithmetic_expression
+  > left power: Arithmetic_expression "**" !>> "*" Arithmetic_expression
+  > left (
+      times: Arithmetic_expression "*" !>> "*" Arithmetic_expression
+    | dividedBy: Arithmetic_expression "/" Arithmetic_expression
+    )
+  > left (
+      plus: Arithmetic_expression "+" Arithmetic_expression
+    | minus: Arithmetic_expression "-" Arithmetic_expression
+    )
+  ;
 syntax Computer_name = \computer-name: System_name;
 
 syntax Literal
@@ -179,13 +185,6 @@ syntax Values
   | \values-c1: 'VALUE'
   ;
 
-syntax Arithmetic_expression_tail = \arithmetic-expression-tail: Alt_plus_minus Times_div;
-
-syntax Alt_times_div
-  = \alt-times-div-c1: "*" !>> "*"
-  | \alt-times-div-c2: "/"
-  ;
-
 syntax Section_name
   = \section-name-c1: User_defined_word
   | \section-name-c2: Integer
@@ -197,8 +196,6 @@ syntax Through
   ;
 
 syntax Literal_through_literal = \literal-through-literal: Literal Through_literal?;
-
-syntax Power = power: Alt_plus_minus? Basis Power_tail*;
 
 syntax Copy_statement
   = \copy-statement: 'COPY' Alt_text_name_literal 'SUPPRESS'? "."
