@@ -39,7 +39,12 @@ syntax Copy_operand
   = \copy-operand-c3: Literal
   | \copy-operand-c2: Identifier
   | \copy-operand-c1: Quoted_pseudo_text
+  // any COBOL word can be replaced, also a reserved word, as in `REPLACING ==...== BY MOVE`
+  | \copy-operand-c4: NotFigurative CobwordKeywords !>> [A-Za-z0-9\-]
   ;
+
+// figurative constants are literals (copy-operand-c3), not reserved words
+syntax NotFigurative = () !>> 'ZERO' !>> 'SPACE' !>> 'QUOTE' !>> 'NULL' !>> 'HIGH-VALUE' !>> 'LOW-VALUE';
 
 syntax Figurative_constant
   = \figurative-constant-c2: 'ALL' Literal
