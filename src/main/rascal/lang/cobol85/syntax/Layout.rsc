@@ -7,8 +7,8 @@ layout LAYOUTLIST = LAYOUT* !>> [\t-\n\ ,;\uE000];
 lexical LAYOUT
     = @category="comment" ^"\uE000\uE000\uE000\uE000\uE000\uE000*" ![\n]* !>> ![\n]$
     | @category="comment" ^"\uE000\uE000\uE000\uE000\uE000\uE000/" ![\n]* !>> ![\n]$
-    | ^"\uE000\uE000\uE000\uE000\uE000\uE000-"
-    // a line continuation
+    // the indicator of a continuation line; its left margin is the margin alternative below, like on any other line
+    | [\uE000] << "-"
     | [\t-\n\ ;,]
     // the margins; the editor shows the original sequence numbers and identification texts there, as comments
     | @category="comment" [\uE000]+ !>> [\uE000]
