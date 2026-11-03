@@ -39,18 +39,19 @@ lexical NonnumericWhole
     | [\'] SingleStrChar* [\'] !>> [\']
     ;
 
+// a literal that is continued on the next line ends at the margin (column 73) or at the end of a line without one
 lexical NonnumericPart
-    = [\"] DoubleStrChar*$
-    | [\'] SingleStrChar*$
+    = [\"] DoubleStrChar* !>> ![\n\uE000]
+    | [\'] SingleStrChar* !>> ![\n\uE000]
     ;
 
 lexical DoubleStrChar
-    = ![\"\n]
+    = ![\"\n\uE000]
     | [\"] [\"]
     ;
 
 lexical SingleStrChar
-    = ![\'\n]
+    = ![\'\n\uE000]
     | [\'] [\']
     // assuming same convention as for "
     ;

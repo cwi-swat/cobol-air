@@ -24,11 +24,12 @@ syntax Identification
     | identification: 'IDENTIFICATION'
     ;
 
+// a comment-entry line, up to the margin (or the end of a line without one), so the margin stays layout
 lexical MetaDataContentLine
-    = Word \ NoIDKeyword ![\n]* [\n]
+    = Word \ NoIDKeyword ![\n\uE000]* !>> ![\n\uE000]
     // headers start in Area A (columns 8-11), so a comment-entry line in Area B (at least 5 spaces before it, after
     // the margin and the indicator column) can start with a header word, as in `PROCEDURE BUILDS THE EIGHT-RECORD FILE`
-    | "     " << NoIDKeyword !>> [a-zA-Z0-9\"()\-] ![\n]* [\n]
+    | "     " << NoIDKeyword !>> [a-zA-Z0-9\"()\-] ![\n\uE000]* !>> ![\n\uE000]
     ;
 
 // the first word of a comment-entry line; it stops at a `.`, so `AUTHOR.` is recognized as a paragraph header.
