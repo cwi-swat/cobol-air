@@ -183,23 +183,12 @@ keyword CobwordKeywords
   | 'WITH'
   | 'WRITE'
   ;
-syntax On_key_phrase = ascendingDescending: 'ON'? Alt_ascending_descending 'KEY'? Qualified_data_name+;
-syntax Accept_statement
-  = acceptFrom: 'ACCEPT' Identifier 'FROM' Date
-  | accept: 'ACCEPT' Identifier
-  | accept: 'ACCEPT' Identifier 'FROM' Cobword \ CobwordKeywords
-  ;
 
 syntax EndSearch
   = 'END-SEARCH'
   | () >> "."
   ;
 
-syntax Search_statement
-  = searchAll: 'SEARCH' 'ALL' Identifier Io_phrase* 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence EndSearch
-  | search: 'SEARCH' Identifier Io_phrase* When_condition_stats+ EndSearch
-  ;
-syntax Perform_until_phrase = until: With_test? 'UNTIL' Expression;
 syntax Search_statement_condition_tail = and: 'AND' Search_statement_condition;
 
 syntax Procedure_to_procedure
@@ -215,11 +204,6 @@ syntax Inspect_by_argument
   ;
 syntax Perform_after_phrase = after: 'AFTER' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Expression;
 syntax Initialize_replacing_argument = by: Initialize_replacing_type 'DATA'? 'BY' Id_or_lit;
-syntax Sort_statement_out
-  = givingFileNames: Giving_file_names
-  | outputProcedure: Output_procedure
-  ;
-syntax Collating_sequence = sequence: 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name;
 
 syntax Before_after_phrase = beforeAfter: Alt_before_after 'INITIAL'? Id_or_lit;
 
@@ -246,6 +230,7 @@ syntax Evaluate_phrase
   | condition: Expression // also covers [NOT] value; the EVALUATE subject decides which it is
   | \false: 'FALSE'
   | \any: 'ANY'
+  | other: 'OTHER'
   ;
 syntax Alt_beginning_ending
   = beginning: 'BEGINNING'
@@ -269,12 +254,6 @@ syntax Also_phrase = also: 'ALSO' Evaluate_condition;
 
 syntax Through_procedure_name = through: Through Procedure_name;
 
-syntax Perform_statement
-  = performVarying: 'PERFORM' Perform_statement_2_alts
-  | performTimes: 'PERFORM' Perform_statement_3_alts
-  | perform: 'PERFORM' Perform_statement_1_alts
-  | performUntil: 'PERFORM' Perform_statement_4_alts
-  ;
 syntax Alt_removal_no_rewind
   = withNoRewind: With_no_rewind
   | removal: 'FOR'? 'REMOVAL'
@@ -322,7 +301,6 @@ syntax Alt_file_names_i_o
   | io: 'I-O'
   | \extend: 'EXTEND'
   ;
-syntax Output_procedure = output: 'OUTPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?;
 
 syntax Evaluate_condition
   = \false: 'FALSE'
@@ -372,11 +350,6 @@ syntax Use_statement
   | useDebugging: 'USE' 'FOR'? 'DEBUGGING' 'ON'? Alt_procedures_all_procedures
   ;
 
-syntax Giving_file_names = giving: 'GIVING' File_name+;
-syntax Sort_statement_in
-  = using: 'USING' File_name+
-  | input: 'INPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?
-  ;
 
 syntax When_condition_stats = \when: 'WHEN' Expression Alt_statement_list_next_sentence;
 syntax Inspect_replacing_argument = by: Inspect_by_argument 'BY' Inspect_by_argument Before_after_phrase*;
@@ -406,10 +379,6 @@ syntax With_test = \test: 'WITH'? 'TEST' Alt_before_after;
 syntax Set_oper
   = by: Alt_up_down 'BY'
   | to: 'TO'
-  ;
-syntax If_statement
-  = \if: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' EndIf
-  | ifElse: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence EndIf
   ;
 
 // an IF without END-IF ends at the period, or at the ELSE or WHEN of an enclosing IF or EVALUATE
@@ -483,6 +452,29 @@ syntax Overflow_phrase
   | notException: 'NOT' 'ON'? 'EXCEPTION' Statement_list
   ;
 
+// the phrases of SORT and MERGE, in any order; a checker rejects the combinations COBOL does not allow
+syntax Sort_phrase
+  = key: 'ON'? Alt_ascending_descending 'KEY'? 'IS'? Qualified_data_name+
+  | duplicates: 'WITH'? 'DUPLICATES' 'IN'? 'ORDER'?
+  | sequence: 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name
+  | using: 'USING' File_name+
+  | input: 'INPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?
+  | output: 'OUTPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?
+  | giving: 'GIVING' File_name+
+  ;
+
+syntax Inspect_phrase
+  = tallying: 'TALLYING' Tallying_argument+
+  | replacing: 'REPLACING' Inspect_replacing_phrase+
+  | converting: 'CONVERTING' Id_or_lit 'TO' Id_or_lit Before_after_phrase*
+  ;
+
+syntax Perform_phrase
+  = times: Cobword_int 'TIMES'
+  | until: With_test? 'UNTIL' Expression
+  | varying: With_test? 'VARYING' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Expression Perform_after_phrase*
+  ;
+
 syntax Statement
   = exitProgram: 'EXIT' 'PROGRAM'
   | receive: 'RECEIVE' File_name Io_phrase*
@@ -490,8 +482,9 @@ syntax Statement
   | disable: 'DISABLE' Communication_io_mode File_name Communication_key_phrase?
   | send: 'SEND' File_name Io_phrase*
   | purge: 'PURGE' File_name
-  | merge: 'MERGE' File_name On_key_phrase+ Collating_sequence? 'USING' File_name File_name+ Merge_statement_tail
-  | search: Search_statement
+  | merge: 'MERGE' File_name Sort_phrase*
+  | searchAll: 'SEARCH' 'ALL' Identifier Io_phrase* 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence EndSearch
+  | search: 'SEARCH' Identifier Io_phrase* When_condition_stats+ EndSearch
   | compute: 'COMPUTE' Cobword_rounded+ Equal Expression Arithmetic_phrase* EndCompute
   | exit: 'EXIT'
   | alter: 'ALTER' Procedure_to_procedure+
@@ -503,30 +496,30 @@ syntax Statement
   | read: 'READ' File_name 'NEXT'? 'RECORD'? Io_phrase* EndRead
   | string: 'STRING' Delimited_by_phrase+ Overflow_phrase* EndString
   | subtract: 'SUBTRACT' Corresponding? Id_or_lit+ Arithmetic_phrase* EndSubtract
-  | move: Move_statement
-  | goTo: Go_to_statement
+  | move: 'MOVE' Corresponding? Id_or_lit 'TO' Identifier+
+  | goMoreLabels: 'GO' 'TO'? 'MORE-LABELS'
+  | goTo: 'GO' 'TO'? Procedure_name+ ('DEPENDING' 'ON'? Identifier)?
   | goback: 'GOBACK'
   | add: 'ADD' Corresponding? Id_or_lit+ Arithmetic_phrase* EndAdd
-  | accept: Accept_statement
+  | accept: 'ACCEPT' Identifier ('FROM' Date)?
   | acceptMessage: 'ACCEPT' File_name 'MESSAGE' 'COUNT'
   | acceptCount: 'ACCEPT' File_name 'COUNT'
   | delete: 'DELETE' File_name 'RECORD'? Io_phrase* EndDelete
-  | initialize: 'INITIALIZE' Identifier+
-  | initialize: 'INITIALIZE' Identifier+ 'REPLACING' Initialize_replacing_argument+
+  | initialize: 'INITIALIZE' Identifier+ ('REPLACING' Initialize_replacing_argument+)?
   | \continue: 'CONTINUE'
   | release: 'RELEASE' Record_name Io_phrase*
   | unstring: 'UNSTRING' Identifier Overflow_phrase* EndUnString
   | close: 'CLOSE' Close_statement_file_name+
-  | \if: If_statement
-  | inspect: Inspect_statement
-  | sort: 'SORT' File_name On_key_is_phrase+ Collating_sequence? Sort_statement_in Sort_statement_out
-  | sort: 'SORT' File_name On_key_is_phrase+ 'WITH'? 'DUPLICATES' 'IN'? 'ORDER'? Collating_sequence? Sort_statement_in Sort_statement_out
+  | \if: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' EndIf
+  | ifElse: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence EndIf
+  | inspect: 'INSPECT' Identifier Inspect_phrase+
+  | sort: 'SORT' File_name Sort_phrase*
   | write: 'WRITE' Record_name Io_phrase* EndWrite
   | evaluate: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ EndEvaluate
-  | evaluate: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ 'WHEN' 'OTHER' Statement_list EndEvaluate
   | \start: 'START' File_name Io_phrase* EndStart
   | \return: 'RETURN' File_name 'RECORD'? Io_phrase* EndReturn
-  | perform: Perform_statement
+  | perform: 'PERFORM' Procedure_name Through_procedure_name? Perform_phrase?
+  | endPerform: 'PERFORM' Perform_phrase? Statement_list 'END-PERFORM'
   | entry: 'ENTRY' Literal Using_data_name_pluslist?
   | cancel: 'CANCEL' Id_or_lit+
   | open: 'OPEN' Open_statement_phrase+
@@ -545,16 +538,13 @@ syntax Communication_key_phrase = key: 'WITH'? 'KEY' Id_or_lit;
 
 
 
-syntax On_key_is_phrase
-  = ascendingDescending: 'ON'? Alt_ascending_descending Qualified_data_name+
-  | ascendingDescending: 'ON'? Alt_ascending_descending 'KEY' 'IS'? Qualified_data_name+
-  ;
 
 syntax Date
   = time: 'TIME'
   | day: 'DAY'
   | date: 'DATE'
   | dayOfWeek: 'DAY-OF-WEEK'
+  | mnemonicName: Cobword \ CobwordKeywords
   ;
 syntax Cobword_rounded = idOrLit: Id_or_lit 'ROUNDED'?;
 
@@ -572,10 +562,6 @@ syntax EndStatementList
   | () >> 'ON'
   | () >> 'OVERFLOW'
   | () >> 'COPY'
-  ;
-syntax Move_statement
-  = moveCorresponding: 'MOVE' Corresponding Identifier 'TO' Identifier+
-  | moveTo: 'MOVE' Id_or_lit 'TO' Identifier+
   ;
 
 syntax Id_or_lit_size
@@ -595,10 +581,6 @@ syntax Tallying_for_id_or_lit = idOrLit: NotAll Id_or_lit Before_after_phrase*;
 
 // operands of INSPECT and UNSTRING can not be ALL literals; ALL is the keyword of the statement
 syntax NotAll = () !>> 'ALL ' !>> 'ALL\"';
-syntax Perform_statement_4_alts
-  = endPerform: Perform_until_phrase Statement_list 'END-PERFORM'
-  | procedureName: Procedure_name Through_procedure_name? Perform_until_phrase
-  ;
 
 syntax Alt_all_leading_first
   = \all: 'ALL'
@@ -612,34 +594,15 @@ syntax Alt_exception_error
   ;
 
 
-syntax Go_to_statement
-  = goMoreLabels: 'GO' 'TO'? 'MORE-LABELS'
-  | go: 'GO' 'TO'? Procedure_name
-  | goDepending: 'GO' 'TO'? Procedure_name+ 'DEPENDING' 'ON'? Identifier
-  ;
 syntax Or_all_id_or_lit = or: 'OR' 'ALL'? NotAll Id_or_lit;
 syntax Alt_run_literal
   = run: 'RUN'
   | literal: Literal
   ;
-syntax Perform_statement_2_alts
-  = procedureName: Procedure_name Through_procedure_name? Perform_varying_phrase Perform_after_phrase*
-  | endPerform: Perform_varying_phrase Statement_list 'END-PERFORM'
-  ;
 
 syntax EndSubtract = 'END-SUBTRACT'?;
 
 
-syntax Inspect_statement
-  = inspectTallyingReplacing: 'INSPECT' Identifier 'TALLYING' Tallying_argument+ 'REPLACING' Inspect_replacing_phrase+
-  | inspectReplacing: 'INSPECT' Identifier 'REPLACING' Inspect_replacing_phrase+
-  | inspectConverting: 'INSPECT' Identifier 'CONVERTING' Id_or_lit 'TO' Id_or_lit Before_after_phrase*
-  | inspectTallying: 'INSPECT' Identifier 'TALLYING' Tallying_argument+
-  ;
-syntax Perform_statement_3_alts
-  = procedureName: Procedure_name Through_procedure_name? Cobword_int 'TIMES'
-  | endPerform: Cobword_int 'TIMES' Statement_list 'END-PERFORM'
-  ;
 
 syntax Rel_op
   = equalTo: Equal_to
@@ -680,16 +643,7 @@ syntax Alt_reversed_with_no_rewind
   | withNoRewind: With_no_rewind
   ;
 
-syntax Merge_statement_tail
-  = outputProcedure: Output_procedure
-  | givingFileNames: Giving_file_names
-  ;
-syntax Perform_statement_1_alts
-  = procedureName: Procedure_name Through_procedure_name?
-  | endPerform: Statement_list 'END-PERFORM'
-  ;
 
 syntax Set_statement_phrase = identifier: Identifier+ Set_oper Set_src;
 
 syntax Tallying_argument = \for: Identifier 'FOR' Tallying_for_argument+;
-syntax Perform_varying_phrase = varying: With_test? 'VARYING' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Expression;
