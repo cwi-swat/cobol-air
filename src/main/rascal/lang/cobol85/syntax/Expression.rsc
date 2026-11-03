@@ -184,11 +184,13 @@ syntax Through
 
 syntax LiteralThroughLiteral = literal: Literal ThroughLiteral?;
 
-syntax CopyStatement
-  = copy: 'COPY' AltTextNameLiteral 'SUPPRESS'? "."
-  | copy: 'COPY' AltTextNameLiteral 'SUPPRESS'? 'REPLACING' CopyStatementByPhrase+ "."
-  | copy: 'COPY' AltTextNameLiteral In AltLibraryNameLiteral 'SUPPRESS'? "."
-  | copy: 'COPY' AltTextNameLiteral In AltLibraryNameLiteral 'SUPPRESS'? 'REPLACING' CopyStatementByPhrase+ "."
+syntax CopyStatement = copy: 'COPY' AltTextNameLiteral CopyPhrase* ".";
+
+// the phrases of COPY, in any order; a checker rejects the combinations COBOL does not allow
+syntax CopyPhrase
+  = \in: In AltLibraryNameLiteral
+  | suppress: 'SUPPRESS'
+  | replacing: 'REPLACING' CopyStatementByPhrase+
   ;
 
 syntax In
