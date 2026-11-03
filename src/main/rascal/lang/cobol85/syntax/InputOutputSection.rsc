@@ -74,7 +74,7 @@ syntax EveryPhrase
   = end: 'END' 'OF'? AltReelUnit
   | records: Integer 'RECORDS'
   ;
-syntax FcePhrase
+syntax FileControlClause
   = record: 'RECORD' 'KEY'? 'IS'? QualifiedDataName
   | access: 'ACCESS' 'MODE'? 'IS'? AltSequentialRandomDynamic
   | relativeKey: 'RELATIVE' 'KEY'? 'IS'? QualifiedDataName

@@ -33,7 +33,7 @@ syntax EnvironmentEntry
   | inputOutputSection: 'INPUT-OUTPUT' 'SECTION' "."
   | fileControl: 'FILE-CONTROL' "."
   // the clauses may come in any order, also before ASSIGN (as in `SELECT SQ-FS4 RESERVE 1 ASSIGN "SEQ1.DAT"`)
-  | select: 'SELECT' 'OPTIONAL'? Id FcePhrase* 'ASSIGN' 'TO'? AltAssignmentNameLiteral+ FcePhrase* "."
+  | select: 'SELECT' 'OPTIONAL'? Id FileControlClause* 'ASSIGN' 'TO'? AltAssignmentNameLiteral+ FileControlClause* "."
   | ioControl: 'I-O-CONTROL' "."
   | ioControlEntries: IoControlEntry+ "."
   // the rest of a paragraph, of the division, or even of the program can come from a copybook
