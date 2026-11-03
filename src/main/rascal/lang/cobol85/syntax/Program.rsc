@@ -17,6 +17,7 @@ keyword CobwordKeywords
     | 'PROGRAM'
     | 'PROGRAM-ID'
     ;
+
 syntax CommonInitial
     = initial: 'INITIAL' 'COMMON'?
     | common: 'COMMON' 'INITIAL'?

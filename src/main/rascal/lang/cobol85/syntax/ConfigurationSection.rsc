@@ -36,6 +36,7 @@ keyword CobwordKeywords
     | 'WITH'
     | 'WORDS'
     ;
+
 syntax MemorySizeType
     = characters: 'CHARACTERS'
     | modules: 'MODULES'

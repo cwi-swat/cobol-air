@@ -39,6 +39,7 @@ keyword CobwordKeywords
     | 'VARYING'
     | 'WITH'
     ;
+
 syntax LabelRecordsClauseTail
     = standard: 'STANDARD'
     | omitted: 'OMITTED'
