@@ -415,7 +415,9 @@ syntax Arithmetic_phrase
   | notSizeError: 'NOT' 'ON'? 'SIZE' 'ERROR' Statement_list
   ;
 
-// the phrases of the input-output statements, in any order; a checker rejects the combinations COBOL does not allow
+// the phrases of the input-output statements, in any order; a checker rejects the combinations COBOL does not allow.
+// READ, RETURN, SEARCH and RECEIVE exclude END-OF-PAGE and the others exclude AT END, so that a statement nested in
+// an AT END or END-OF-PAGE phrase can not take the NOT AT END or NOT END-OF-PAGE of its parent
 syntax Io_phrase
   = into: 'INTO' Identifier
   | from: 'FROM' Identifier
@@ -477,14 +479,14 @@ syntax Perform_phrase
 
 syntax Statement
   = exitProgram: 'EXIT' 'PROGRAM'
-  | receive: 'RECEIVE' File_name Io_phrase*
+  | receive: 'RECEIVE' File_name Io_phrase!endOfPage!notEndOfPage*
   | enable: 'ENABLE' Communication_io_mode File_name Communication_key_phrase?
   | disable: 'DISABLE' Communication_io_mode File_name Communication_key_phrase?
-  | send: 'SEND' File_name Io_phrase*
+  | send: 'SEND' File_name Io_phrase!atEnd!notAtEnd*
   | purge: 'PURGE' File_name
   | merge: 'MERGE' File_name Sort_phrase*
-  | searchAll: 'SEARCH' 'ALL' Identifier Io_phrase* 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence EndSearch
-  | search: 'SEARCH' Identifier Io_phrase* When_condition_stats+ EndSearch
+  | searchAll: 'SEARCH' 'ALL' Identifier Io_phrase!endOfPage!notEndOfPage* 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence EndSearch
+  | search: 'SEARCH' Identifier Io_phrase!endOfPage!notEndOfPage* When_condition_stats+ EndSearch
   | compute: 'COMPUTE' Cobword_rounded+ Equal Expression Arithmetic_phrase* EndCompute
   | exit: 'EXIT'
   | alter: 'ALTER' Procedure_to_procedure+
@@ -493,7 +495,7 @@ syntax Statement
   | stop: 'STOP' Alt_run_literal
   | divide: 'DIVIDE' Id_or_lit Arithmetic_phrase* EndDivide
   | display: 'DISPLAY' Id_or_lit+ ('UPON' Cobword \ CobwordKeywords)? ('WITH'? 'NO' 'ADVANCING')?
-  | read: 'READ' File_name 'NEXT'? 'RECORD'? Io_phrase* EndRead
+  | read: 'READ' File_name 'NEXT'? 'RECORD'? Io_phrase!endOfPage!notEndOfPage* EndRead
   | string: 'STRING' Delimited_by_phrase+ Overflow_phrase* EndString
   | subtract: 'SUBTRACT' Corresponding? Id_or_lit+ Arithmetic_phrase* EndSubtract
   | move: 'MOVE' Corresponding? Id_or_lit 'TO' Identifier+
@@ -504,27 +506,27 @@ syntax Statement
   | accept: 'ACCEPT' Identifier ('FROM' Date)?
   | acceptMessage: 'ACCEPT' File_name 'MESSAGE' 'COUNT'
   | acceptCount: 'ACCEPT' File_name 'COUNT'
-  | delete: 'DELETE' File_name 'RECORD'? Io_phrase* EndDelete
+  | delete: 'DELETE' File_name 'RECORD'? Io_phrase!atEnd!notAtEnd* EndDelete
   | initialize: 'INITIALIZE' Identifier+ ('REPLACING' Initialize_replacing_argument+)?
   | \continue: 'CONTINUE'
-  | release: 'RELEASE' Record_name Io_phrase*
+  | release: 'RELEASE' Record_name Io_phrase!atEnd!notAtEnd*
   | unstring: 'UNSTRING' Identifier Overflow_phrase* EndUnString
   | close: 'CLOSE' Close_statement_file_name+
   | \if: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' EndIf
   | ifElse: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence EndIf
   | inspect: 'INSPECT' Identifier Inspect_phrase+
   | sort: 'SORT' File_name Sort_phrase*
-  | write: 'WRITE' Record_name Io_phrase* EndWrite
+  | write: 'WRITE' Record_name Io_phrase!atEnd!notAtEnd* EndWrite
   | evaluate: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ EndEvaluate
-  | \start: 'START' File_name Io_phrase* EndStart
-  | \return: 'RETURN' File_name 'RECORD'? Io_phrase* EndReturn
+  | \start: 'START' File_name Io_phrase!atEnd!notAtEnd* EndStart
+  | \return: 'RETURN' File_name 'RECORD'? Io_phrase!endOfPage!notEndOfPage* EndReturn
   | perform: 'PERFORM' Procedure_name Through_procedure_name? Perform_phrase?
   | endPerform: 'PERFORM' Perform_phrase? Statement_list 'END-PERFORM'
   | entry: 'ENTRY' Literal Using_data_name_pluslist?
   | cancel: 'CANCEL' Id_or_lit+
   | open: 'OPEN' Open_statement_phrase+
   | multiply: 'MULTIPLY' Id_or_lit Arithmetic_phrase* EndMultiply
-  | rewrite: 'REWRITE' Record_name Io_phrase* EndRewrite
+  | rewrite: 'REWRITE' Record_name Io_phrase!atEnd!notAtEnd* EndRewrite
   ;
 
 syntax Communication_io_mode
