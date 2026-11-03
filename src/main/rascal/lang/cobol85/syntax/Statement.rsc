@@ -356,7 +356,6 @@ syntax Alt_statement_list_next_sentence
 
 syntax Open_statement_input_file_name = fileName: File_name Alt_reversed_with_no_rewind?;
 syntax Close_statement_file_name = fileName: File_name Close_statement_options?;
-syntax Not_on_overflow_statement_list = not: 'NOT' 'ON'? 'OVERFLOW' Statement_list;
 syntax Initialize_replacing_type
   = alphabetic: 'ALPHABETIC'
   | numericEdited: 'NUMERIC-EDITED'
@@ -401,7 +400,6 @@ syntax Page_phrase
 
 syntax EndDivide = 'END-DIVIDE'?;
 
-syntax On_overflow_statement_list = overflow: 'ON'? 'OVERFLOW' Statement_list;
 
 syntax With_test = \test: 'WITH'? 'TEST' Alt_before_after;
 
@@ -472,6 +470,19 @@ syntax Io_phrase
   | noData: 'NO' 'DATA' Statement
   ;
 
+// the phrases of CALL, STRING and UNSTRING, in any order; a checker rejects the combinations COBOL does not allow
+syntax Overflow_phrase
+  = delimitedBy: 'DELIMITED' 'BY'? 'ALL'? NotAll Id_or_lit Or_all_id_or_lit*
+  | into: 'INTO' Unstring_statement_dst+
+  | pointer: 'WITH'? 'POINTER' Identifier
+  | tallying: 'TALLYING' 'IN'? Identifier
+  | using: 'USING' Using_parameters
+  | overflow: 'ON'? 'OVERFLOW' Statement_list
+  | notOverflow: 'NOT' 'ON'? 'OVERFLOW' Statement_list
+  | exception: 'ON'? 'EXCEPTION' Statement_list
+  | notException: 'NOT' 'ON'? 'EXCEPTION' Statement_list
+  ;
+
 syntax Statement
   = exitProgram: 'EXIT' 'PROGRAM'
   | receive: 'RECEIVE' File_name Io_phrase*
@@ -484,23 +495,13 @@ syntax Statement
   | compute: 'COMPUTE' Cobword_rounded+ Equal Expression Arithmetic_phrase* EndCompute
   | exit: 'EXIT'
   | alter: 'ALTER' Procedure_to_procedure+
-  | call: 'CALL' Id_or_lit On_overflow_statement_list? EndCall
-  | call: 'CALL' Id_or_lit 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
-  | call: 'CALL' Id_or_lit 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
-  | call: 'CALL' Id_or_lit 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
-  | call: 'CALL' Id_or_lit 'USING' Using_parameters On_overflow_statement_list? EndCall
-  | call: 'CALL' Id_or_lit 'USING' Using_parameters 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
-  | call: 'CALL' Id_or_lit 'USING' Using_parameters 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
-  | call: 'CALL' Id_or_lit 'USING' Using_parameters 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
+  | call: 'CALL' Id_or_lit Overflow_phrase* EndCall
   | \set: 'SET' Set_statement_phrase+
   | stop: 'STOP' Alt_run_literal
   | divide: 'DIVIDE' Id_or_lit Arithmetic_phrase* EndDivide
-  | display: 'DISPLAY' Id_or_lit+
-  | display: 'DISPLAY' Id_or_lit+ 'WITH'? 'NO' 'ADVANCING'
-  | display: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords
-  | display: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords 'WITH'? 'NO' 'ADVANCING'
+  | display: 'DISPLAY' Id_or_lit+ ('UPON' Cobword \ CobwordKeywords)? ('WITH'? 'NO' 'ADVANCING')?
   | read: 'READ' File_name 'NEXT'? 'RECORD'? Io_phrase* EndRead
-  | string: 'STRING' Delimited_by_phrase+ 'INTO' Identifier With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndString
+  | string: 'STRING' Delimited_by_phrase+ Overflow_phrase* EndString
   | subtract: 'SUBTRACT' Corresponding? Id_or_lit+ Arithmetic_phrase* EndSubtract
   | move: Move_statement
   | goTo: Go_to_statement
@@ -514,10 +515,7 @@ syntax Statement
   | initialize: 'INITIALIZE' Identifier+ 'REPLACING' Initialize_replacing_argument+
   | \continue: 'CONTINUE'
   | release: 'RELEASE' Record_name Io_phrase*
-  | unstring: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
-  | unstring: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
-  | unstring: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? NotAll Id_or_lit Or_all_id_or_lit* 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
-  | unstring: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? NotAll Id_or_lit Or_all_id_or_lit* 'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
+  | unstring: 'UNSTRING' Identifier Overflow_phrase* EndUnString
   | close: 'CLOSE' Close_statement_file_name+
   | \if: If_statement
   | inspect: Inspect_statement
@@ -628,7 +626,6 @@ syntax Perform_statement_2_alts
   = procedureName: Procedure_name Through_procedure_name? Perform_varying_phrase Perform_after_phrase*
   | endPerform: Perform_varying_phrase Statement_list 'END-PERFORM'
   ;
-syntax With_pointer_identifier = pointer: 'WITH'? 'POINTER' Identifier;
 
 syntax EndSubtract = 'END-SUBTRACT'?;
 
