@@ -17,4 +17,4 @@ extend lang::cobol85::\syntax::FileDescriptionEntry;
 extend lang::cobol85::\syntax::ReportSection;
 
 // a source file can contain several programs, each ending with END PROGRAM
-start syntax Cobol85 = Cobol_source_program+;
+start syntax Cobol85 = CobolSourceProgram+;

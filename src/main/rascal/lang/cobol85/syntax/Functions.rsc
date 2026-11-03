@@ -17,13 +17,13 @@ keyword CobwordKeywords
   ;
 
 syntax Identifier
-  = \function: 'FUNCTION' Function_name !>> [A-Za-z0-9\-] Function_arguments? Reference_modification?
+  = \function: 'FUNCTION' FunctionName !>> [A-Za-z0-9\-] FunctionArguments? ReferenceModification?
   ;
 
-syntax Function_arguments = brackets: "(" Function_argument+ ")";
+syntax FunctionArguments = brackets: "(" FunctionArgument+ ")";
 
 // arguments are separated by spaces, so an IS-less class or zero condition would also read as two arguments
-syntax Function_argument = expression: Expression!inClass!notInClass!zero!notZero EndFunctionArgument;
+syntax FunctionArgument = expression: Expression!inClass!notInClass!zero!notZero EndFunctionArgument;
 
 // longest match: an argument can not be followed by a binary operator or a subscript, so `MAX(1 - 2)` and `MAX(A (1))`
 // have one argument. A sign glued to its number starts the next argument, so `MAX(-1, -2)` has two.
@@ -35,11 +35,11 @@ syntax EndFunctionArgument
   ;
 
 // the same amendment introduced ALL subscripts, to pass all elements of a table to a function: `FUNCTION MAX(T(ALL))`
-syntax Subscript_expression = \all: 'ALL';
+syntax SubscriptExpression = \all: 'ALL';
 
-syntax Reference_modification = brackets: "(" Expression ":" Expression? ")";
+syntax ReferenceModification = brackets: "(" Expression ":" Expression? ")";
 
-syntax Function_name
+syntax FunctionName
   = 'ACOS'
   | 'ANNUITY'
   | 'ASIN'

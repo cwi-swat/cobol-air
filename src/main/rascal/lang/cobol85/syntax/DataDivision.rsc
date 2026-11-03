@@ -14,16 +14,16 @@ keyword CobwordKeywords
   | 'WORKING-STORAGE'
   ;
 
-syntax File_section_entry
-  = fd: Alt_fd_sd Id File_and_sort_description_entry_clause* "." Data_description_entry+
-  | fd: Alt_fd_sd Id Copy_statement Data_description_entry* // the clauses come from a copybook
+syntax FileSectionEntry
+  = fd: AltFdSd Id FileAndSortDescriptionEntryClause* "." DataDescriptionEntry+
+  | fd: AltFdSd Id CopyStatement DataDescriptionEntry* // the clauses come from a copybook
   ;
 // the sections of the data division, in any order; a checker rejects the orders COBOL does not allow
-syntax Data_division = dataDivision: 'DATA' 'DIVISION' "." Data_section*;
+syntax DataDivision = dataDivision: 'DATA' 'DIVISION' "." DataSection*;
 
-syntax Data_section
-  = file: 'FILE' 'SECTION' "." File_section_entry*
-  | workingStorage: 'WORKING-STORAGE' 'SECTION' "." Data_description_entry*
-  | linkage: 'LINKAGE' 'SECTION' "." Data_description_entry*
-  | communication: Communication_section
+syntax DataSection
+  = file: 'FILE' 'SECTION' "." FileSectionEntry*
+  | workingStorage: 'WORKING-STORAGE' 'SECTION' "." DataDescriptionEntry*
+  | linkage: 'LINKAGE' 'SECTION' "." DataDescriptionEntry*
+  | communication: CommunicationSection
   ;

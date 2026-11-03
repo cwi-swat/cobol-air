@@ -11,21 +11,21 @@ keyword CobwordKeywords
 
 // todo check precede restriction
 // todo: check keywords not allowed in pic strings.
-lexical Picture_string = [\t-\n\ ,.;] << Picture_contents \ CobwordKeywords !>> ![\t-\n\ ,.;] !>> ",." !>> ";."; // longest match: in 9,9,. the last comma is part of the picture
+lexical PictureString = [\t-\n\ ,.;] << PictureContents \ CobwordKeywords !>> ![\t-\n\ ,.;] !>> ",." !>> ";."; // longest match: in 9,9,. the last comma is part of the picture
 
-lexical Picture_contents = Picture_char+;
+lexical PictureContents = PictureChar+;
 
-lexical Picture_char
+lexical PictureChar
   = [,.;] >> ![\t-\n\ ]
   | ![\t-\n\ ,.;]
   ;
 
-lexical Quoted_pseudo_text = "==" (![=] | ("=" ![=]))* "==";
+lexical QuotedPseudoText = "==" (![=] | ("=" ![=]))* "==";
 
-syntax Replace_pseudo_text_pair = by: Quoted_pseudo_text 'BY' Quoted_pseudo_text;
-syntax Replace_directive
+syntax ReplacePseudoTextPair = by: QuotedPseudoText 'BY' QuotedPseudoText;
+syntax ReplaceDirective
   = replaceOff: 'REPLACE' 'OFF' "."
-  | replace: 'REPLACE' Replace_pseudo_text_pair+ "."
+  | replace: 'REPLACE' ReplacePseudoTextPair+ "."
   ;
 
 lexical Id = ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za-z]* !>> [\-_0-9A-Za-z]) \ CobwordKeywords

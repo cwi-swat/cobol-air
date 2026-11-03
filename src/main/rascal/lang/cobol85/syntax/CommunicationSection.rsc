@@ -32,27 +32,27 @@ keyword CobwordKeywords
   | 'TIMES'
   ;
 
-syntax Communication_section = communicationSection: 'COMMUNICATION' 'SECTION' "." Communication_description_entry+;
+syntax CommunicationSection = communicationSection: 'COMMUNICATION' 'SECTION' "." CommunicationDescriptionEntry+;
 
 // a CD entry is followed by the record descriptions of its message area
-syntax Communication_description_entry
-  = cd: 'CD' Id Communication_direction Communication_description_clause* "." Data_description_entry*
+syntax CommunicationDescriptionEntry
+  = cd: 'CD' Id CommunicationDirection CommunicationDescriptionClause* "." DataDescriptionEntry*
   // the input form can also list its eleven data names by position, without the clause keywords
-  | cdInput: 'CD' Id Communication_input Alt_data_name_filler+ "." Data_description_entry*
+  | cdInput: 'CD' Id CommunicationInput AltDataNameFiller+ "." DataDescriptionEntry*
   ;
 
-syntax Communication_direction
+syntax CommunicationDirection
   = initialInput: 'FOR'? 'INITIAL' 'INPUT'
   | input: 'FOR'? 'INPUT'
   | output: 'FOR'? 'OUTPUT'
   ;
 
-syntax Communication_input
+syntax CommunicationInput
   = initialInput: 'FOR'? 'INITIAL' 'INPUT'
   | input: 'FOR'? 'INPUT'
   ;
 
-syntax Communication_description_clause
+syntax CommunicationDescriptionClause
   // input clauses
   = queue: 'SYMBOLIC'? 'QUEUE' 'IS'? Id
   | subQueue1: 'SYMBOLIC'? 'SUB-QUEUE-1' 'IS'? Id
@@ -67,7 +67,7 @@ syntax Communication_description_clause
   | count: 'MESSAGE'? 'COUNT' 'IS'? Id
   // output clauses
   | destinationCount: 'DESTINATION' 'COUNT' 'IS'? Id
-  | destinationTable: 'DESTINATION' 'TABLE' 'OCCURS' Integer 'TIMES' Indexed_by?
+  | destinationTable: 'DESTINATION' 'TABLE' 'OCCURS' Integer 'TIMES' IndexedBy?
   | error: 'ERROR' 'KEY' 'IS'? Id
   | destination: 'SYMBOLIC'? 'DESTINATION' 'IS'? Id
   ;

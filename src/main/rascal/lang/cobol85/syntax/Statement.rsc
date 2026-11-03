@@ -189,29 +189,29 @@ syntax EndSearch
   | () >> "."
   ;
 
-syntax Search_statement_condition_tail = and: 'AND' Search_statement_condition;
+syntax SearchStatementConditionTail = and: 'AND' SearchStatementCondition;
 
-syntax Procedure_to_procedure
-  = to: Procedure_name 'TO' Procedure_name
-  | to: Procedure_name 'TO' 'PROCEED' 'TO' Procedure_name
+syntax ProcedureToProcedure
+  = to: ProcedureName 'TO' ProcedureName
+  | to: ProcedureName 'TO' 'PROCEED' 'TO' ProcedureName
   ;
 
-syntax Delimited_by_phrase = delimited: Id_or_lit+ 'DELIMITED' 'BY'? Id_or_lit_size;
-syntax Inspect_by_argument
-  = figurativeConstantSimple: Figurative_constant_simple
+syntax DelimitedByPhrase = delimited: IdOrLit+ 'DELIMITED' 'BY'? IdOrLitSize;
+syntax InspectByArgument
+  = figurativeConstantSimple: FigurativeConstantSimple
   | nonnumeric: Nonnumeric
   | identifier: Identifier
   ;
-syntax Perform_after_phrase = after: 'AFTER' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Expression;
-syntax Initialize_replacing_argument = by: Initialize_replacing_type 'DATA'? 'BY' Id_or_lit;
+syntax PerformAfterPhrase = after: 'AFTER' Identifier 'FROM' IdOrLit 'BY' IdOrLit 'UNTIL' Expression;
+syntax InitializeReplacingArgument = by: InitializeReplacingType 'DATA'? 'BY' IdOrLit;
 
-syntax Before_after_phrase = beforeAfter: Alt_before_after 'INITIAL'? Id_or_lit;
+syntax BeforeAfterPhrase = beforeAfter: AltBeforeAfter 'INITIAL'? IdOrLit;
 
-syntax Tallying_for_argument
-  = characters: 'CHARACTERS' Before_after_phrase*
-  | allLeading: Alt_all_leading Tallying_for_id_or_lit+
+syntax TallyingForArgument
+  = characters: 'CHARACTERS' BeforeAfterPhrase*
+  | allLeading: AltAllLeading TallyingForIdOrLit+
   ;
-syntax Alt_file_reel_unit
+syntax AltFileReelUnit
   = unit: 'UNIT'
   | reel: 'REEL'
   | file: 'FILE'
@@ -220,11 +220,11 @@ syntax Lines
   = lines: 'LINES'
   | line: 'LINE'
   ;
-syntax Id_or_lit
+syntax IdOrLit
   = literal: Literal
   | identifier: Identifier
   ;
-syntax Evaluate_phrase
+syntax EvaluatePhrase
   = through: 'NOT'? Expression!negation Through Expression
   | \true: 'TRUE'
   | condition: Expression // also covers [NOT] value; the EVALUATE subject decides which it is
@@ -232,17 +232,17 @@ syntax Evaluate_phrase
   | \any: 'ANY'
   | other: 'OTHER'
   ;
-syntax Alt_beginning_ending
+syntax AltBeginningEnding
   = beginning: 'BEGINNING'
   | ending: 'ENDING'
   ;
 
-syntax When_phrase = \when: 'WHEN' Evaluate_phrase When_phrase_also_phrase*;
+syntax WhenPhrase = \when: 'WHEN' EvaluatePhrase WhenPhraseAlsoPhrase*;
 
-syntax Open_statement_phrase
+syntax OpenStatementPhrase
   = io: 'I-O' Id+
-  | input: 'INPUT' Open_statement_input_file_name+
-  | output: 'OUTPUT' Open_statement_output_file_name+
+  | input: 'INPUT' OpenStatementInputFileName+
+  | output: 'OUTPUT' OpenStatementOutputFileName+
   | \extend: 'EXTEND' Id+
   ;
 
@@ -250,23 +250,23 @@ syntax Open_statement_phrase
 syntax EndAdd = 'END-ADD'?;
 
 
-syntax Also_phrase = also: 'ALSO' Evaluate_condition;
+syntax AlsoPhrase = also: 'ALSO' EvaluateCondition;
 
-syntax Through_procedure_name = through: Through Procedure_name;
+syntax ThroughProcedureName = through: Through ProcedureName;
 
-syntax Alt_removal_no_rewind
-  = withNoRewind: With_no_rewind
+syntax AltRemovalNoRewind
+  = withNoRewind: WithNoRewind
   | removal: 'FOR'? 'REMOVAL'
   ;
 
-syntax Alt_up_down
+syntax AltUpDown
   = down: 'DOWN'
   | up: 'UP'
   ;
 
-syntax When_phrase_also_phrase = also: 'ALSO' Evaluate_phrase;
+syntax WhenPhraseAlsoPhrase = also: 'ALSO' EvaluatePhrase;
 
-syntax Cobword_int
+syntax CobwordInt
   = identifier: Identifier
   | integer: Integer
   ;
@@ -275,26 +275,26 @@ syntax Corresponding
   | corresponding: 'CORRESPONDING'
   ;
 
-syntax End_of_page
+syntax EndOfPage
   = endOfPage: 'END-OF-PAGE'
   | eop: 'EOP'
   ;
-syntax Inspect_replacing_phrase
-  = characters: 'CHARACTERS' 'BY' Id_or_lit Before_after_phrase*
-  | allLeadingFirst: Alt_all_leading_first Inspect_replacing_argument+
+syntax InspectReplacingPhrase
+  = characters: 'CHARACTERS' 'BY' IdOrLit BeforeAfterPhrase*
+  | allLeadingFirst: AltAllLeadingFirst InspectReplacingArgument+
   ;
-syntax Alt_before_after
+syntax AltBeforeAfter
   = before: 'BEFORE'
   | after: 'AFTER'
   ;
-syntax Alt_all_leading
+syntax AltAllLeading
   = \all: 'ALL'
   | leading: 'LEADING'
   ;
-syntax Using_data_name_pluslist = using: 'USING' Id+;
+syntax UsingDataNamePluslist = using: 'USING' Id+;
 
 
-syntax Alt_file_names_i_o
+syntax AltFileNamesIO
   = fileName: Id+
   | output: 'OUTPUT'
   | input: 'INPUT'
@@ -302,16 +302,16 @@ syntax Alt_file_names_i_o
   | \extend: 'EXTEND'
   ;
 
-syntax Evaluate_condition
+syntax EvaluateCondition
   = \false: 'FALSE'
   | condition: Expression
   | \true: 'TRUE'
   ;
-syntax When_phrases = whenPhrase: When_phrase+ Statement_list;
+syntax WhenPhrases = whenPhrase: WhenPhrase+ StatementList;
 
-syntax Open_statement_output_file_name = fileName: Id With_no_rewind?;
+syntax OpenStatementOutputFileName = fileName: Id WithNoRewind?;
 
-syntax Content_parameter_value
+syntax ContentParameterValue
   = identifier: Identifier
   | literal: Literal
   ;
@@ -320,21 +320,21 @@ syntax Equal
   = equalSign: "="
   | equal: 'EQUAL'
   ;
-syntax Search_statement_condition
-  = equal: Identifier 'IS'? Equal_to Expression!conjunction // AND starts the next key condition
-  | conditionName: Id In_data_or_file_or_mnemonic_name* Subscript_parentheses*
+syntax SearchStatementCondition
+  = equal: Identifier 'IS'? EqualTo Expression!conjunction // AND starts the next key condition
+  | conditionName: Id InDataOrFileOrMnemonicName* SubscriptParentheses*
   ;
 
 syntax EndMultiply = 'END-MULTIPLY'?;
 
-syntax Alt_statement_list_next_sentence
-  = statementList: Statement_list
+syntax AltStatementListNextSentence
+  = statementList: StatementList
   | nextSentence: 'NEXT' 'SENTENCE'
   ;
 
-syntax Open_statement_input_file_name = fileName: Id Alt_reversed_with_no_rewind?;
-syntax Close_statement_file_name = fileName: Id Close_statement_options?;
-syntax Initialize_replacing_type
+syntax OpenStatementInputFileName = fileName: Id AltReversedWithNoRewind?;
+syntax CloseStatementFileName = fileName: Id CloseStatementOptions?;
+syntax InitializeReplacingType
   = alphabetic: 'ALPHABETIC'
   | numericEdited: 'NUMERIC-EDITED'
   | numeric: 'NUMERIC'
@@ -344,40 +344,40 @@ syntax Initialize_replacing_type
   | egcs: 'EGCS'
   ;
 
-syntax Use_statement
-  = useAfterProcedure: 'USE' 'GLOBAL'? 'AFTER' 'STANDARD'? Alt_exception_error 'PROCEDURE' 'ON'? Alt_file_names_i_o
-  | useAfterLabel: 'USE' 'GLOBAL'? 'AFTER' 'STANDARD'? Alt_beginning_ending? Alt_file_reel_unit? 'LABEL' 'PROCEDURE' 'ON'? Alt_file_names_i_o
-  | useDebugging: 'USE' 'FOR'? 'DEBUGGING' 'ON'? Alt_procedures_all_procedures
+syntax UseStatement
+  = useAfterProcedure: 'USE' 'GLOBAL'? 'AFTER' 'STANDARD'? AltExceptionError 'PROCEDURE' 'ON'? AltFileNamesIO
+  | useAfterLabel: 'USE' 'GLOBAL'? 'AFTER' 'STANDARD'? AltBeginningEnding? AltFileReelUnit? 'LABEL' 'PROCEDURE' 'ON'? AltFileNamesIO
+  | useDebugging: 'USE' 'FOR'? 'DEBUGGING' 'ON'? AltProceduresAllProcedures
   ;
 
 
-syntax When_condition_stats = \when: 'WHEN' Expression Alt_statement_list_next_sentence;
-syntax Inspect_replacing_argument = by: Inspect_by_argument 'BY' Inspect_by_argument Before_after_phrase*;
+syntax WhenConditionStats = \when: 'WHEN' Expression AltStatementListNextSentence;
+syntax InspectReplacingArgument = by: InspectByArgument 'BY' InspectByArgument BeforeAfterPhrase*;
 // a BY CONTENT or BY REFERENCE phrase applies to all the parameters that follow it, up to the next BY phrase;
 // parameters before the first BY phrase are passed by reference
-syntax Using_parameters
-  = identifier: Identifier+ Parameter_group*
-  | identifier: Parameter_group+
+syntax UsingParameters
+  = identifier: Identifier+ ParameterGroup*
+  | identifier: ParameterGroup+
   ;
 
-syntax Parameter_group
-  = content: 'BY'? 'CONTENT' Content_parameter_value+
+syntax ParameterGroup
+  = content: 'BY'? 'CONTENT' ContentParameterValue+
   | reference: 'BY'? 'REFERENCE' Identifier+
   ;
 
-syntax Page_phrase
+syntax PagePhrase
   = page: 'PAGE'
-  | cobwordInt: Cobword_int Lines?
+  | cobwordInt: CobwordInt Lines?
   | zeroes: Zeroes Lines?
   ;
 
 syntax EndDivide = 'END-DIVIDE'?;
 
 
-syntax With_test = \test: 'WITH'? 'TEST' Alt_before_after;
+syntax WithTest = \test: 'WITH'? 'TEST' AltBeforeAfter;
 
-syntax Set_oper
-  = by: Alt_up_down 'BY'
+syntax SetOper
+  = by: AltUpDown 'BY'
   | to: 'TO'
   ;
 
@@ -404,27 +404,27 @@ syntax EndRewrite = 'END-REWRITE'?;
 syntax EndRead = 'END-READ'?;
 
 // the phrases of the arithmetic statements, in any order; a checker rejects the combinations COBOL does not allow
-syntax Arithmetic_phrase
-  = to: 'TO' Cobword_rounded+
-  | from: 'FROM' Cobword_rounded+
-  | by: 'BY' Cobword_rounded+
-  | into: 'INTO' Cobword_rounded+
-  | giving: 'GIVING' Cobword_rounded+
+syntax ArithmeticPhrase
+  = to: 'TO' CobwordRounded+
+  | from: 'FROM' CobwordRounded+
+  | by: 'BY' CobwordRounded+
+  | into: 'INTO' CobwordRounded+
+  | giving: 'GIVING' CobwordRounded+
   | remainder: 'REMAINDER' Identifier
-  | sizeError: 'ON'? 'SIZE' 'ERROR' Statement_list
-  | notSizeError: 'NOT' 'ON'? 'SIZE' 'ERROR' Statement_list
+  | sizeError: 'ON'? 'SIZE' 'ERROR' StatementList
+  | notSizeError: 'NOT' 'ON'? 'SIZE' 'ERROR' StatementList
   ;
 
 // the phrases of the input-output statements, in any order; a checker rejects the combinations COBOL does not allow.
 // READ, RETURN, SEARCH and RECEIVE exclude END-OF-PAGE and the others exclude AT END, so that a statement nested in
 // an AT END or END-OF-PAGE phrase can not take the NOT AT END or NOT END-OF-PAGE of its parent
-syntax Io_phrase
+syntax IoPhrase
   = into: 'INTO' Identifier
   | from: 'FROM' Identifier
-  | key: 'KEY' 'IS'? Qualified_data_name
-  | keyRelation: 'KEY' 'IS'? Rel_op Qualified_data_name
+  | key: 'KEY' 'IS'? QualifiedDataName
+  | keyRelation: 'KEY' 'IS'? RelOp QualifiedDataName
   | varying: 'VARYING' Identifier
-  | advancing: Alt_before_after 'ADVANCING'? Page_phrase
+  | advancing: AltBeforeAfter 'ADVANCING'? PagePhrase
   | message: 'MESSAGE'
   | segment: 'SEGMENT'
   | withEsi: 'WITH' 'ESI'
@@ -432,109 +432,109 @@ syntax Io_phrase
   | withEgi: 'WITH' 'EGI'
   | with: 'WITH' Identifier
   | replacing: 'REPLACING' 'LINE'
-  | atEnd: 'AT'? 'END' Statement_list
-  | notAtEnd: 'NOT' 'AT'? 'END' Statement_list
-  | invalidKey: 'INVALID' 'KEY'? Statement_list
-  | notInvalidKey: 'NOT' 'INVALID' 'KEY'? Statement_list
-  | endOfPage: 'AT'? End_of_page Statement_list
-  | notEndOfPage: 'NOT' 'AT'? End_of_page Statement_list
+  | atEnd: 'AT'? 'END' StatementList
+  | notAtEnd: 'NOT' 'AT'? 'END' StatementList
+  | invalidKey: 'INVALID' 'KEY'? StatementList
+  | notInvalidKey: 'NOT' 'INVALID' 'KEY'? StatementList
+  | endOfPage: 'AT'? EndOfPage StatementList
+  | notEndOfPage: 'NOT' 'AT'? EndOfPage StatementList
   | noData: 'NO' 'DATA' Statement
   ;
 
 // the phrases of CALL, STRING and UNSTRING, in any order; a checker rejects the combinations COBOL does not allow
-syntax Overflow_phrase
-  = delimitedBy: 'DELIMITED' 'BY'? 'ALL'? NotAll Id_or_lit Or_all_id_or_lit*
-  | into: 'INTO' Unstring_statement_dst+
+syntax OverflowPhrase
+  = delimitedBy: 'DELIMITED' 'BY'? 'ALL'? NotAll IdOrLit OrAllIdOrLit*
+  | into: 'INTO' UnstringStatementDst+
   | pointer: 'WITH'? 'POINTER' Identifier
   | tallying: 'TALLYING' 'IN'? Identifier
-  | using: 'USING' Using_parameters
-  | overflow: 'ON'? 'OVERFLOW' Statement_list
-  | notOverflow: 'NOT' 'ON'? 'OVERFLOW' Statement_list
-  | exception: 'ON'? 'EXCEPTION' Statement_list
-  | notException: 'NOT' 'ON'? 'EXCEPTION' Statement_list
+  | using: 'USING' UsingParameters
+  | overflow: 'ON'? 'OVERFLOW' StatementList
+  | notOverflow: 'NOT' 'ON'? 'OVERFLOW' StatementList
+  | exception: 'ON'? 'EXCEPTION' StatementList
+  | notException: 'NOT' 'ON'? 'EXCEPTION' StatementList
   ;
 
 // the phrases of SORT and MERGE, in any order; a checker rejects the combinations COBOL does not allow
-syntax Sort_phrase
-  = key: 'ON'? Alt_ascending_descending 'KEY'? 'IS'? Qualified_data_name+
+syntax SortPhrase
+  = key: 'ON'? AltAscendingDescending 'KEY'? 'IS'? QualifiedDataName+
   | duplicates: 'WITH'? 'DUPLICATES' 'IN'? 'ORDER'?
   | sequence: 'COLLATING'? 'SEQUENCE' 'IS'? Id
   | using: 'USING' Id+
-  | input: 'INPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?
-  | output: 'OUTPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?
+  | input: 'INPUT' 'PROCEDURE' 'IS'? ProcedureName ThroughProcedureName?
+  | output: 'OUTPUT' 'PROCEDURE' 'IS'? ProcedureName ThroughProcedureName?
   | giving: 'GIVING' Id+
   ;
 
-syntax Inspect_phrase
-  = tallying: 'TALLYING' Tallying_argument+
-  | replacing: 'REPLACING' Inspect_replacing_phrase+
-  | converting: 'CONVERTING' Id_or_lit 'TO' Id_or_lit Before_after_phrase*
+syntax InspectPhrase
+  = tallying: 'TALLYING' TallyingArgument+
+  | replacing: 'REPLACING' InspectReplacingPhrase+
+  | converting: 'CONVERTING' IdOrLit 'TO' IdOrLit BeforeAfterPhrase*
   ;
 
-syntax Perform_phrase
-  = times: Cobword_int 'TIMES'
-  | until: With_test? 'UNTIL' Expression
-  | varying: With_test? 'VARYING' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Expression Perform_after_phrase*
+syntax PerformPhrase
+  = times: CobwordInt 'TIMES'
+  | until: WithTest? 'UNTIL' Expression
+  | varying: WithTest? 'VARYING' Identifier 'FROM' IdOrLit 'BY' IdOrLit 'UNTIL' Expression PerformAfterPhrase*
   ;
 
 syntax Statement
   = exitProgram: 'EXIT' 'PROGRAM'
-  | receive: 'RECEIVE' Id Io_phrase!endOfPage!notEndOfPage*
-  | enable: 'ENABLE' Communication_io_mode Id Communication_key_phrase?
-  | disable: 'DISABLE' Communication_io_mode Id Communication_key_phrase?
-  | send: 'SEND' Id Io_phrase!atEnd!notAtEnd*
+  | receive: 'RECEIVE' Id IoPhrase!endOfPage!notEndOfPage*
+  | enable: 'ENABLE' CommunicationIoMode Id CommunicationKeyPhrase?
+  | disable: 'DISABLE' CommunicationIoMode Id CommunicationKeyPhrase?
+  | send: 'SEND' Id IoPhrase!atEnd!notAtEnd*
   | purge: 'PURGE' Id
-  | merge: 'MERGE' Id Sort_phrase*
-  | searchAll: 'SEARCH' 'ALL' Identifier Io_phrase!endOfPage!notEndOfPage* 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence EndSearch
-  | search: 'SEARCH' Identifier Io_phrase!endOfPage!notEndOfPage* When_condition_stats+ EndSearch
-  | compute: 'COMPUTE' Cobword_rounded+ Equal Expression Arithmetic_phrase* EndCompute
+  | merge: 'MERGE' Id SortPhrase*
+  | searchAll: 'SEARCH' 'ALL' Identifier IoPhrase!endOfPage!notEndOfPage* 'WHEN' SearchStatementCondition SearchStatementConditionTail* AltStatementListNextSentence EndSearch
+  | search: 'SEARCH' Identifier IoPhrase!endOfPage!notEndOfPage* WhenConditionStats+ EndSearch
+  | compute: 'COMPUTE' CobwordRounded+ Equal Expression ArithmeticPhrase* EndCompute
   | exit: 'EXIT'
-  | alter: 'ALTER' Procedure_to_procedure+
-  | call: 'CALL' Id_or_lit Overflow_phrase* EndCall
-  | \set: 'SET' Set_statement_phrase+
-  | stop: 'STOP' Alt_run_literal
-  | divide: 'DIVIDE' Id_or_lit Arithmetic_phrase* EndDivide
-  | display: 'DISPLAY' Id_or_lit+ ('UPON' Id)? ('WITH'? 'NO' 'ADVANCING')?
-  | read: 'READ' Id 'NEXT'? 'RECORD'? Io_phrase!endOfPage!notEndOfPage* EndRead
-  | string: 'STRING' Delimited_by_phrase+ Overflow_phrase* EndString
-  | subtract: 'SUBTRACT' Corresponding? Id_or_lit+ Arithmetic_phrase* EndSubtract
-  | move: 'MOVE' Corresponding? Id_or_lit 'TO' Identifier+
+  | alter: 'ALTER' ProcedureToProcedure+
+  | call: 'CALL' IdOrLit OverflowPhrase* EndCall
+  | \set: 'SET' SetStatementPhrase+
+  | stop: 'STOP' AltRunLiteral
+  | divide: 'DIVIDE' IdOrLit ArithmeticPhrase* EndDivide
+  | display: 'DISPLAY' IdOrLit+ ('UPON' Id)? ('WITH'? 'NO' 'ADVANCING')?
+  | read: 'READ' Id 'NEXT'? 'RECORD'? IoPhrase!endOfPage!notEndOfPage* EndRead
+  | string: 'STRING' DelimitedByPhrase+ OverflowPhrase* EndString
+  | subtract: 'SUBTRACT' Corresponding? IdOrLit+ ArithmeticPhrase* EndSubtract
+  | move: 'MOVE' Corresponding? IdOrLit 'TO' Identifier+
   | goMoreLabels: 'GO' 'TO'? 'MORE-LABELS'
-  | goTo: 'GO' 'TO'? Procedure_name+ ('DEPENDING' 'ON'? Identifier)?
+  | goTo: 'GO' 'TO'? ProcedureName+ ('DEPENDING' 'ON'? Identifier)?
   | goback: 'GOBACK'
-  | add: 'ADD' Corresponding? Id_or_lit+ Arithmetic_phrase* EndAdd
+  | add: 'ADD' Corresponding? IdOrLit+ ArithmeticPhrase* EndAdd
   | accept: 'ACCEPT' Identifier ('FROM' Date)?
   | acceptMessage: 'ACCEPT' Id 'MESSAGE' 'COUNT'
   | acceptCount: 'ACCEPT' Id 'COUNT'
-  | delete: 'DELETE' Id 'RECORD'? Io_phrase!atEnd!notAtEnd* EndDelete
-  | initialize: 'INITIALIZE' Identifier+ ('REPLACING' Initialize_replacing_argument+)?
+  | delete: 'DELETE' Id 'RECORD'? IoPhrase!atEnd!notAtEnd* EndDelete
+  | initialize: 'INITIALIZE' Identifier+ ('REPLACING' InitializeReplacingArgument+)?
   | \continue: 'CONTINUE'
-  | release: 'RELEASE' Record_name Io_phrase!atEnd!notAtEnd*
-  | unstring: 'UNSTRING' Identifier Overflow_phrase* EndUnString
-  | close: 'CLOSE' Close_statement_file_name+
-  | \if: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' EndIf
-  | ifElse: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence EndIf
-  | inspect: 'INSPECT' Identifier Inspect_phrase+
-  | sort: 'SORT' Id Sort_phrase*
-  | write: 'WRITE' Record_name Io_phrase!atEnd!notAtEnd* EndWrite
-  | evaluate: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ EndEvaluate
-  | \start: 'START' Id Io_phrase!atEnd!notAtEnd* EndStart
-  | \return: 'RETURN' Id 'RECORD'? Io_phrase!endOfPage!notEndOfPage* EndReturn
-  | perform: 'PERFORM' Procedure_name Through_procedure_name? Perform_phrase?
-  | endPerform: 'PERFORM' Perform_phrase? Statement_list 'END-PERFORM'
-  | entry: 'ENTRY' Literal Using_data_name_pluslist?
-  | cancel: 'CANCEL' Id_or_lit+
-  | open: 'OPEN' Open_statement_phrase+
-  | multiply: 'MULTIPLY' Id_or_lit Arithmetic_phrase* EndMultiply
-  | rewrite: 'REWRITE' Record_name Io_phrase!atEnd!notAtEnd* EndRewrite
+  | release: 'RELEASE' RecordName IoPhrase!atEnd!notAtEnd*
+  | unstring: 'UNSTRING' Identifier OverflowPhrase* EndUnString
+  | close: 'CLOSE' CloseStatementFileName+
+  | \if: 'IF' Expression 'THEN'? AltStatementListNextSentence () !>> 'ELSE' EndIf
+  | ifElse: 'IF' Expression 'THEN'? AltStatementListNextSentence 'ELSE' AltStatementListNextSentence EndIf
+  | inspect: 'INSPECT' Identifier InspectPhrase+
+  | sort: 'SORT' Id SortPhrase*
+  | write: 'WRITE' RecordName IoPhrase!atEnd!notAtEnd* EndWrite
+  | evaluate: 'EVALUATE' EvaluateCondition AlsoPhrase* WhenPhrases+ EndEvaluate
+  | \start: 'START' Id IoPhrase!atEnd!notAtEnd* EndStart
+  | \return: 'RETURN' Id 'RECORD'? IoPhrase!endOfPage!notEndOfPage* EndReturn
+  | perform: 'PERFORM' ProcedureName ThroughProcedureName? PerformPhrase?
+  | endPerform: 'PERFORM' PerformPhrase? StatementList 'END-PERFORM'
+  | entry: 'ENTRY' Literal UsingDataNamePluslist?
+  | cancel: 'CANCEL' IdOrLit+
+  | open: 'OPEN' OpenStatementPhrase+
+  | multiply: 'MULTIPLY' IdOrLit ArithmeticPhrase* EndMultiply
+  | rewrite: 'REWRITE' RecordName IoPhrase!atEnd!notAtEnd* EndRewrite
   ;
 
-syntax Communication_io_mode
+syntax CommunicationIoMode
   = input: 'INPUT' 'TERMINAL'?
   | output: 'OUTPUT'
   ;
 
-syntax Communication_key_phrase = key: 'WITH'? 'KEY' Id_or_lit;
+syntax CommunicationKeyPhrase = key: 'WITH'? 'KEY' IdOrLit;
 
 
 
@@ -548,9 +548,9 @@ syntax Date
   | dayOfWeek: 'DAY-OF-WEEK'
   | mnemonicName: Id
   ;
-syntax Cobword_rounded = idOrLit: Id_or_lit 'ROUNDED'?;
+syntax CobwordRounded = idOrLit: IdOrLit 'ROUNDED'?;
 
-syntax Statement_list = statement: Statement+ EndStatementList;
+syntax StatementList = statement: Statement+ EndStatementList;
 
 // a statement list extends to the end of the sentence, a scope terminator, or the next phrase of its enclosing statement
 syntax EndStatementList
@@ -566,38 +566,38 @@ syntax EndStatementList
   | () >> 'COPY'
   ;
 
-syntax Id_or_lit_size
+syntax IdOrLitSize
   = literal: Literal
   | size: 'SIZE'
   | identifier: Identifier
   ;
-syntax Unstring_statement_dst
+syntax UnstringStatementDst
   = identifier: Identifier
   | identifier: Identifier 'COUNT' 'IN'? Identifier
   | identifier: Identifier 'DELIMITER' 'IN'? Identifier
   | identifier: Identifier 'DELIMITER' 'IN'? Identifier 'COUNT' 'IN'? Identifier
   ;
-syntax With_no_rewind = no: 'WITH'? 'NO' 'REWIND';
+syntax WithNoRewind = no: 'WITH'? 'NO' 'REWIND';
 
-syntax Tallying_for_id_or_lit = idOrLit: NotAll Id_or_lit Before_after_phrase*;
+syntax TallyingForIdOrLit = idOrLit: NotAll IdOrLit BeforeAfterPhrase*;
 
 // operands of INSPECT and UNSTRING can not be ALL literals; ALL is the keyword of the statement
 syntax NotAll = () !>> 'ALL ' !>> 'ALL\"';
 
-syntax Alt_all_leading_first
+syntax AltAllLeadingFirst
   = \all: 'ALL'
   | first: 'FIRST'
   | leading: 'LEADING'
   ;
 
-syntax Alt_exception_error
+syntax AltExceptionError
   = exception: 'EXCEPTION'
   | error: 'ERROR'
   ;
 
 
-syntax Or_all_id_or_lit = or: 'OR' 'ALL'? NotAll Id_or_lit;
-syntax Alt_run_literal
+syntax OrAllIdOrLit = or: 'OR' 'ALL'? NotAll IdOrLit;
+syntax AltRunLiteral
   = run: 'RUN'
   | literal: Literal
   ;
@@ -606,21 +606,21 @@ syntax EndSubtract = 'END-SUBTRACT'?;
 
 
 
-syntax Rel_op
-  = equalTo: Equal_to
-  | greaterThanOrEqualTo: Greater_than_or_equal_to
-  | greaterThan: Greater_than
+syntax RelOp
+  = equalTo: EqualTo
+  | greaterThanOrEqualTo: GreaterThanOrEqualTo
+  | greaterThan: GreaterThan
   ;
-syntax Alt_no_rewind_lock
+syntax AltNoRewindLock
   = no: 'NO' 'REWIND'
   | lock: 'LOCK'
   ;
-syntax Close_statement_options
-  = noRewindLock: 'WITH'? Alt_no_rewind_lock
-  | reelUnit: Alt_reel_unit Alt_removal_no_rewind?
+syntax CloseStatementOptions
+  = noRewindLock: 'WITH'? AltNoRewindLock
+  | reelUnit: AltReelUnit AltRemovalNoRewind?
   ;
 
-syntax Set_src
+syntax SetSrc
   = \off: 'OFF'
   | identifier: Identifier
   | literal: Literal
@@ -628,24 +628,24 @@ syntax Set_src
   | \true: 'TRUE'
   ;
 
-syntax Alt_procedures_all_procedures
+syntax AltProceduresAllProcedures
   = allProcedures: 'ALL' 'PROCEDURES'
-  | procedureName: Procedure_name+
+  | procedureName: ProcedureName+
   // `USE FOR DEBUGGING ON ALL REFERENCES OF A B ALL C`; the names without ALL stay procedure names, as in c1
-  | allReferences: Procedure_name* All_references_of (All_references_of | Procedure_name)*
+  | allReferences: ProcedureName* AllReferencesOf (AllReferencesOf | ProcedureName)*
   ;
 
-syntax All_references_of = \all: 'ALL' 'REFERENCES'? 'OF'? NotReferences Identifier;
+syntax AllReferencesOf = \all: 'ALL' 'REFERENCES'? 'OF'? NotReferences Identifier;
 
 // REFERENCES is the keyword, not a data name qualified by the identifier (`REFERENCES OF FREC`)
 syntax NotReferences = () !>> 'REFERENCES ' !>> 'REFERENCES\n';
 
-syntax Alt_reversed_with_no_rewind
+syntax AltReversedWithNoRewind
   = reversed: 'REVERSED'
-  | withNoRewind: With_no_rewind
+  | withNoRewind: WithNoRewind
   ;
 
 
-syntax Set_statement_phrase = identifier: Identifier+ Set_oper Set_src;
+syntax SetStatementPhrase = identifier: Identifier+ SetOper SetSrc;
 
-syntax Tallying_argument = \for: Identifier 'FOR' Tallying_for_argument+;
+syntax TallyingArgument = \for: Identifier 'FOR' TallyingForArgument+;

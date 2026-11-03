@@ -76,51 +76,51 @@ keyword CobwordKeywords
 
 
 // FD PRINT-FILE REPORT IS SALES-REPORT.
-syntax File_and_sort_description_entry_clause
+syntax FileAndSortDescriptionEntryClause
   = report: 'REPORT' 'IS'? Id+
   | report: 'REPORTS' 'ARE'? Id+
   ;
 
 // the records of a report file are described by its report groups, so its FD has no record descriptions
-syntax File_section_entry
-  = reportFd: Alt_fd_sd Id File_and_sort_description_entry_clause* "."
+syntax FileSectionEntry
+  = reportFd: AltFdSd Id FileAndSortDescriptionEntryClause* "."
   ;
 
-syntax Data_section = report: Report_section;
+syntax DataSection = report: ReportSection;
 
-syntax Report_section = reportSection: 'REPORT' 'SECTION' "." Report_description*;
+syntax ReportSection = reportSection: 'REPORT' 'SECTION' "." ReportDescription*;
 
-syntax Report_description
-  = rd: 'RD' Id Report_description_clause* "." Report_group_description_entry*
+syntax ReportDescription
+  = rd: 'RD' Id ReportDescriptionClause* "." ReportGroupDescriptionEntry*
   ;
 
-syntax Report_description_clause
-  = globalClause: Global_clause
+syntax ReportDescriptionClause
+  = globalClause: GlobalClause
   | code: 'CODE' 'IS'? Literal
-  | control: 'CONTROL' 'IS'? Control_names
-  | control: 'CONTROLS' 'ARE'? Control_names
+  | control: 'CONTROL' 'IS'? ControlNames
+  | control: 'CONTROLS' 'ARE'? ControlNames
   // PAGE LIMIT IS 60 LINES HEADING 1 FIRST DETAIL 5 LAST DETAIL 55 FOOTING 58
-  | page: 'PAGE' Page_limit? Integer Alt_line_lines? Page_phrase*
+  | page: 'PAGE' PageLimit? Integer AltLineLines? PagePhrase*
   ;
 
 // the control data names, from the most to the least major
-syntax Control_names
+syntax ControlNames
   = final: 'FINAL' Id*
   | dataName: Id+
   ;
 
-syntax Page_limit
+syntax PageLimit
   = limit: 'LIMIT' 'IS'?
   | limit: 'LIMITS' 'ARE'?
   ;
 
-syntax Alt_line_lines
+syntax AltLineLines
   = line: 'LINE'
   | lines: 'LINES'
   ;
 
 // COBOL-85 fixes the order HEADING, FIRST DETAIL, LAST DETAIL, FOOTING; compilers accept any order
-syntax Page_phrase
+syntax PagePhrase
   = heading: 'HEADING' 'IS'? Integer
   | first: 'FIRST' 'DETAIL' 'IS'? Integer
   | last: 'LAST' 'DETAIL' 'IS'? Integer
@@ -129,21 +129,21 @@ syntax Page_phrase
 
 // The three formats of the standard (a report group with TYPE at level 01, a group, and an elementary item)
 // share one list of clauses, in any order.
-syntax Report_group_description_entry
+syntax ReportGroupDescriptionEntry
   = // the follow restriction ensures that digits are eaten up by picture strings (as in Data_description_entry)
-    entry: Num!decimal!signedDecimal!signedInteger !>> [.,] Alt_data_name_filler? Report_group_clause* "."
-  | copy: Copy_statement
+    entry: Num!decimal!signedDecimal!signedInteger !>> [.,] AltDataNameFiller? ReportGroupClause* "."
+  | copy: CopyStatement
   ;
 
-syntax Report_group_clause
-  = line: 'LINE' 'NUMBER'? 'IS'? Line_number
-  | next: 'NEXT' 'GROUP' 'IS'? Next_group
-  | \type: 'TYPE' 'IS'? Report_group_type
+syntax ReportGroupClause
+  = line: 'LINE' 'NUMBER'? 'IS'? LineNumber
+  | next: 'NEXT' 'GROUP' 'IS'? NextGroup
+  | \type: 'TYPE' 'IS'? ReportGroupType
   | usage: Usage
   | usage: 'USAGE' 'IS'? Usage
-  | picture: Picture 'IS'? Picture_string
-  | sign: 'SIGN' 'IS'? Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
-  | sign: Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
+  | picture: Picture 'IS'? PictureString
+  | sign: 'SIGN' 'IS'? AltLeadingTrailing 'SEPARATE' 'CHARACTER'?
+  | sign: AltLeadingTrailing 'SEPARATE' 'CHARACTER'?
   | justified: Justified 'RIGHT'?
   | blank: 'BLANK' 'WHEN'? Zeroes
   | column: 'COLUMN' 'NUMBER'? 'IS'? Integer
@@ -151,10 +151,10 @@ syntax Report_group_clause
   | source: 'SOURCE' 'IS'? Identifier
   | \value: 'VALUE' 'IS'? Literal
   // SUM A B UPON DETAIL-1 RESET ON FINAL; several SUM clauses can follow each other, the RESET phrase ends the last
-  | sum: 'SUM' Identifier+ Upon_phrase? Reset_phrase?
+  | sum: 'SUM' Identifier+ UponPhrase? ResetPhrase?
   ;
 
-syntax Line_number
+syntax LineNumber
   = integer: Integer
   | integerNextPage: Integer 'ON'? 'NEXT' 'PAGE'
   | plus: 'PLUS' Integer
@@ -162,37 +162,37 @@ syntax Line_number
   | nextPage: 'NEXT' 'PAGE'
   ;
 
-syntax Next_group
+syntax NextGroup
   = integer: Integer
   | plus: 'PLUS' Integer
   | nextPage: 'NEXT' 'PAGE'
   ;
 
-syntax Report_group_type
+syntax ReportGroupType
   = reportHeading: 'REPORT' 'HEADING'
   | reportHeading: 'RH'
   | pageHeading: 'PAGE' 'HEADING'
   | pageHeading: 'PH'
-  | controlHeading: 'CONTROL' 'HEADING' Control_name
-  | controlHeading: 'CH' Control_name
+  | controlHeading: 'CONTROL' 'HEADING' ControlName
+  | controlHeading: 'CH' ControlName
   | detail: 'DETAIL'
   | detail: 'DE'
-  | controlFooting: 'CONTROL' 'FOOTING' Control_name
-  | controlFooting: 'CF' Control_name
+  | controlFooting: 'CONTROL' 'FOOTING' ControlName
+  | controlFooting: 'CF' ControlName
   | pageFooting: 'PAGE' 'FOOTING'
   | pageFooting: 'PF'
   | reportFooting: 'REPORT' 'FOOTING'
   | reportFooting: 'RF'
   ;
 
-syntax Control_name
+syntax ControlName
   = final: 'FINAL'
   | dataName: Id
   ;
 
-syntax Upon_phrase = upon: 'UPON' Id+;
+syntax UponPhrase = upon: 'UPON' Id+;
 
-syntax Reset_phrase = reset: 'RESET' 'ON'? Control_name;
+syntax ResetPhrase = reset: 'RESET' 'ON'? ControlName;
 
 // the special registers, one per report, qualified by the report name when there are several reports
 syntax Identifier
@@ -205,12 +205,12 @@ syntax Identifier
 syntax Statement
   = initiate: 'INITIATE' Id+
   // a report group name (TYPE DETAIL) or a report name (summary reporting)
-  | generate: 'GENERATE' Qualified_data_name
+  | generate: 'GENERATE' QualifiedDataName
   | terminate: 'TERMINATE' Id+
   // only in a USE BEFORE REPORTING procedure
   | suppress: 'SUPPRESS' 'PRINTING'?
   ;
 
-syntax Use_statement
+syntax UseStatement
   = useBefore: 'USE' 'GLOBAL'? 'BEFORE' 'REPORTING' Identifier
   ;

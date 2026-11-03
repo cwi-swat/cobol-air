@@ -17,7 +17,7 @@ keyword CobwordKeywords
   | 'SECURITY'
   ;
 
-syntax Identification_division_content = identificationDivisionPhrase: Identification_division_phrase*;
+syntax IdentificationDivisionContent = identificationDivisionPhrase: IdentificationDivisionPhrase*;
 syntax Identification
   = id: 'ID'
   | identification: 'IDENTIFICATION'
@@ -46,7 +46,7 @@ keyword NoIDKeyword
   | 'PROCEDURE'
   ;
 
-syntax Identification_division_phrase
+syntax IdentificationDivisionPhrase
   = security: 'SECURITY' "."? MetaDataContentLine*
   | dateCompiled: 'DATE-COMPILED' "."? MetaDataContentLine*
   | author: 'AUTHOR' "."? MetaDataContentLine*

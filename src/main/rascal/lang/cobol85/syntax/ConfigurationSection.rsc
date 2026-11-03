@@ -34,7 +34,7 @@ keyword CobwordKeywords
   | 'WITH'
   | 'WORDS'
   ;
-syntax Memory_size_type =
+syntax MemorySizeType =
   characters: 'CHARACTERS' 
   | modules: 'MODULES' 
   | words: 'WORDS' 
@@ -43,50 +43,50 @@ syntax Are =
   \is: 'IS' 
   | are: 'ARE' 
   ; 
-syntax Alphabet_type_also =
+syntax AlphabetTypeAlso =
   also: 'ALSO' Literal 
   ; 
-syntax Special_names_paragraph_phrase =
-   systemName: Id Special_names_paragraph_phrase_tail 
+syntax SpecialNamesParagraphPhrase =
+   systemName: Id SpecialNamesParagraphPhraseTail 
   ; 
-syntax Special_names_paragraph_status_phrase =
+syntax SpecialNamesParagraphStatusPhrase =
    \on: 'ON' 'STATUS'? 'IS'? Expression ('OFF' 'STATUS'? 'IS'? Expression)?
   |  \off: 'OFF' 'STATUS'? 'IS'? Expression ('ON' 'STATUS'? 'IS'? Expression)?
   ; 
-syntax Special_names_paragraph_clause =
+syntax SpecialNamesParagraphClause =
    decimalPoint: 'DECIMAL-POINT' 'IS'? 'COMMA' 
-  |  class: 'CLASS' Id 'IS'? Literal_through_literal+ 
-  |  symbolic: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ ('IN' Id)?
+  |  class: 'CLASS' Id 'IS'? LiteralThroughLiteral+ 
+  |  symbolic: 'SYMBOLIC' 'CHARACTERS'? SymbolicCharacterMapping+ ('IN' Id)?
   |  currency: 'CURRENCY' 'SIGN'? 'IS'? Literal 
-  |  alphabet: 'ALPHABET' Id 'IS'? Alphabet_type 
+  |  alphabet: 'ALPHABET' Id 'IS'? AlphabetType 
   ; 
-syntax Alphabet_type_other =
-  literal: Literal Alphabet_type_also_through? 
+syntax AlphabetTypeOther =
+  literal: Literal AlphabetTypeAlsoThrough? 
   ; 
-syntax Special_names_paragraph_phrase_tail =
-   word: 'IS'? Id  Special_names_paragraph_status_phrase? 
-  | status: Special_names_paragraph_status_phrase 
+syntax SpecialNamesParagraphPhraseTail =
+   word: 'IS'? Id  SpecialNamesParagraphStatusPhrase? 
+  | status: SpecialNamesParagraphStatusPhrase 
   ; 
-syntax Symbolic_character_mapping =
+syntax SymbolicCharacterMapping =
   symbolicCharacter: Id+ Are? Integer+ 
   ;
 
 // the clauses of SOURCE-COMPUTER and OBJECT-COMPUTER, in any order; a checker rejects the combinations COBOL does not allow
-syntax Computer_clause
-  = memory: 'MEMORY' 'SIZE'? Integer Memory_size_type
+syntax ComputerClause
+  = memory: 'MEMORY' 'SIZE'? Integer MemorySizeType
   | sequence: 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id
-  | segmentLimit: 'SEGMENT-LIMIT' 'IS'? Priority_number
+  | segmentLimit: 'SEGMENT-LIMIT' 'IS'? PriorityNumber
   | debugging: 'WITH'? 'DEBUGGING' 'MODE'
   ;
-syntax Alphabet_type =
+syntax AlphabetType =
   native: 'NATIVE' 
   | ebcdic: 'EBCDIC' 
   | standard2: 'STANDARD-2' 
   | standard1: 'STANDARD-1' 
-  |  alphabetTypeOther: Alphabet_type_other+ 
+  |  alphabetTypeOther: AlphabetTypeOther+ 
   ;
 
-syntax Alphabet_type_also_through =
-   alphabetTypeAlso: Alphabet_type_also+ 
-  | throughLiteral: Through_literal 
+syntax AlphabetTypeAlsoThrough =
+   alphabetTypeAlso: AlphabetTypeAlso+ 
+  | throughLiteral: ThroughLiteral 
   ;

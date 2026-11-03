@@ -47,53 +47,53 @@ keyword CobwordKeywords
   | 'WRITE-ONLY'
   ;
 
-syntax File_name_position = fileName: Id ('POSITION' Integer)?;
-syntax Record_delimiter_name
+syntax FileNamePosition = fileName: Id ('POSITION' Integer)?;
+syntax RecordDelimiterName
   = assignmentName: Id
   | standard1: 'STANDARD-1'
   ;
-syntax Record_sort
+syntax RecordSort
   = sort: 'SORT'
   | record: 'RECORD'
   | sortMerge: 'SORT-MERGE'
   ;
-syntax Alt_indexed_relative_sequential
+syntax AltIndexedRelativeSequential
   = relative: 'RELATIVE'
   | indexed: 'INDEXED'
   | sequential: 'SEQUENTIAL'
   ;
 // the entries of the I-O-CONTROL paragraph
-syntax Io_control_entry
-  = rerun: 'RERUN' 'ON' Id ('EVERY'? Every_phrase 'OF'? Id)?
+syntax IoControlEntry
+  = rerun: 'RERUN' 'ON' Id ('EVERY'? EveryPhrase 'OF'? Id)?
   // SAME SORT AREA FOR SQ-FS1 ST-FS1,
-  | same: 'SAME' Record_sort? 'AREA'? 'FOR'? Id Id+
+  | same: 'SAME' RecordSort? 'AREA'? 'FOR'? Id Id+
   | apply: 'APPLY' 'WRITE-ONLY' 'ON'? Id+
-  | multiple: 'MULTIPLE' 'FILE' 'TAPE'? 'CONTAINS'? File_name_position+
+  | multiple: 'MULTIPLE' 'FILE' 'TAPE'? 'CONTAINS'? FileNamePosition+
   ;
-syntax Every_phrase
-  = end: 'END' 'OF'? Alt_reel_unit
+syntax EveryPhrase
+  = end: 'END' 'OF'? AltReelUnit
   | records: Integer 'RECORDS'
   ;
-syntax Fce_phrase
-  = record: 'RECORD' 'KEY'? 'IS'? Qualified_data_name
-  | access: 'ACCESS' 'MODE'? 'IS'? Alt_sequential_random_dynamic
-  | relativeKey: 'RELATIVE' 'KEY'? 'IS'? Qualified_data_name
-  | recordDelimiter: 'RECORD' 'DELIMITER' 'IS'? Record_delimiter_name
-  | status: 'FILE'? 'STATUS' 'IS'? Qualified_data_name Qualified_data_name?
-  | padding: 'PADDING' 'CHARACTER'? 'IS'? Alt_qualified_data_name_literal
-  | organization: 'ORGANIZATION'? 'IS'? Alt_indexed_relative_sequential
-  | passwordClause: Password_clause
-  | alternate: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause?
+syntax FcePhrase
+  = record: 'RECORD' 'KEY'? 'IS'? QualifiedDataName
+  | access: 'ACCESS' 'MODE'? 'IS'? AltSequentialRandomDynamic
+  | relativeKey: 'RELATIVE' 'KEY'? 'IS'? QualifiedDataName
+  | recordDelimiter: 'RECORD' 'DELIMITER' 'IS'? RecordDelimiterName
+  | status: 'FILE'? 'STATUS' 'IS'? QualifiedDataName QualifiedDataName?
+  | padding: 'PADDING' 'CHARACTER'? 'IS'? AltQualifiedDataNameLiteral
+  | organization: 'ORGANIZATION'? 'IS'? AltIndexedRelativeSequential
+  | passwordClause: PasswordClause
+  | alternate: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? QualifiedDataName PasswordClause?
   | duplicates: 'WITH'? 'DUPLICATES'
   | reserve: 'RESERVE' Integer Areas?
   ;
-syntax Password_clause = password: 'PASSWORD' 'IS'? Id;
-syntax Alt_assignment_name_literal
+syntax PasswordClause = password: 'PASSWORD' 'IS'? Id;
+syntax AltAssignmentNameLiteral
   = literal: Literal
   | assignmentName: Id
   ;
 
-syntax Alt_sequential_random_dynamic
+syntax AltSequentialRandomDynamic
   = random: 'RANDOM'
   | \dynamic: 'DYNAMIC'
   | sequential: 'SEQUENTIAL'

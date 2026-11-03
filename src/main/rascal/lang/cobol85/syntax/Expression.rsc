@@ -44,34 +44,34 @@ keyword CobwordKeywords
 syntax Identifier
   = linageCounter: 'LINAGE-COUNTER'
   | linageCounter: 'LINAGE-COUNTER' In Id
-  | qualifiedDataName: Qualified_data_name Subscript_parentheses*
-  | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Expression ":" ")"
-  | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Expression ":" Expression ")"
+  | qualifiedDataName: QualifiedDataName SubscriptParentheses*
+  | qualifiedDataName: QualifiedDataName SubscriptParentheses* "(" Expression ":" ")"
+  | qualifiedDataName: QualifiedDataName SubscriptParentheses* "(" Expression ":" Expression ")"
   ;
-syntax Subscript_expression
+syntax SubscriptExpression
   = literal: Literal
-  | qualifiedDataName: Qualified_data_name
-  | plus: Qualified_data_name "+" Integer
-  | minus: Qualified_data_name "-" Integer
+  | qualifiedDataName: QualifiedDataName
+  | plus: QualifiedDataName "+" Integer
+  | minus: QualifiedDataName "-" Integer
   ;
 
-syntax Record_name = qualifiedDataName: Qualified_data_name;
+syntax RecordName = qualifiedDataName: QualifiedDataName;
 
-syntax Qualified_data_name
+syntax QualifiedDataName
   = length: 'LENGTH' 'OF' Identifier
   | address: 'ADDRESS' 'OF' Id
-  | dataName: Id In_data_or_file_name*
+  | dataName: Id InDataOrFileName*
   ;
 
 
-syntax Paragraph_name
+syntax ParagraphName
   = word: Id
   | integer: Integer
   ;
-syntax Copy_operand
+syntax CopyOperand
   = literal: Literal
   | identifier: Identifier
-  | quotedPseudoText: Quoted_pseudo_text
+  | quotedPseudoText: QuotedPseudoText
   // any COBOL word can be replaced, also a reserved word, as in `REPLACING ==...== BY MOVE`
   | \keyword: NotFigurative CobwordKeywords !>> [A-Za-z0-9\-]
   ;
@@ -79,22 +79,22 @@ syntax Copy_operand
 // figurative constants are literals (copy-operand-c3), not reserved words
 syntax NotFigurative = () !>> 'ZERO' !>> 'SPACE' !>> 'QUOTE' !>> 'NULL' !>> 'HIGH-VALUE' !>> 'LOW-VALUE';
 
-syntax Figurative_constant
+syntax FigurativeConstant
   = \all: 'ALL' Literal
-  | figurativeConstantSimple: Figurative_constant_simple !>> [A-Za-z0-9\-] // a keyword ends at a word boundary: ZERO-NULL is a data name
+  | figurativeConstantSimple: FigurativeConstantSimple !>> [A-Za-z0-9\-] // a keyword ends at a word boundary: ZERO-NULL is a data name
   ;
 syntax Integer = \num: Num;
 
-syntax Paragraph_or_section_name
+syntax ParagraphOrSectionName
   = integer: Integer
   | word: Id
   ;
-syntax Alt_reel_unit
+syntax AltReelUnit
   = reel: 'REEL'
   | unit: 'UNIT'
   ;
 
-syntax Figurative_constant_simple
+syntax FigurativeConstantSimple
   = spaces: 'SPACES'
   | quotes: 'QUOTES'
   | highValues: 'HIGH-VALUES'
@@ -111,28 +111,28 @@ syntax Figurative_constant_simple
   ;
 
 
-syntax Alt_ascending_descending
+syntax AltAscendingDescending
   = descending: 'DESCENDING'
   | ascending: 'ASCENDING'
   ;
 
-syntax Through_literal = through: Through Literal;
+syntax ThroughLiteral = through: Through Literal;
 
-syntax Alt_library_name_literal
+syntax AltLibraryNameLiteral
   = word: Id
   | literal: Literal
   ;
 
-syntax Alt_text_name_literal
+syntax AltTextNameLiteral
   = word: Id
   | literal: Literal
   ;
 
-syntax Procedure_name
-  = paragraphOrSectionName: Paragraph_or_section_name
-  | paragraphOrSectionName: Paragraph_or_section_name In Section_name
+syntax ProcedureName
+  = paragraphOrSectionName: ParagraphOrSectionName
+  | paragraphOrSectionName: ParagraphOrSectionName In SectionName
   ;
-syntax In_data_or_file_name = \in: In Id;
+syntax InDataOrFileName = \in: In Id;
 // arithmetic expressions; the conditions in Condition.rsc continue this priority chain below minus.
 // Priorities follow COBOL-85: unary plus and minus, then exponentiation, then multiplication and division,
 // then addition and subtraction; operators of equal priority are evaluated from left to right
@@ -156,11 +156,11 @@ syntax Expression
 syntax Literal
   = \num: Num
   | nonnumeric: Nonnumeric
-  | figurativeConstant: Figurative_constant
+  | figurativeConstant: FigurativeConstant
   ;
 
 
-syntax In_data_or_file_or_mnemonic_name = \in: In Id;
+syntax InDataOrFileOrMnemonicName = \in: In Id;
 syntax Records
   = records: 'RECORDS'
   | record: 'RECORD'
@@ -172,7 +172,7 @@ syntax Values
   | \value: 'VALUE'
   ;
 
-syntax Section_name
+syntax SectionName
   = word: Id
   | integer: Integer
   ;
@@ -182,13 +182,13 @@ syntax Through
   | thru: 'THRU'
   ;
 
-syntax Literal_through_literal = literal: Literal Through_literal?;
+syntax LiteralThroughLiteral = literal: Literal ThroughLiteral?;
 
-syntax Copy_statement
-  = copy: 'COPY' Alt_text_name_literal 'SUPPRESS'? "."
-  | copy: 'COPY' Alt_text_name_literal 'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+ "."
-  | copy: 'COPY' Alt_text_name_literal In Alt_library_name_literal 'SUPPRESS'? "."
-  | copy: 'COPY' Alt_text_name_literal In Alt_library_name_literal 'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+ "."
+syntax CopyStatement
+  = copy: 'COPY' AltTextNameLiteral 'SUPPRESS'? "."
+  | copy: 'COPY' AltTextNameLiteral 'SUPPRESS'? 'REPLACING' CopyStatementByPhrase+ "."
+  | copy: 'COPY' AltTextNameLiteral In AltLibraryNameLiteral 'SUPPRESS'? "."
+  | copy: 'COPY' AltTextNameLiteral In AltLibraryNameLiteral 'SUPPRESS'? 'REPLACING' CopyStatementByPhrase+ "."
   ;
 
 syntax In
@@ -196,12 +196,12 @@ syntax In
   | \in: 'IN'
   ;
 
-syntax Priority_number = \num: Num;
-syntax Copy_statement_by_phrase = by: Copy_operand 'BY' Copy_operand;
+syntax PriorityNumber = \num: Num;
+syntax CopyStatementByPhrase = by: CopyOperand 'BY' CopyOperand;
 // a subscript does not follow a comma, so in `FUNCTION MIN(B, (C + 1) / 2)` the bracket starts the next argument
-syntax Subscript_parentheses = brackets: "," !<< ", " !<< "(" Subscript_expression+ ")";
+syntax SubscriptParentheses = brackets: "," !<< ", " !<< "(" SubscriptExpression+ ")";
 
-syntax Equal_to
+syntax EqualTo
   = equal: 'EQUAL' 'TO'?
   | equalSign: "="
   ;

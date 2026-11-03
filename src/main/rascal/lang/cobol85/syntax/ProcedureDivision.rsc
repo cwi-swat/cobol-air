@@ -15,30 +15,30 @@ keyword CobwordKeywords
   | 'USING'
   ;
 
-syntax Procedure_division
-  = procedureDivision: 'PROCEDURE' 'DIVISION' Using_phrase Paragraphs Section_with_header*
-  | procedureDivision: 'PROCEDURE' 'DIVISION' Using_phrase 'DECLARATIVES' "." Declaratives_content+ 'END' 'DECLARATIVES' "." Paragraphs Section_with_header*
+syntax ProcedureDivision
+  = procedureDivision: 'PROCEDURE' 'DIVISION' UsingPhrase Paragraphs SectionWithHeader*
+  | procedureDivision: 'PROCEDURE' 'DIVISION' UsingPhrase 'DECLARATIVES' "." DeclarativesContent+ 'END' 'DECLARATIVES' "." Paragraphs SectionWithHeader*
   ;
-syntax Using_phrase
-  = copy: Copy_statement
-  | copy: 'USING' Id* Copy_statement
-  | using: Using_data_name_pluslist? "."
+syntax UsingPhrase
+  = copy: CopyStatement
+  | copy: 'USING' Id* CopyStatement
+  | using: UsingDataNamePluslist? "."
   ;
-syntax Section_with_header = sectionHeader: Section_header "." Paragraphs;
-syntax Paragraphs = items: Paragraph_item* Paragraph*;
+syntax SectionWithHeader = sectionHeader: SectionHeader "." Paragraphs;
+syntax Paragraphs = items: ParagraphItem* Paragraph*;
 syntax Paragraph
-  = items: Paragraph_name "." Paragraph_item*
-  | go: Paragraph_name "." 'GO' 'TO'? "."
+  = items: ParagraphName "." ParagraphItem*
+  | go: ParagraphName "." 'GO' 'TO'? "."
   ;
-syntax Paragraph_item
+syntax ParagraphItem
   = sentence: Sentence
-  | replaceDirective: Replace_directive
+  | replaceDirective: ReplaceDirective
   ;
 syntax Sentence
-  = statementList: Statement_list "."+
-  | copy: Statement_list? Copy_statement
+  = statementList: StatementList "."+
+  | copy: StatementList? CopyStatement
   ;
 
-syntax Declaratives_content = sectionHeader: Section_header "." Use_statement "." Paragraphs;
+syntax DeclarativesContent = sectionHeader: SectionHeader "." UseStatement "." Paragraphs;
 
-syntax Section_header = section: Section_name 'SECTION' Priority_number?;
+syntax SectionHeader = section: SectionName 'SECTION' PriorityNumber?;

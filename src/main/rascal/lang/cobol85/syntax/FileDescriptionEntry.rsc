@@ -39,16 +39,16 @@ keyword CobwordKeywords
   | 'VARYING'
   | 'WITH'
   ;
-syntax Label_records_clause_tail
+syntax LabelRecordsClauseTail
   = standard: 'STANDARD'
   | omitted: 'OMITTED'
   | dataName: Id+
   ;
-syntax Alt_fd_sd
+syntax AltFdSd
   = fd: 'FD'
   | sd: 'SD'
   ;
-syntax Record_clause_tail
+syntax RecordClauseTail
   = to: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'?
   | integer: 'CONTAINS'? Integer 'CHARACTERS'?
   | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'?
@@ -60,39 +60,39 @@ syntax Record_clause_tail
   | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'?
   | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Id
   ;
-syntax Alt_characters_records
+syntax AltCharactersRecords
   = characters: 'CHARACTERS'
   | records: 'RECORDS'
   | record: 'RECORD'
   ;
-syntax File_and_sort_description_entry_clause
-  = label: 'LABEL' Records_are Label_records_clause_tail
-  | block: 'BLOCK' 'CONTAINS'? Integer_to? Integer Alt_characters_records?
-  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'?
-  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
-  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
-  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
-  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer
-  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
-  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
-  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+syntax FileAndSortDescriptionEntryClause
+  = label: 'LABEL' RecordsAre LabelRecordsClauseTail
+  | block: 'BLOCK' 'CONTAINS'? IntegerTo? Integer AltCharactersRecords?
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'?
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'AT'? 'BOTTOM' AltDataNameInteger
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'AT'? 'TOP' AltDataNameInteger
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'AT'? 'TOP' AltDataNameInteger 'LINES'? 'AT'? 'BOTTOM' AltDataNameInteger
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger 'LINES'? 'AT'? 'BOTTOM' AltDataNameInteger
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger 'LINES'? 'AT'? 'TOP' AltDataNameInteger
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger 'LINES'? 'AT'? 'TOP' AltDataNameInteger 'LINES'? 'AT'? 'BOTTOM' AltDataNameInteger
   | recording: 'RECORDING' 'MODE'? 'IS'? Id
-  | globalClause: Global_clause
-  | record: 'RECORD' Record_clause_tail
-  | \data: 'DATA' Records_are Id+
-  | \value: 'VALUE' 'OF' Value_of_clause_tail+
+  | globalClause: GlobalClause
+  | record: 'RECORD' RecordClauseTail
+  | \data: 'DATA' RecordsAre Id+
+  | \value: 'VALUE' 'OF' ValueOfClauseTail+
   | codeSet: 'CODE-SET' 'IS'? Id
-  | externalClause: External_clause
+  | externalClause: ExternalClause
   ;
-syntax Records_are = records: Records Are?;
+syntax RecordsAre = records: Records Are?;
 
-syntax Alt_qualified_data_name_literal
+syntax AltQualifiedDataNameLiteral
   = literal: Literal
-  | qualifiedDataName: Qualified_data_name
+  | qualifiedDataName: QualifiedDataName
   ;
-syntax Alt_data_name_integer
+syntax AltDataNameInteger
   = dataName: Id
   | integer: Integer
   ;
 
-syntax Value_of_clause_tail = systemName: Id 'IS'? Alt_qualified_data_name_literal;
+syntax ValueOfClauseTail = systemName: Id 'IS'? AltQualifiedDataNameLiteral;

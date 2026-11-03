@@ -25,13 +25,13 @@ keyword CobwordKeywords
   | 'ZEROS'
   ;
 
-syntax Greater_than_or_equal_to =
+syntax GreaterThanOrEqualTo =
    greaterThan: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'? 
   |  notLessThan: 'NOT' 'LESS' 'THAN'? 
   | greaterThanOrEqual: "\>=" 
   |  notLessThanSign: 'NOT' "\<" 
   ; 
-syntax Greater_than =
+syntax GreaterThan =
   greaterThanSign: "\>" 
   |  greaterThan: 'GREATER' 'THAN'? 
   ; 

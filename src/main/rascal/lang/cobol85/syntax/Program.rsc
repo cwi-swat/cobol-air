@@ -17,13 +17,13 @@ keyword CobwordKeywords
   | 'PROGRAM'
   | 'PROGRAM-ID'
   ;
-syntax Common_initial
+syntax CommonInitial
   = initial: 'INITIAL' 'COMMON'?
   | common: 'COMMON' 'INITIAL'?
   ;
-syntax Nested_cobol_source_program
-  = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Id ('IS'? Common_initial 'PROGRAM'?)? "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Id "."
+syntax NestedCobolSourceProgram
+  = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Id ('IS'? CommonInitial 'PROGRAM'?)? "."? ReplaceDirective* IdentificationDivisionContent EnvironmentDivision? DataDivision? ProcedureDivision? NestedCobolSourceProgram* 'END' 'PROGRAM' Id "."
   ;
-syntax Cobol_source_program
-  = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Id ('IS'? Common_initial 'PROGRAM'?)? "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division? (Nested_cobol_source_program* 'END' 'PROGRAM' Id ".")?
+syntax CobolSourceProgram
+  = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Id ('IS'? CommonInitial 'PROGRAM'?)? "."? ReplaceDirective* IdentificationDivisionContent EnvironmentDivision? DataDivision? ProcedureDivision? (NestedCobolSourceProgram* 'END' 'PROGRAM' Id ".")?
   ;

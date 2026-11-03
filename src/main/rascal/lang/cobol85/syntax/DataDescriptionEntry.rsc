@@ -57,7 +57,7 @@ keyword CobwordKeywords
   | 'ZEROS'
   ;
 
-syntax Integer_to = to: Integer 'TO';
+syntax IntegerTo = to: Integer 'TO';
 
 syntax Picture
   = pic: 'PIC'
@@ -68,14 +68,14 @@ syntax Zeroes
   | zero: 'ZERO'
   | zeroes: 'ZEROES'
   ;
-syntax External_clause = external: 'IS'? 'EXTERNAL';
-syntax Data_description_entry
+syntax ExternalClause = external: 'IS'? 'EXTERNAL';
+syntax DataDescriptionEntry
   = // the follow restriction ensures that digits are eaten up by picture strings.
-   entry: Num!decimal!signedDecimal!signedInteger !>> [.,] Alt_data_name_filler? Data_description_entry_clause* "."?
-  | copy: Copy_statement
-  | replaceDirective: Replace_directive
+   entry: Num!decimal!signedDecimal!signedInteger !>> [.,] AltDataNameFiller? DataDescriptionEntryClause* "."?
+  | copy: CopyStatement
+  | replaceDirective: ReplaceDirective
   ;
-syntax Alt_left_right
+syntax AltLeftRight
   = \left: 'LEFT'
   | \right: 'RIGHT'
   ;
@@ -89,29 +89,29 @@ syntax Synchronized
   | sync: 'SYNC'
   ;
 
-syntax Data_description_entry_clause
-  = externalClause: External_clause
-  | globalClause: Global_clause
-  | synchronized: Synchronized Alt_left_right?
+syntax DataDescriptionEntryClause
+  = externalClause: ExternalClause
+  | globalClause: GlobalClause
+  | synchronized: Synchronized AltLeftRight?
   | blank: 'BLANK' 'WHEN'? Zeroes
-  | sign: Alt_leading_trailing
-  | sign: 'SIGN' 'IS'? Alt_leading_trailing
-  | sign: Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
-  | sign: 'SIGN' 'IS'? Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
-  | values: Values Are? Literal_through_literal+
-  | picture: Picture 'IS'? Picture_string
+  | sign: AltLeadingTrailing
+  | sign: 'SIGN' 'IS'? AltLeadingTrailing
+  | sign: AltLeadingTrailing 'SEPARATE' 'CHARACTER'?
+  | sign: 'SIGN' 'IS'? AltLeadingTrailing 'SEPARATE' 'CHARACTER'?
+  | values: Values Are? LiteralThroughLiteral+
+  | picture: Picture 'IS'? PictureString
   | redefines: 'REDEFINES' Id
   | usage: Usage
   | usage: 'USAGE' 'IS'? Usage
-  | renames: 'RENAMES' Qualified_data_name
-  | renames: 'RENAMES' Qualified_data_name Through Qualified_data_name
+  | renames: 'RENAMES' QualifiedDataName
+  | renames: 'RENAMES' QualifiedDataName Through QualifiedDataName
   | justified: Justified 'RIGHT'?
-  | occursClause: Occurs_clause
+  | occursClause: OccursClause
   ;
 
-syntax Global_clause = global: 'IS'? 'GLOBAL';
+syntax GlobalClause = global: 'IS'? 'GLOBAL';
 
-syntax Alt_leading_trailing
+syntax AltLeadingTrailing
   = trailing: 'TRAILING'
   | leading: 'LEADING'
   ;
@@ -133,16 +133,16 @@ syntax Usage
   | display1: 'DISPLAY-1'
   | computational3: 'COMPUTATIONAL-3'
   ;
-syntax Indexed_by = indexed: 'INDEXED' 'BY'? Id+;
+syntax IndexedBy = indexed: 'INDEXED' 'BY'? Id+;
 
-syntax Alt_data_name_filler
+syntax AltDataNameFiller
   = filler: 'FILLER'
   | dataName: Id
   ;
 
-syntax Occurs_clause
-  = occursDepending: 'OCCURS' Integer_to? Integer 'TIMES'? 'DEPENDING' 'ON'? Qualified_data_name Occurs_clause_key* Indexed_by?
-  | occurs: 'OCCURS' Integer 'TIMES'? Occurs_clause_key* Indexed_by?
+syntax OccursClause
+  = occursDepending: 'OCCURS' IntegerTo? Integer 'TIMES'? 'DEPENDING' 'ON'? QualifiedDataName OccursClauseKey* IndexedBy?
+  | occurs: 'OCCURS' Integer 'TIMES'? OccursClauseKey* IndexedBy?
   ;
 
-syntax Occurs_clause_key = ascendingDescending: Alt_ascending_descending 'KEY'? 'IS'? Qualified_data_name+;
+syntax OccursClauseKey = ascendingDescending: AltAscendingDescending 'KEY'? 'IS'? QualifiedDataName+;
