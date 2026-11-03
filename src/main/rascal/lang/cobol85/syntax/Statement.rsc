@@ -267,13 +267,6 @@ syntax At_end_statement_list = end: 'AT'? 'END' Statement_list;
 
 syntax EndAdd = 'END-ADD'?;
 
-//  | () >> ".";
-syntax Add_statement
-  = addGiving: 'ADD' Id_or_lit+ 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndAdd
-  | addGiving: 'ADD' Id_or_lit+ 'TO' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndAdd
-  | addCorresponding: 'ADD' Corresponding Identifier 'TO' Identifier 'ROUNDED'? On_size_error_statement_list? Not_on_size_error_statement_list? EndAdd
-  | addTo: 'ADD' Id_or_lit+ 'TO' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndAdd
-  ;
 
 syntax Also_phrase = also: 'ALSO' Evaluate_condition;
 
@@ -360,11 +353,6 @@ syntax Search_statement_condition
 
 syntax EndMultiply = 'END-MULTIPLY'?;
 
-// | () >> ".";
-syntax Multiply_statement
-  = multiplyByGiving: 'MULTIPLY' Id_or_lit 'BY' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndMultiply
-  | multiplyBy: 'MULTIPLY' Id_or_lit 'BY' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndMultiply
-  ;
 syntax Alt_statement_list_next_sentence
   = statementList: Statement_list
   | nextSentence: 'NEXT' 'SENTENCE'
@@ -418,14 +406,6 @@ syntax Page_phrase
 
 syntax EndDivide = 'END-DIVIDE'?;
 
-// | () >> ".";
-syntax Divide_statement
-  = divideIntoGiving: 'DIVIDE' Id_or_lit 'INTO' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndDivide
-  | divideInto: 'DIVIDE' Id_or_lit 'INTO' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndDivide
-  | divideByGivingRemainder: 'DIVIDE' Id_or_lit 'BY' Id_or_lit 'GIVING' Identifier 'ROUNDED'? 'REMAINDER' Identifier On_size_error_statement_list? Not_on_size_error_statement_list? EndDivide
-  | divideIntoGivingRemainder: 'DIVIDE' Id_or_lit 'INTO' Id_or_lit 'GIVING' Identifier 'ROUNDED'? 'REMAINDER' Identifier On_size_error_statement_list? Not_on_size_error_statement_list? EndDivide
-  | divideByGiving: 'DIVIDE' Id_or_lit 'BY' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndDivide
-  ;
 syntax Into_identifier = into: 'INTO' Identifier;
 syntax On_overflow_statement_list = overflow: 'ON'? 'OVERFLOW' Statement_list;
 
@@ -448,18 +428,12 @@ syntax EndIf
   | () >> 'WHEN'
   ;
 syntax EndCompute = 'END-COMPUTE'?;
-// | () >> ".";
 syntax EndCall = 'END-CALL'?;
-// | () >> ".";
 syntax EndString = 'END-STRING'?;
-// | () >> ".";
 syntax EndDelete = 'END-DELETE'?;
 syntax EndUnString = 'END-UNSTRING'?;
-// | () >> ".";
 syntax EndWrite = 'END-WRITE'?;
-// | () >> ".";
 syntax EndEvaluate = 'END-EVALUATE'?;
-// | () >> ".";
 syntax EndReturn
   = 'END-RETURN'
   | () >> "."
@@ -467,6 +441,18 @@ syntax EndReturn
 syntax EndStart = 'END-START'?;
 syntax EndRewrite = 'END-REWRITE'?;
 syntax EndRead = 'END-READ'?;
+
+// the phrases of the arithmetic statements, in any order; a checker rejects the combinations COBOL does not allow
+syntax Arithmetic_phrase
+  = to: 'TO' Cobword_rounded+
+  | from: 'FROM' Cobword_rounded+
+  | by: 'BY' Cobword_rounded+
+  | into: 'INTO' Cobword_rounded+
+  | giving: 'GIVING' Cobword_rounded+
+  | remainder: 'REMAINDER' Identifier
+  | sizeError: 'ON'? 'SIZE' 'ERROR' Statement_list
+  | notSizeError: 'NOT' 'ON'? 'SIZE' 'ERROR' Statement_list
+  ;
 
 syntax Statement
   = exitProgram: 'EXIT' 'PROGRAM'
@@ -478,7 +464,7 @@ syntax Statement
   | purge: 'PURGE' File_name
   | merge: 'MERGE' File_name On_key_phrase+ Collating_sequence? 'USING' File_name File_name+ Merge_statement_tail
   | search: Search_statement
-  | compute: 'COMPUTE' Cobword_rounded+ Equal Expression On_size_error_statement_list? Not_on_size_error_statement_list? EndCompute
+  | compute: 'COMPUTE' Cobword_rounded+ Equal Expression Arithmetic_phrase* EndCompute
   | exit: 'EXIT'
   | alter: 'ALTER' Procedure_to_procedure+
   | call: 'CALL' Id_or_lit On_overflow_statement_list? EndCall
@@ -491,7 +477,7 @@ syntax Statement
   | call: 'CALL' Id_or_lit 'USING' Using_parameters 'ON'? 'EXCEPTION' Statement_list 'NOT' 'ON'? 'EXCEPTION' Statement_list On_overflow_statement_list? EndCall
   | \set: 'SET' Set_statement_phrase+
   | stop: 'STOP' Alt_run_literal
-  | divide: Divide_statement
+  | divide: 'DIVIDE' Id_or_lit Arithmetic_phrase* EndDivide
   | display: 'DISPLAY' Id_or_lit+
   | display: 'DISPLAY' Id_or_lit+ 'WITH'? 'NO' 'ADVANCING'
   | display: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords
@@ -499,11 +485,11 @@ syntax Statement
   | read: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? EndRead
   | read: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? 'KEY' 'IS'? Qualified_data_name Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? EndRead
   | string: 'STRING' Delimited_by_phrase+ 'INTO' Identifier With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndString
-  | subtract: Subtract_statement
+  | subtract: 'SUBTRACT' Corresponding? Id_or_lit+ Arithmetic_phrase* EndSubtract
   | move: Move_statement
   | goTo: Go_to_statement
   | goback: 'GOBACK'
-  | add: Add_statement
+  | add: 'ADD' Corresponding? Id_or_lit+ Arithmetic_phrase* EndAdd
   | accept: Accept_statement
   | acceptMessage: 'ACCEPT' File_name 'MESSAGE' 'COUNT'
   | acceptCount: 'ACCEPT' File_name 'COUNT'
@@ -538,7 +524,7 @@ syntax Statement
   | entry: 'ENTRY' Literal Using_data_name_pluslist?
   | cancel: 'CANCEL' Id_or_lit+
   | open: 'OPEN' Open_statement_phrase+
-  | multiply: Multiply_statement
+  | multiply: 'MULTIPLY' Id_or_lit Arithmetic_phrase* EndMultiply
   | rewrite: 'REWRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? EndRewrite
   ;
 
@@ -562,7 +548,6 @@ syntax Send_replacing_line = replacing: 'REPLACING' 'LINE';
 
 syntax No_data_statement = no: 'NO' 'DATA' Statement;
 
-syntax Not_on_size_error_statement_list = not: 'NOT' 'ON'? 'SIZE' 'ERROR' Statement_list;
 syntax On_key_is_phrase
   = ascendingDescending: 'ON'? Alt_ascending_descending Qualified_data_name+
   | ascendingDescending: 'ON'? Alt_ascending_descending 'KEY' 'IS'? Qualified_data_name+
@@ -574,7 +559,7 @@ syntax Date
   | date: 'DATE'
   | dayOfWeek: 'DAY-OF-WEEK'
   ;
-syntax Cobword_rounded = identifier: Identifier 'ROUNDED'?;
+syntax Cobword_rounded = idOrLit: Id_or_lit 'ROUNDED'?;
 
 syntax Statement_list = statement: Statement+ EndStatementList;
 
@@ -618,7 +603,6 @@ syntax Perform_statement_4_alts
   | procedureName: Procedure_name Through_procedure_name? Perform_until_phrase
   ;
 
-syntax On_size_error_statement_list = size: 'ON'? 'SIZE' 'ERROR' Statement_list;
 syntax Alt_all_leading_first
   = \all: 'ALL'
   | first: 'FIRST'
@@ -650,12 +634,6 @@ syntax With_pointer_identifier = pointer: 'WITH'? 'POINTER' Identifier;
 
 syntax EndSubtract = 'END-SUBTRACT'?;
 
-// | () >> ".";
-syntax Subtract_statement
-  = subtractFrom: 'SUBTRACT' Id_or_lit+ 'FROM' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndSubtract
-  | subtractFromGiving: 'SUBTRACT' Id_or_lit+ 'FROM' Id_or_lit 'GIVING' Cobword_rounded+ On_size_error_statement_list? Not_on_size_error_statement_list? EndSubtract
-  | subtractCorresponding: 'SUBTRACT' Corresponding Identifier 'FROM' Identifier 'ROUNDED'? On_size_error_statement_list? Not_on_size_error_statement_list? EndSubtract
-  ;
 
 syntax Inspect_statement
   = inspectTallyingReplacing: 'INSPECT' Identifier 'TALLYING' Tallying_argument+ 'REPLACING' Inspect_replacing_phrase+
