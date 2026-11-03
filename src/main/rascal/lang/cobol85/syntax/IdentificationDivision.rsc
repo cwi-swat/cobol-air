@@ -17,10 +17,10 @@ keyword CobwordKeywords
   | 'SECURITY'
   ;
 
-syntax Identification_division_content = \identification-division-content: Identification_division_phrase*;
+syntax Identification_division_content = identificationDivisionPhrase: Identification_division_phrase*;
 syntax Identification
-  = \identification-c2: 'ID'
-  | \identification-c1: 'IDENTIFICATION'
+  = id: 'ID'
+  | identification: 'IDENTIFICATION'
   ;
   
 lexical MetaDataContentLine
@@ -47,10 +47,10 @@ keyword NoIDKeyword
   ;
 
 syntax Identification_division_phrase
-  = \identification-division-phrase-c5: 'SECURITY' "."? MetaDataContentLine*
-  | \identification-division-phrase-c4: 'DATE-COMPILED' "."? MetaDataContentLine*
-  | \identification-division-phrase-c1: 'AUTHOR' "."? MetaDataContentLine*
-  | \identification-division-phrase-c3: 'DATE-WRITTEN' "."? MetaDataContentLine*
-  | \identification-division-phrase-c6: 'REMARKS' "."? MetaDataContentLine*
-  | \identification-division-phrase-c2: 'INSTALLATION' "."? MetaDataContentLine*
+  = security: 'SECURITY' "."? MetaDataContentLine*
+  | dateCompiled: 'DATE-COMPILED' "."? MetaDataContentLine*
+  | author: 'AUTHOR' "."? MetaDataContentLine*
+  | dateWritten: 'DATE-WRITTEN' "."? MetaDataContentLine*
+  | remarks: 'REMARKS' "."? MetaDataContentLine*
+  | installation: 'INSTALLATION' "."? MetaDataContentLine*
   ;

@@ -42,105 +42,105 @@ keyword CobwordKeywords
   ;
 
 syntax Identifier
-  = \identifier-c2: 'LINAGE-COUNTER'
-  | \identifier-c2: 'LINAGE-COUNTER' In File_name
-  | \identifier-c1: Qualified_data_name Subscript_parentheses*
-  | \identifier-c1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression ":" ")"
-  | \identifier-c1: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression ":" Arithmetic_expression ")"
+  = linageCounter: 'LINAGE-COUNTER'
+  | linageCounter: 'LINAGE-COUNTER' In File_name
+  | qualifiedDataName: Qualified_data_name Subscript_parentheses*
+  | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression ":" ")"
+  | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression ":" Arithmetic_expression ")"
   ;
 syntax Subscript_expression
-  = \subscript-expression-c1: Literal
-  | \subscript-expression-c2: Qualified_data_name
+  = literal: Literal
+  | qualifiedDataName: Qualified_data_name
   | plus: Qualified_data_name "+" Integer
   | minus: Qualified_data_name "-" Integer
   ;
 
-syntax Data_name = \data-name: Alphabetic_user_defined_word;
-syntax Record_name = \record-name: Qualified_data_name;
+syntax Data_name = word: Alphabetic_user_defined_word;
+syntax Record_name = qualifiedDataName: Qualified_data_name;
 
-syntax Index_name = \index-name: Alphabetic_user_defined_word;
-syntax System_name = \system-name: Cobword \ CobwordKeywords;
+syntax Index_name = word: Alphabetic_user_defined_word;
+syntax System_name = word: Cobword \ CobwordKeywords;
 syntax Qualified_data_name
-  = \qualified-data-name-c3: 'LENGTH' 'OF' Identifier
-  | \qualified-data-name-c2: 'ADDRESS' 'OF' Data_name
-  | \qualified-data-name-c1: Data_name In_data_or_file_name*
+  = length: 'LENGTH' 'OF' Identifier
+  | address: 'ADDRESS' 'OF' Data_name
+  | dataName: Data_name In_data_or_file_name*
   ;
 
-syntax Assignment_name = \assignment-name: System_name;
+syntax Assignment_name = systemName: System_name;
 
-syntax Symbolic_character = \symbolic-character: Alphabetic_user_defined_word;
+syntax Symbolic_character = word: Alphabetic_user_defined_word;
 syntax Paragraph_name
-  = \paragraph-name-c1: User_defined_word
-  | \paragraph-name-c2: Integer
+  = word: User_defined_word
+  | integer: Integer
   ;
 syntax Copy_operand
-  = \copy-operand-c3: Literal
-  | \copy-operand-c2: Identifier
-  | \copy-operand-c1: Quoted_pseudo_text
+  = literal: Literal
+  | identifier: Identifier
+  | quotedPseudoText: Quoted_pseudo_text
   // any COBOL word can be replaced, also a reserved word, as in `REPLACING ==...== BY MOVE`
-  | \copy-operand-c4: NotFigurative CobwordKeywords !>> [A-Za-z0-9\-]
+  | \keyword: NotFigurative CobwordKeywords !>> [A-Za-z0-9\-]
   ;
 
 // figurative constants are literals (copy-operand-c3), not reserved words
 syntax NotFigurative = () !>> 'ZERO' !>> 'SPACE' !>> 'QUOTE' !>> 'NULL' !>> 'HIGH-VALUE' !>> 'LOW-VALUE';
 
 syntax Figurative_constant
-  = \figurative-constant-c2: 'ALL' Literal
-  | \figurative-constant-c1: Figurative_constant_simple !>> [A-Za-z0-9\-] // a keyword ends at a word boundary: ZERO-NULL is a data name
+  = \all: 'ALL' Literal
+  | figurativeConstantSimple: Figurative_constant_simple !>> [A-Za-z0-9\-] // a keyword ends at a word boundary: ZERO-NULL is a data name
   ;
-syntax Integer = integer: Num;
+syntax Integer = \num: Num;
 
 syntax Paragraph_or_section_name
-  = \paragraph-or-section-name-c2: Integer
-  | \paragraph-or-section-name-c1: User_defined_word
+  = integer: Integer
+  | word: User_defined_word
   ;
 syntax Alt_reel_unit
-  = \alt-reel-unit-c1: 'REEL'
-  | \alt-reel-unit-c2: 'UNIT'
+  = reel: 'REEL'
+  | unit: 'UNIT'
   ;
 
 syntax Figurative_constant_simple
-  = \figurative-constant-simple-c5: 'SPACES'
-  | \figurative-constant-simple-c11: 'QUOTES'
-  | \figurative-constant-simple-c7: 'HIGH-VALUES'
-  | \figurative-constant-simple-c12: 'NULL'
-  | \figurative-constant-simple-c3: 'ZEROES'
-  | \figurative-constant-simple-c8: 'LOW-VALUE'
-  | \figurative-constant-simple-c6: 'HIGH-VALUE'
-  | \figurative-constant-simple-c1: 'ZERO'
-  | \figurative-constant-simple-c4: 'SPACE'
-  | \figurative-constant-simple-c10: 'QUOTE'
-  | \figurative-constant-simple-c9: 'LOW-VALUES'
-  | \figurative-constant-simple-c2: 'ZEROS'
-  | \figurative-constant-simple-c13: 'NULLS'
+  = spaces: 'SPACES'
+  | quotes: 'QUOTES'
+  | highValues: 'HIGH-VALUES'
+  | null: 'NULL'
+  | zeroes: 'ZEROES'
+  | lowValue: 'LOW-VALUE'
+  | highValue: 'HIGH-VALUE'
+  | zero: 'ZERO'
+  | space: 'SPACE'
+  | quote: 'QUOTE'
+  | lowValues: 'LOW-VALUES'
+  | zeros: 'ZEROS'
+  | nulls: 'NULLS'
   ;
 
-syntax Class_name = \class-name: Alphabetic_user_defined_word;
+syntax Class_name = word: Alphabetic_user_defined_word;
 
 syntax Alt_ascending_descending
-  = \alt-ascending-descending-c2: 'DESCENDING'
-  | \alt-ascending-descending-c1: 'ASCENDING'
+  = descending: 'DESCENDING'
+  | ascending: 'ASCENDING'
   ;
 
-syntax Through_literal = \through-literal: Through Literal;
+syntax Through_literal = through: Through Literal;
 
 syntax Alt_library_name_literal
-  = \alt-library-name-literal-c1: User_defined_word
-  | \alt-library-name-literal-c2: Literal
+  = word: User_defined_word
+  | literal: Literal
   ;
 
-syntax User_defined_word = \user-defined-word: Cobword \ CobwordKeywords;
+syntax User_defined_word = word: Cobword \ CobwordKeywords;
 syntax Alt_text_name_literal
-  = \alt-text-name-literal-c1: User_defined_word
-  | \alt-text-name-literal-c2: Literal
+  = word: User_defined_word
+  | literal: Literal
   ;
-syntax Alphabet_name = \alphabet-name: Alphabetic_user_defined_word;
+syntax Alphabet_name = word: Alphabetic_user_defined_word;
 
 syntax Procedure_name
-  = \procedure-name: Paragraph_or_section_name
-  | \procedure-name: Paragraph_or_section_name In Section_name
+  = paragraphOrSectionName: Paragraph_or_section_name
+  | paragraphOrSectionName: Paragraph_or_section_name In Section_name
   ;
-syntax In_data_or_file_name = \in-data-or-file-name: In Alphabetic_user_defined_word;
+syntax In_data_or_file_name = \in: In Alphabetic_user_defined_word;
 // priorities follow COBOL-85: unary plus and minus, then exponentiation, then multiplication and division,
 // then addition and subtraction; operators of equal priority are evaluated from left to right
 syntax Arithmetic_expression
@@ -159,61 +159,61 @@ syntax Arithmetic_expression
     | minus: Arithmetic_expression "-" Arithmetic_expression
     )
   ;
-syntax Computer_name = \computer-name: System_name;
+syntax Computer_name = systemName: System_name;
 
 syntax Literal
-  = \literal-c2: Num
-  | \literal-c1: Nonnumeric
-  | \literal-c3: Figurative_constant
+  = \num: Num
+  | nonnumeric: Nonnumeric
+  | figurativeConstant: Figurative_constant
   ;
 
-syntax File_name = \file-name: Alphabetic_user_defined_word;
+syntax File_name = word: Alphabetic_user_defined_word;
 
-syntax In_data_or_file_or_mnemonic_name = \in-data-or-file-or-mnemonic-name: In Alphabetic_user_defined_word;
+syntax In_data_or_file_or_mnemonic_name = \in: In Alphabetic_user_defined_word;
 syntax Records
-  = \records-c2: 'RECORDS'
-  | \records-c1: 'RECORD'
+  = records: 'RECORDS'
+  | record: 'RECORD'
   ;
 
-syntax Alphabetic_user_defined_word = \alphabetic-user-defined-word: Cobword \ CobwordKeywords;
+syntax Alphabetic_user_defined_word = word: Cobword \ CobwordKeywords;
 
 syntax Values
-  = \values-c2: 'VALUES'
-  | \values-c1: 'VALUE'
+  = values: 'VALUES'
+  | \value: 'VALUE'
   ;
 
 syntax Section_name
-  = \section-name-c1: User_defined_word
-  | \section-name-c2: Integer
+  = word: User_defined_word
+  | integer: Integer
   ;
 
 syntax Through
-  = \through-c1: 'THROUGH'
-  | \through-c2: 'THRU'
+  = through: 'THROUGH'
+  | thru: 'THRU'
   ;
 
-syntax Literal_through_literal = \literal-through-literal: Literal Through_literal?;
+syntax Literal_through_literal = literal: Literal Through_literal?;
 
 syntax Copy_statement
-  = \copy-statement: 'COPY' Alt_text_name_literal 'SUPPRESS'? "."
-  | \copy-statement: 'COPY' Alt_text_name_literal 'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+ "."
-  | \copy-statement: 'COPY' Alt_text_name_literal In Alt_library_name_literal 'SUPPRESS'? "."
-  | \copy-statement: 'COPY' Alt_text_name_literal In Alt_library_name_literal 'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+ "."
+  = copy: 'COPY' Alt_text_name_literal 'SUPPRESS'? "."
+  | copy: 'COPY' Alt_text_name_literal 'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+ "."
+  | copy: 'COPY' Alt_text_name_literal In Alt_library_name_literal 'SUPPRESS'? "."
+  | copy: 'COPY' Alt_text_name_literal In Alt_library_name_literal 'SUPPRESS'? 'REPLACING' Copy_statement_by_phrase+ "."
   ;
 
 syntax In
-  = \in-c1: 'OF'
-  | \in-c2: 'IN'
+  = of: 'OF'
+  | \in: 'IN'
   ;
 
-syntax Priority_number = \priority-number: Num;
-syntax Copy_statement_by_phrase = \copy-statement-by-phrase: Copy_operand 'BY' Copy_operand;
+syntax Priority_number = \num: Num;
+syntax Copy_statement_by_phrase = by: Copy_operand 'BY' Copy_operand;
 // a subscript does not follow a comma, so in `FUNCTION MIN(B, (C + 1) / 2)` the bracket starts the next argument
-syntax Subscript_parentheses = \subscript-parentheses: "," !<< ", " !<< "(" Subscript_expression+ ")";
+syntax Subscript_parentheses = brackets: "," !<< ", " !<< "(" Subscript_expression+ ")";
 
 syntax Equal_to
-  = \equal-to-c1: 'EQUAL' 'TO'?
-  | \equal-to-c2: "="
+  = equal: 'EQUAL' 'TO'?
+  | equalSign: "="
   ;
 
-syntax Program_name = \program-name: User_defined_word;
+syntax Program_name = word: User_defined_word;

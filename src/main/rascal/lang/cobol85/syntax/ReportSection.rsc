@@ -74,145 +74,145 @@ keyword CobwordKeywords
   | 'WHEN'
   ;
 
-syntax Report_name = \report-name: Data_name;
+syntax Report_name = dataName: Data_name;
 
 // FD PRINT-FILE REPORT IS SALES-REPORT.
 syntax File_and_sort_description_entry_clause
-  = \file-and-sort-description-entry-clause-report: 'REPORT' 'IS'? Report_name+
-  | \file-and-sort-description-entry-clause-report: 'REPORTS' 'ARE'? Report_name+
+  = report: 'REPORT' 'IS'? Report_name+
+  | report: 'REPORTS' 'ARE'? Report_name+
   ;
 
 // the records of a report file are described by its report groups, so its FD has no record descriptions
 syntax File_section_entry
-  = \file-section-entry-report: Alt_fd_sd File_name File_and_sort_description_entry_clause* "."
+  = reportFd: Alt_fd_sd File_name File_and_sort_description_entry_clause* "."
   ;
 
 // the REPORT SECTION is the last section of the data division
-syntax Data_division = \data-division-report: Data_division Report_section;
+syntax Data_division = reportSection: Data_division Report_section;
 
-syntax Report_section = \report-section: 'REPORT' 'SECTION' "." Report_description*;
+syntax Report_section = reportSection: 'REPORT' 'SECTION' "." Report_description*;
 
 syntax Report_description
-  = \report-description: 'RD' Report_name Report_description_clause* "." Report_group_description_entry*
+  = rd: 'RD' Report_name Report_description_clause* "." Report_group_description_entry*
   ;
 
 syntax Report_description_clause
-  = \report-description-clause-global: Global_clause
-  | \report-description-clause-code: 'CODE' 'IS'? Literal
-  | \report-description-clause-control: 'CONTROL' 'IS'? Control_names
-  | \report-description-clause-control: 'CONTROLS' 'ARE'? Control_names
+  = globalClause: Global_clause
+  | code: 'CODE' 'IS'? Literal
+  | control: 'CONTROL' 'IS'? Control_names
+  | control: 'CONTROLS' 'ARE'? Control_names
   // PAGE LIMIT IS 60 LINES HEADING 1 FIRST DETAIL 5 LAST DETAIL 55 FOOTING 58
-  | \report-description-clause-page: 'PAGE' Page_limit? Integer Alt_line_lines? Page_phrase*
+  | page: 'PAGE' Page_limit? Integer Alt_line_lines? Page_phrase*
   ;
 
 // the control data names, from the most to the least major
 syntax Control_names
-  = \control-names-final: 'FINAL' Data_name*
-  | \control-names: Data_name+
+  = final: 'FINAL' Data_name*
+  | dataName: Data_name+
   ;
 
 syntax Page_limit
-  = \page-limit: 'LIMIT' 'IS'?
-  | \page-limit: 'LIMITS' 'ARE'?
+  = limit: 'LIMIT' 'IS'?
+  | limit: 'LIMITS' 'ARE'?
   ;
 
 syntax Alt_line_lines
-  = \alt-line-lines-c1: 'LINE'
-  | \alt-line-lines-c2: 'LINES'
+  = line: 'LINE'
+  | lines: 'LINES'
   ;
 
 // COBOL-85 fixes the order HEADING, FIRST DETAIL, LAST DETAIL, FOOTING; compilers accept any order
 syntax Page_phrase
-  = \page-phrase-heading: 'HEADING' 'IS'? Integer
-  | \page-phrase-first-detail: 'FIRST' 'DETAIL' 'IS'? Integer
-  | \page-phrase-last-detail: 'LAST' 'DETAIL' 'IS'? Integer
-  | \page-phrase-footing: 'FOOTING' 'IS'? Integer
+  = heading: 'HEADING' 'IS'? Integer
+  | first: 'FIRST' 'DETAIL' 'IS'? Integer
+  | last: 'LAST' 'DETAIL' 'IS'? Integer
+  | footing: 'FOOTING' 'IS'? Integer
   ;
 
 // The three formats of the standard (a report group with TYPE at level 01, a group, and an elementary item)
 // share one list of clauses, in any order.
 syntax Report_group_description_entry
   = // the follow restriction ensures that digits are eaten up by picture strings (as in Data_description_entry)
-    \report-group-description-entry: Nat !>> [.,] Alt_data_name_filler? Report_group_clause* "."
-  | \report-group-description-entry-copy: Copy_statement
+    entry: Nat !>> [.,] Alt_data_name_filler? Report_group_clause* "."
+  | copy: Copy_statement
   ;
 
 syntax Report_group_clause
-  = \report-group-clause-line: 'LINE' 'NUMBER'? 'IS'? Line_number
-  | \report-group-clause-next-group: 'NEXT' 'GROUP' 'IS'? Next_group
-  | \report-group-clause-type: 'TYPE' 'IS'? Report_group_type
-  | \report-group-clause-usage: Usage
-  | \report-group-clause-usage: 'USAGE' 'IS'? Usage
-  | \report-group-clause-picture: Picture 'IS'? Picture_string
-  | \report-group-clause-sign: 'SIGN' 'IS'? Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
-  | \report-group-clause-sign: Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
-  | \report-group-clause-justified: Justified 'RIGHT'?
-  | \report-group-clause-blank-when-zero: 'BLANK' 'WHEN'? Zeroes
-  | \report-group-clause-column: 'COLUMN' 'NUMBER'? 'IS'? Integer
-  | \report-group-clause-group-indicate: 'GROUP' 'INDICATE'?
-  | \report-group-clause-source: 'SOURCE' 'IS'? Identifier
-  | \report-group-clause-value: 'VALUE' 'IS'? Literal
+  = line: 'LINE' 'NUMBER'? 'IS'? Line_number
+  | next: 'NEXT' 'GROUP' 'IS'? Next_group
+  | \type: 'TYPE' 'IS'? Report_group_type
+  | usage: Usage
+  | usage: 'USAGE' 'IS'? Usage
+  | picture: Picture 'IS'? Picture_string
+  | sign: 'SIGN' 'IS'? Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
+  | sign: Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
+  | justified: Justified 'RIGHT'?
+  | blank: 'BLANK' 'WHEN'? Zeroes
+  | column: 'COLUMN' 'NUMBER'? 'IS'? Integer
+  | group: 'GROUP' 'INDICATE'?
+  | source: 'SOURCE' 'IS'? Identifier
+  | \value: 'VALUE' 'IS'? Literal
   // SUM A B UPON DETAIL-1 RESET ON FINAL; several SUM clauses can follow each other, the RESET phrase ends the last
-  | \report-group-clause-sum: 'SUM' Identifier+ Upon_phrase? Reset_phrase?
+  | sum: 'SUM' Identifier+ Upon_phrase? Reset_phrase?
   ;
 
 syntax Line_number
-  = \line-number-absolute: Integer
-  | \line-number-absolute-next-page: Integer 'ON'? 'NEXT' 'PAGE'
-  | \line-number-relative: 'PLUS' Integer
+  = integer: Integer
+  | integerNextPage: Integer 'ON'? 'NEXT' 'PAGE'
+  | plus: 'PLUS' Integer
   // COBOL-74
-  | \line-number-next-page: 'NEXT' 'PAGE'
+  | nextPage: 'NEXT' 'PAGE'
   ;
 
 syntax Next_group
-  = \next-group-absolute: Integer
-  | \next-group-relative: 'PLUS' Integer
-  | \next-group-next-page: 'NEXT' 'PAGE'
+  = integer: Integer
+  | plus: 'PLUS' Integer
+  | nextPage: 'NEXT' 'PAGE'
   ;
 
 syntax Report_group_type
-  = \report-group-type-report-heading: 'REPORT' 'HEADING'
-  | \report-group-type-report-heading: 'RH'
-  | \report-group-type-page-heading: 'PAGE' 'HEADING'
-  | \report-group-type-page-heading: 'PH'
-  | \report-group-type-control-heading: 'CONTROL' 'HEADING' Control_name
-  | \report-group-type-control-heading: 'CH' Control_name
-  | \report-group-type-detail: 'DETAIL'
-  | \report-group-type-detail: 'DE'
-  | \report-group-type-control-footing: 'CONTROL' 'FOOTING' Control_name
-  | \report-group-type-control-footing: 'CF' Control_name
-  | \report-group-type-page-footing: 'PAGE' 'FOOTING'
-  | \report-group-type-page-footing: 'PF'
-  | \report-group-type-report-footing: 'REPORT' 'FOOTING'
-  | \report-group-type-report-footing: 'RF'
+  = reportHeading: 'REPORT' 'HEADING'
+  | reportHeading: 'RH'
+  | pageHeading: 'PAGE' 'HEADING'
+  | pageHeading: 'PH'
+  | controlHeading: 'CONTROL' 'HEADING' Control_name
+  | controlHeading: 'CH' Control_name
+  | detail: 'DETAIL'
+  | detail: 'DE'
+  | controlFooting: 'CONTROL' 'FOOTING' Control_name
+  | controlFooting: 'CF' Control_name
+  | pageFooting: 'PAGE' 'FOOTING'
+  | pageFooting: 'PF'
+  | reportFooting: 'REPORT' 'FOOTING'
+  | reportFooting: 'RF'
   ;
 
 syntax Control_name
-  = \control-name-final: 'FINAL'
-  | \control-name: Data_name
+  = final: 'FINAL'
+  | dataName: Data_name
   ;
 
-syntax Upon_phrase = \upon-phrase: 'UPON' Data_name+;
+syntax Upon_phrase = upon: 'UPON' Data_name+;
 
-syntax Reset_phrase = \reset-phrase: 'RESET' 'ON'? Control_name;
+syntax Reset_phrase = reset: 'RESET' 'ON'? Control_name;
 
 // the special registers, one per report, qualified by the report name when there are several reports
 syntax Identifier
-  = \identifier-line-counter: 'LINE-COUNTER'
-  | \identifier-line-counter: 'LINE-COUNTER' In Report_name
-  | \identifier-page-counter: 'PAGE-COUNTER'
-  | \identifier-page-counter: 'PAGE-COUNTER' In Report_name
+  = lineCounter: 'LINE-COUNTER'
+  | lineCounter: 'LINE-COUNTER' In Report_name
+  | pageCounter: 'PAGE-COUNTER'
+  | pageCounter: 'PAGE-COUNTER' In Report_name
   ;
 
 syntax Statement
-  = \statement-initiate: 'INITIATE' Report_name+
+  = initiate: 'INITIATE' Report_name+
   // a report group name (TYPE DETAIL) or a report name (summary reporting)
-  | \statement-generate: 'GENERATE' Qualified_data_name
-  | \statement-terminate: 'TERMINATE' Report_name+
+  | generate: 'GENERATE' Qualified_data_name
+  | terminate: 'TERMINATE' Report_name+
   // only in a USE BEFORE REPORTING procedure
-  | \statement-suppress: 'SUPPRESS' 'PRINTING'?
+  | suppress: 'SUPPRESS' 'PRINTING'?
   ;
 
 syntax Use_statement
-  = \use-statement-before-reporting: 'USE' 'GLOBAL'? 'BEFORE' 'REPORTING' Identifier
+  = useBefore: 'USE' 'GLOBAL'? 'BEFORE' 'REPORTING' Identifier
   ;

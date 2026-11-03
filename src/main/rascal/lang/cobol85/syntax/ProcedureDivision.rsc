@@ -16,29 +16,29 @@ keyword CobwordKeywords
   ;
 
 syntax Procedure_division
-  = \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase Paragraphs Section_with_header*
-  | \procedure-division: 'PROCEDURE' 'DIVISION' Using_phrase 'DECLARATIVES' "." Declaratives_content+ 'END' 'DECLARATIVES' "." Paragraphs Section_with_header*
+  = procedureDivision: 'PROCEDURE' 'DIVISION' Using_phrase Paragraphs Section_with_header*
+  | procedureDivision: 'PROCEDURE' 'DIVISION' Using_phrase 'DECLARATIVES' "." Declaratives_content+ 'END' 'DECLARATIVES' "." Paragraphs Section_with_header*
   ;
 syntax Using_phrase
-  = \using-phrase-c2: Copy_statement
-  | \using-phrase-c2: 'USING' Data_name* Copy_statement
-  | \using-phrase-c1: Using_data_name_pluslist? "."
+  = copy: Copy_statement
+  | copy: 'USING' Data_name* Copy_statement
+  | using: Using_data_name_pluslist? "."
   ;
-syntax Section_with_header = \section-with-header: Section_header "." Paragraphs;
-syntax Paragraphs = paragraphs: Paragraph_item* Paragraph*;
+syntax Section_with_header = sectionHeader: Section_header "." Paragraphs;
+syntax Paragraphs = items: Paragraph_item* Paragraph*;
 syntax Paragraph
-  = \paragraph-c2: Paragraph_name "." Paragraph_item*
-  | \paragraph-c1: Paragraph_name "." 'GO' 'TO'? "."
+  = items: Paragraph_name "." Paragraph_item*
+  | go: Paragraph_name "." 'GO' 'TO'? "."
   ;
 syntax Paragraph_item
-  = \paragraph-item-sentence: Sentence
-  | \paragraph-item-replace: Replace_directive
+  = sentence: Sentence
+  | replaceDirective: Replace_directive
   ;
 syntax Sentence
-  = \sentence-c1: Statement_list "."+
-  | \sentence-c2: Statement_list? Copy_statement
+  = statementList: Statement_list "."+
+  | copy: Statement_list? Copy_statement
   ;
 
-syntax Declaratives_content = \declaratives-content: Section_header "." Use_statement "." Paragraphs;
+syntax Declaratives_content = sectionHeader: Section_header "." Use_statement "." Paragraphs;
 
-syntax Section_header = \section-header: Section_name 'SECTION' Priority_number?;
+syntax Section_header = section: Section_name 'SECTION' Priority_number?;

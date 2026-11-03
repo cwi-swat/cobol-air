@@ -26,14 +26,14 @@ keyword CobwordKeywords
   ;
 
 syntax Greater_than_or_equal_to =
-   \greater-than-or-equal-to-c1: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'? 
-  |  \greater-than-or-equal-to-c2: 'NOT' 'LESS' 'THAN'? 
-  | \greater-than-or-equal-to-c4: "\>=" 
-  |  \greater-than-or-equal-to-c3: 'NOT' "\<" 
+   greaterThan: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'? 
+  |  notLessThan: 'NOT' 'LESS' 'THAN'? 
+  | greaterThanOrEqual: "\>=" 
+  |  notLessThanSign: 'NOT' "\<" 
   ; 
 syntax Greater_than =
-  \greater-than-c2: "\>" 
-  |  \greater-than-c1: 'GREATER' 'THAN'? 
+  greaterThanSign: "\>" 
+  |  greaterThan: 'GREATER' 'THAN'? 
   ; 
 // relations bind stronger than NOT, NOT stronger than AND, and AND stronger than OR (COBOL-85)
 syntax Condition

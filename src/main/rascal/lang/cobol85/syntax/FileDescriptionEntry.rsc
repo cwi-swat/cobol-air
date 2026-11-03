@@ -40,59 +40,59 @@ keyword CobwordKeywords
   | 'WITH'
   ;
 syntax Label_records_clause_tail
-  = \label-records-clause-tail-c1: 'STANDARD'
-  | \label-records-clause-tail-c2: 'OMITTED'
-  | \label-records-clause-tail-c3: Data_name+
+  = standard: 'STANDARD'
+  | omitted: 'OMITTED'
+  | dataName: Data_name+
   ;
 syntax Alt_fd_sd
-  = \alt-fd-sd-c1: 'FD'
-  | \alt-fd-sd-c2: 'SD'
+  = fd: 'FD'
+  | sd: 'SD'
   ;
 syntax Record_clause_tail
-  = \record-clause-tail-c1: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'?
-  | \record-clause-tail-c2: 'CONTAINS'? Integer 'CHARACTERS'?
-  | \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'?
-  | \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
-  | \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'?
-  | \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
-  | \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'?
-  | \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
-  | \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'?
-  | \record-clause-tail-c3: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+  = to: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'?
+  | integer: 'CONTAINS'? Integer 'CHARACTERS'?
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'?
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'?
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'?
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'?
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
   ;
 syntax Alt_characters_records
-  = \alt-characters-records-c1: 'CHARACTERS'
-  | \alt-characters-records-c2: 'RECORDS'
-  | \alt-characters-records-c3: 'RECORD'
+  = characters: 'CHARACTERS'
+  | records: 'RECORDS'
+  | record: 'RECORD'
   ;
 syntax File_and_sort_description_entry_clause
-  = \file-and-sort-description-entry-clause-c5: 'LABEL' Records_are Label_records_clause_tail
-  | \file-and-sort-description-entry-clause-c3: 'BLOCK' 'CONTAINS'? Integer_to? Integer Alt_characters_records?
-  | \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'?
-  | \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
-  | \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
-  | \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
-  | \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer
-  | \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
-  | \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
-  | \file-and-sort-description-entry-clause-c8: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
-  | \file-and-sort-description-entry-clause-c9: 'RECORDING' 'MODE'? 'IS'? Cobword \ CobwordKeywords
-  | \file-and-sort-description-entry-clause-c2: Global_clause
-  | \file-and-sort-description-entry-clause-c4: 'RECORD' Record_clause_tail
-  | \file-and-sort-description-entry-clause-c7: 'DATA' Records_are Data_name+
-  | \file-and-sort-description-entry-clause-c6: 'VALUE' 'OF' Value_of_clause_tail+
-  | \file-and-sort-description-entry-clause-c10: 'CODE-SET' 'IS'? Alphabet_name
-  | \file-and-sort-description-entry-clause-c1: External_clause
+  = label: 'LABEL' Records_are Label_records_clause_tail
+  | block: 'BLOCK' 'CONTAINS'? Integer_to? Integer Alt_characters_records?
+  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'?
+  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
+  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer
+  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
+  | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
+  | recording: 'RECORDING' 'MODE'? 'IS'? Cobword \ CobwordKeywords
+  | globalClause: Global_clause
+  | record: 'RECORD' Record_clause_tail
+  | \data: 'DATA' Records_are Data_name+
+  | \value: 'VALUE' 'OF' Value_of_clause_tail+
+  | codeSet: 'CODE-SET' 'IS'? Alphabet_name
+  | externalClause: External_clause
   ;
-syntax Records_are = \records-are: Records Are?;
+syntax Records_are = records: Records Are?;
 
 syntax Alt_qualified_data_name_literal
-  = \alt-qualified-data-name-literal-c2: Literal
-  | \alt-qualified-data-name-literal-c1: Qualified_data_name
+  = literal: Literal
+  | qualifiedDataName: Qualified_data_name
   ;
 syntax Alt_data_name_integer
-  = \alt-data-name-integer-c1: Data_name
-  | \alt-data-name-integer-c2: Integer
+  = dataName: Data_name
+  | integer: Integer
   ;
 
-syntax Value_of_clause_tail = \value-of-clause-tail: System_name 'IS'? Alt_qualified_data_name_literal;
+syntax Value_of_clause_tail = systemName: System_name 'IS'? Alt_qualified_data_name_literal;

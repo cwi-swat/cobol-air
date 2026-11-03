@@ -52,72 +52,72 @@ keyword CobwordKeywords
   ;
 
 syntax File_name_position
-  = \file-name-position: File_name
-  | \file-name-position: File_name 'POSITION' Integer
+  = fileName: File_name
+  | fileName: File_name 'POSITION' Integer
   ;
 syntax Record_delimiter_name
-  = \record-delimiter-name-c2: Assignment_name
-  | \record-delimiter-name-c1: 'STANDARD-1'
+  = assignmentName: Assignment_name
+  | standard1: 'STANDARD-1'
   ;
 syntax Record_sort
-  = \record-sort-c2: 'SORT'
-  | \record-sort-c1: 'RECORD'
-  | \record-sort-c3: 'SORT-MERGE'
+  = sort: 'SORT'
+  | record: 'RECORD'
+  | sortMerge: 'SORT-MERGE'
   ;
 syntax Alt_indexed_relative_sequential
-  = \alt-indexed-relative-sequential-c2: 'RELATIVE'
-  | \alt-indexed-relative-sequential-c1: 'INDEXED'
-  | \alt-indexed-relative-sequential-c3: 'SEQUENTIAL'
+  = relative: 'RELATIVE'
+  | indexed: 'INDEXED'
+  | sequential: 'SEQUENTIAL'
   ;
 syntax Qsam_or_sam_or_vsam_i_o_control_entries
-  = \qsam-or-sam-or-vsam-i-o-control-entries-c1: 'RERUN' 'ON' Alt_assignment_name_file_name 'EVERY'? Every_phrase 'OF'? File_name
+  = rerun: 'RERUN' 'ON' Alt_assignment_name_file_name 'EVERY'? Every_phrase 'OF'? File_name
   // SAME SORT AREA FOR SQ-FS1 ST-FS1,
-  | \qsam-or-sam-or-vsam-i-o-control-entries-c2: 'SAME' Record_sort? 'AREA'? 'FOR'? File_name File_name+
-  | \qsam-or-sam-or-vsam-i-o-control-entries-c4: 'APPLY' 'WRITE-ONLY' 'ON'? File_name+
-  | \qsam-or-sam-or-vsam-i-o-control-entries-c3: 'MULTIPLE' 'FILE' 'TAPE'? 'CONTAINS'? File_name_position+
+  | same: 'SAME' Record_sort? 'AREA'? 'FOR'? File_name File_name+
+  | apply: 'APPLY' 'WRITE-ONLY' 'ON'? File_name+
+  | multiple: 'MULTIPLE' 'FILE' 'TAPE'? 'CONTAINS'? File_name_position+
   ;
 syntax Every_phrase
-  = \every-phrase-c2: 'END' 'OF'? Alt_reel_unit
-  | \every-phrase-c1: Integer 'RECORDS'
+  = end: 'END' 'OF'? Alt_reel_unit
+  | records: Integer 'RECORDS'
   ;
 syntax Fce_phrase
-  = \fce-phrase-c4: 'RECORD' 'KEY'? 'IS'? Qualified_data_name
-  | \fce-phrase-c3: 'ACCESS' 'MODE'? 'IS'? Alt_sequential_random_dynamic
-  | \fce-phrase-c3: 'ACCESS' 'MODE'? 'IS'? Alt_sequential_random_dynamic 'RELATIVE' 'KEY'? 'IS'? Qualified_data_name
-  | \fce-phrase-c9: 'RECORD' 'DELIMITER' 'IS'? Record_delimiter_name
-  | \fce-phrase-c7: 'FILE'? 'STATUS' 'IS'? Qualified_data_name Qualified_data_name?
-  | \fce-phrase-c8: 'PADDING' 'CHARACTER'? 'IS'? Alt_qualified_data_name_literal
-  | \fce-phrase-c2: Alt_indexed_relative_sequential
-  | \fce-phrase-c2: 'ORGANIZATION' 'IS'? Alt_indexed_relative_sequential
-  | \fce-phrase-c5: Password_clause
-  | \fce-phrase-c6: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause?
-  | \fce-phrase-c6: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause? 'WITH'? 'DUPLICATES'
-  | \fce-phrase-c1: 'RESERVE' Integer Areas?
+  = record: 'RECORD' 'KEY'? 'IS'? Qualified_data_name
+  | access: 'ACCESS' 'MODE'? 'IS'? Alt_sequential_random_dynamic
+  | access: 'ACCESS' 'MODE'? 'IS'? Alt_sequential_random_dynamic 'RELATIVE' 'KEY'? 'IS'? Qualified_data_name
+  | recordDelimiter: 'RECORD' 'DELIMITER' 'IS'? Record_delimiter_name
+  | status: 'FILE'? 'STATUS' 'IS'? Qualified_data_name Qualified_data_name?
+  | padding: 'PADDING' 'CHARACTER'? 'IS'? Alt_qualified_data_name_literal
+  | organization: Alt_indexed_relative_sequential
+  | organization: 'ORGANIZATION' 'IS'? Alt_indexed_relative_sequential
+  | passwordClause: Password_clause
+  | alternate: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause?
+  | alternate: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause? 'WITH'? 'DUPLICATES'
+  | reserve: 'RESERVE' Integer Areas?
   ;
-syntax Password_clause = \password-clause: 'PASSWORD' 'IS'? Data_name;
+syntax Password_clause = password: 'PASSWORD' 'IS'? Data_name;
 syntax Alt_assignment_name_literal
-  = \alt-assignment-name-literal-c2: Literal
-  | \alt-assignment-name-literal-c1: Assignment_name
+  = literal: Literal
+  | assignmentName: Assignment_name
   ;
 syntax Alt_assignment_name_file_name
-  = \alt-assignment-name-file-name-c1: Assignment_name
-  | \alt-assignment-name-file-name-c2: File_name
+  = assignmentName: Assignment_name
+  | fileName: File_name
   ;
 syntax File_control_entry
   // the clauses may come in any order, also before ASSIGN (as in `SELECT SQ-FS4 RESERVE 1 ASSIGN "SEQ1.DAT"`)
-  = \file-control-entry: 'SELECT' 'OPTIONAL'? File_name Fce_phrase* 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* "."
-  | \file-control-entry-copy: Copy_statement
+  = select: 'SELECT' 'OPTIONAL'? File_name Fce_phrase* 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* "."
+  | copy: Copy_statement
   ;
 
 syntax Alt_sequential_random_dynamic
-  = \alt-sequential-random-dynamic-c2: 'RANDOM'
-  | \alt-sequential-random-dynamic-c3: 'DYNAMIC'
-  | \alt-sequential-random-dynamic-c1: 'SEQUENTIAL'
+  = random: 'RANDOM'
+  | \dynamic: 'DYNAMIC'
+  | sequential: 'SEQUENTIAL'
   ;
 
 syntax Areas
-  = \areas-c2: 'AREAS'
-  | \areas-c1: 'AREA'
+  = areas: 'AREAS'
+  | area: 'AREA'
   ;
   
-syntax Same_area = \same-area: 'SAME' Record_sort 'AREA'? 'FOR'? File_name File_name+;
+syntax Same_area = same: 'SAME' Record_sort 'AREA'? 'FOR'? File_name File_name+;

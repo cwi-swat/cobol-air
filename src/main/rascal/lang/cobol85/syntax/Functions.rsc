@@ -17,12 +17,12 @@ keyword CobwordKeywords
   ;
 
 syntax Identifier
-  = \function-identifier: 'FUNCTION' Function_name !>> [A-Za-z0-9\-] Function_arguments? Reference_modification?
+  = \function: 'FUNCTION' Function_name !>> [A-Za-z0-9\-] Function_arguments? Reference_modification?
   ;
 
-syntax Function_arguments = \function-arguments: "(" Function_argument+ ")";
+syntax Function_arguments = brackets: "(" Function_argument+ ")";
 
-syntax Function_argument = \function-argument: Arithmetic_expression EndFunctionArgument;
+syntax Function_argument = arithmeticExpression: Arithmetic_expression EndFunctionArgument;
 
 // longest match: an argument can not be followed by a binary operator or a subscript, so `MAX(1 - 2)` and `MAX(A (1))`
 // have one argument. A sign glued to its number starts the next argument, so `MAX(-1, -2)` has two.
@@ -34,9 +34,9 @@ syntax EndFunctionArgument
   ;
 
 // the same amendment introduced ALL subscripts, to pass all elements of a table to a function: `FUNCTION MAX(T(ALL))`
-syntax Subscript_expression = \subscript-expression-all: 'ALL';
+syntax Subscript_expression = \all: 'ALL';
 
-syntax Reference_modification = \reference-modification: "(" Arithmetic_expression ":" Arithmetic_expression? ")";
+syntax Reference_modification = brackets: "(" Arithmetic_expression ":" Arithmetic_expression? ")";
 
 syntax Function_name
   = 'ACOS'
