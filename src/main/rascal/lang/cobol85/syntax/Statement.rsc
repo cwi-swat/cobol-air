@@ -196,9 +196,8 @@ syntax EndSearch
   ;
 
 syntax Search_statement
-  = searchAll: 'SEARCH' 'ALL' Identifier At_end_statement_list? 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence EndSearch
-  | search: 'SEARCH' Identifier At_end_statement_list? When_condition_stats+ EndSearch
-  | search: 'SEARCH' Identifier 'VARYING' Identifier At_end_statement_list? When_condition_stats+ EndSearch
+  = searchAll: 'SEARCH' 'ALL' Identifier Io_phrase* 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence EndSearch
+  | search: 'SEARCH' Identifier Io_phrase* When_condition_stats+ EndSearch
   ;
 syntax Perform_until_phrase = until: With_test? 'UNTIL' Expression;
 syntax Search_statement_condition_tail = and: 'AND' Search_statement_condition;
@@ -254,7 +253,6 @@ syntax Alt_beginning_ending
   ;
 
 syntax When_phrase = \when: 'WHEN' Evaluate_phrase When_phrase_also_phrase*;
-syntax From_identifier = from: 'FROM' Identifier;
 
 syntax Open_statement_phrase
   = io: 'I-O' File_name+
@@ -263,7 +261,6 @@ syntax Open_statement_phrase
   | \extend: 'EXTEND' File_name+
   ;
 
-syntax At_end_statement_list = end: 'AT'? 'END' Statement_list;
 
 syntax EndAdd = 'END-ADD'?;
 
@@ -317,7 +314,6 @@ syntax Alt_all_leading
   ;
 syntax Using_data_name_pluslist = using: 'USING' Data_name+;
 
-syntax Not_at_end_statement_list = not: 'NOT' 'AT'? 'END' Statement_list;
 
 syntax Alt_file_names_i_o
   = fileName: File_name+
@@ -383,7 +379,6 @@ syntax Sort_statement_in
   | input: 'INPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?
   ;
 
-syntax Invalid_key_statement_list = invalid: 'INVALID' 'KEY'? Statement_list;
 syntax When_condition_stats = \when: 'WHEN' Expression Alt_statement_list_next_sentence;
 syntax Inspect_replacing_argument = by: Inspect_by_argument 'BY' Inspect_by_argument Before_after_phrase*;
 // a BY CONTENT or BY REFERENCE phrase applies to all the parameters that follow it, up to the next BY phrase;
@@ -406,7 +401,6 @@ syntax Page_phrase
 
 syntax EndDivide = 'END-DIVIDE'?;
 
-syntax Into_identifier = into: 'INTO' Identifier;
 syntax On_overflow_statement_list = overflow: 'ON'? 'OVERFLOW' Statement_list;
 
 syntax With_test = \test: 'WITH'? 'TEST' Alt_before_after;
@@ -454,13 +448,36 @@ syntax Arithmetic_phrase
   | notSizeError: 'NOT' 'ON'? 'SIZE' 'ERROR' Statement_list
   ;
 
+// the phrases of the input-output statements, in any order; a checker rejects the combinations COBOL does not allow
+syntax Io_phrase
+  = into: 'INTO' Identifier
+  | from: 'FROM' Identifier
+  | key: 'KEY' 'IS'? Qualified_data_name
+  | keyRelation: 'KEY' 'IS'? Rel_op Qualified_data_name
+  | varying: 'VARYING' Identifier
+  | advancing: Alt_before_after 'ADVANCING'? Page_phrase
+  | message: 'MESSAGE'
+  | segment: 'SEGMENT'
+  | withEsi: 'WITH' 'ESI'
+  | withEmi: 'WITH' 'EMI'
+  | withEgi: 'WITH' 'EGI'
+  | with: 'WITH' Identifier
+  | replacing: 'REPLACING' 'LINE'
+  | atEnd: 'AT'? 'END' Statement_list
+  | notAtEnd: 'NOT' 'AT'? 'END' Statement_list
+  | invalidKey: 'INVALID' 'KEY'? Statement_list
+  | notInvalidKey: 'NOT' 'INVALID' 'KEY'? Statement_list
+  | endOfPage: 'AT'? End_of_page Statement_list
+  | notEndOfPage: 'NOT' 'AT'? End_of_page Statement_list
+  | noData: 'NO' 'DATA' Statement
+  ;
+
 syntax Statement
   = exitProgram: 'EXIT' 'PROGRAM'
-  | receive: 'RECEIVE' File_name 'MESSAGE'? 'INTO' Identifier No_data_statement?
-  | receive: 'RECEIVE' File_name 'SEGMENT' 'INTO' Identifier No_data_statement?
+  | receive: 'RECEIVE' File_name Io_phrase*
   | enable: 'ENABLE' Communication_io_mode File_name Communication_key_phrase?
   | disable: 'DISABLE' Communication_io_mode File_name Communication_key_phrase?
-  | send: 'SEND' File_name From_identifier? Send_with_phrase? Send_advancing_phrase? Send_replacing_line?
+  | send: 'SEND' File_name Io_phrase*
   | purge: 'PURGE' File_name
   | merge: 'MERGE' File_name On_key_phrase+ Collating_sequence? 'USING' File_name File_name+ Merge_statement_tail
   | search: Search_statement
@@ -482,8 +499,7 @@ syntax Statement
   | display: 'DISPLAY' Id_or_lit+ 'WITH'? 'NO' 'ADVANCING'
   | display: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords
   | display: 'DISPLAY' Id_or_lit+ 'UPON' Cobword \ CobwordKeywords 'WITH'? 'NO' 'ADVANCING'
-  | read: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? EndRead
-  | read: 'READ' File_name 'NEXT'? 'RECORD'? Into_identifier? 'KEY' 'IS'? Qualified_data_name Invalid_key_statement_list? Not_invalid_key_statement_list? At_end_statement_list? Not_at_end_statement_list? EndRead
+  | read: 'READ' File_name 'NEXT'? 'RECORD'? Io_phrase* EndRead
   | string: 'STRING' Delimited_by_phrase+ 'INTO' Identifier With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndString
   | subtract: 'SUBTRACT' Corresponding? Id_or_lit+ Arithmetic_phrase* EndSubtract
   | move: Move_statement
@@ -493,11 +509,11 @@ syntax Statement
   | accept: Accept_statement
   | acceptMessage: 'ACCEPT' File_name 'MESSAGE' 'COUNT'
   | acceptCount: 'ACCEPT' File_name 'COUNT'
-  | delete: 'DELETE' File_name 'RECORD'? Invalid_key_statement_list? Not_invalid_key_statement_list? EndDelete
+  | delete: 'DELETE' File_name 'RECORD'? Io_phrase* EndDelete
   | initialize: 'INITIALIZE' Identifier+
   | initialize: 'INITIALIZE' Identifier+ 'REPLACING' Initialize_replacing_argument+
   | \continue: 'CONTINUE'
-  | release: 'RELEASE' Record_name From_identifier?
+  | release: 'RELEASE' Record_name Io_phrase*
   | unstring: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
   | unstring: 'UNSTRING' Identifier 'INTO' Unstring_statement_dst+ With_pointer_identifier? 'TALLYING' 'IN'? Identifier On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
   | unstring: 'UNSTRING' Identifier 'DELIMITED' 'BY'? 'ALL'? NotAll Id_or_lit Or_all_id_or_lit* 'INTO' Unstring_statement_dst+ With_pointer_identifier? On_overflow_statement_list? Not_on_overflow_statement_list? EndUnString
@@ -507,25 +523,17 @@ syntax Statement
   | inspect: Inspect_statement
   | sort: 'SORT' File_name On_key_is_phrase+ Collating_sequence? Sort_statement_in Sort_statement_out
   | sort: 'SORT' File_name On_key_is_phrase+ 'WITH'? 'DUPLICATES' 'IN'? 'ORDER'? Collating_sequence? Sort_statement_in Sort_statement_out
-  | write: 'WRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? EndWrite
-  | write: 'WRITE' Record_name From_identifier? 'NOT' 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list? EndWrite
-  | write: 'WRITE' Record_name From_identifier? 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list? EndWrite
-  | write: 'WRITE' Record_name From_identifier? 'AT'? End_of_page Statement_list 'NOT' 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list? EndWrite
-  | write: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase Invalid_key_statement_list? Not_invalid_key_statement_list? EndWrite
-  | write: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'NOT' 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list? EndWrite
-  | write: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list? EndWrite
-  | write: 'WRITE' Record_name From_identifier? Alt_before_after 'ADVANCING'? Page_phrase 'AT'? End_of_page Statement_list 'NOT' 'AT'? End_of_page Statement_list Invalid_key_statement_list? Not_invalid_key_statement_list? EndWrite
+  | write: 'WRITE' Record_name Io_phrase* EndWrite
   | evaluate: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ EndEvaluate
   | evaluate: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ 'WHEN' 'OTHER' Statement_list EndEvaluate
-  | \start: 'START' File_name Invalid_key_statement_list? Not_invalid_key_statement_list? EndStart
-  | \start: 'START' File_name 'KEY' 'IS'? Rel_op Qualified_data_name Invalid_key_statement_list? Not_invalid_key_statement_list? EndStart
-  | \return: 'RETURN' File_name 'RECORD'? Into_identifier? 'AT'? 'END' Statement_list Not_at_end_statement_list? EndReturn
+  | \start: 'START' File_name Io_phrase* EndStart
+  | \return: 'RETURN' File_name 'RECORD'? Io_phrase* EndReturn
   | perform: Perform_statement
   | entry: 'ENTRY' Literal Using_data_name_pluslist?
   | cancel: 'CANCEL' Id_or_lit+
   | open: 'OPEN' Open_statement_phrase+
   | multiply: 'MULTIPLY' Id_or_lit Arithmetic_phrase* EndMultiply
-  | rewrite: 'REWRITE' Record_name From_identifier? Invalid_key_statement_list? Not_invalid_key_statement_list? EndRewrite
+  | rewrite: 'REWRITE' Record_name Io_phrase* EndRewrite
   ;
 
 syntax Communication_io_mode
@@ -535,18 +543,9 @@ syntax Communication_io_mode
 
 syntax Communication_key_phrase = key: 'WITH'? 'KEY' Id_or_lit;
 
-syntax Send_with_phrase
-  = withEsi: 'WITH' 'ESI'
-  | withEmi: 'WITH' 'EMI'
-  | withEgi: 'WITH' 'EGI'
-  | with: 'WITH' Identifier
-  ;
 
-syntax Send_advancing_phrase = beforeAfter: Alt_before_after 'ADVANCING'? Page_phrase;
 
-syntax Send_replacing_line = replacing: 'REPLACING' 'LINE';
 
-syntax No_data_statement = no: 'NO' 'DATA' Statement;
 
 syntax On_key_is_phrase
   = ascendingDescending: 'ON'? Alt_ascending_descending Qualified_data_name+
@@ -614,7 +613,6 @@ syntax Alt_exception_error
   | error: 'ERROR'
   ;
 
-syntax Not_invalid_key_statement_list = not: 'NOT' 'INVALID' 'KEY'? Statement_list;
 
 syntax Go_to_statement
   = goMoreLabels: 'GO' 'TO'? 'MORE-LABELS'
