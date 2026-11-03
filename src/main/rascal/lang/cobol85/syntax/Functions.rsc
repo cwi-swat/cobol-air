@@ -26,7 +26,7 @@ syntax FunctionArgument = expression: Expression ! inClass ! notInClass ! zero !
 // have one argument. A sign glued to its number starts the next argument, so `MAX(-1, -2)` has two.
 // After a comma a bracket starts the next argument, so `MIN(A, (1 + 2) / 3)` has two.
 syntax EndFunctionArgument
-    = () !>> [*/(] !>> "+ " !>> "- " !>> "+\n" !>> "-\n"
+    = () !>> [*/(] !>> "+ " !>> "- " !>> "+\n" !>> "-\n" !>> "+\uE000" !>> "-\uE000"
     | "," << () >> "("
     | ", " << () >> "("
     ;

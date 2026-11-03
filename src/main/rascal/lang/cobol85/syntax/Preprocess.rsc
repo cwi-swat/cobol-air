@@ -6,9 +6,10 @@ import IO;
 
 str preprocess(str src) {
     list[str] lines = split("\n", src);
-    // the sequence area (columns 1-6) and the identification area (from column 73) become blanks, in place, so that
-    // every line keeps its length and all offsets stay the same, also for lines that are shorter or longer than 80
-    lines = [blank(line[..6]) + line[6..72] + blank(line[72..]) | str line <- lines];
+    // the sequence area (columns 1-6) and the identification area (from column 73) are filled with the margin
+    // character, in place, so that every line keeps its length and all offsets stay the same, also for lines that are
+    // shorter or longer than 80. The grammar reads the margins as layout and highlights them as comments.
+    lines = [margin(line[..6]) + line[6..72] + margin(line[72..]) | str line <- lines];
 
     // Debugging lines (`D` in the indicator column) are code when the program is compiled `WITH DEBUGGING MODE`
     // (a clause of SOURCE-COMPUTER), and comment lines otherwise.
@@ -26,7 +27,8 @@ str preprocess(str src) {
     for (int i <- index(lines)) {
         str line = lines[i];
         str ind = indicator(line);
-        str body = line[7..];
+        // the code area, without the margin
+        str body = line[7..72];
 
         if (ind in { "*", "/" } || trim(body) == "") {
             continue;
@@ -50,9 +52,13 @@ str preprocess(str src) {
     return intercalate("\n", lines) + "\n";
 }
 
-private str rtrim(str s) = /^<body:.*?>\s*$/ := s ? body : s;
+// without trailing spaces and margin characters
+private str rtrim(str s) = /^<body:.*?>[\s\uE000]*$/ := s ? body : s;
 
-private str blank(str s) = left("", size(s));
+// a private use character, so the margins never mix with spaces or code: this keeps the margin layout unambiguous
+private str marginChar = "\uE000";
+
+private str margin(str s) = left("", size(s), marginChar);
 
 // column 7; a line that is too short to have one has a blank indicator
 private str indicator(str line) = size(line) > 6 ? line[6] : " ";

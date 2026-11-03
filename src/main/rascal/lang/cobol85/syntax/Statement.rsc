@@ -607,7 +607,7 @@ syntax WithNoRewind = no: 'WITH'? 'NO' 'REWIND';
 syntax TallyingForIdOrLit = idOrLit: NotAll IdOrLit BeforeAfterPhrase*;
 
 // operands of INSPECT and UNSTRING can not be ALL literals; ALL is the keyword of the statement
-syntax NotAll = () !>> 'ALL ' !>> 'ALL\"';
+syntax NotAll = () !>> 'ALL ' !>> 'ALL\"' !>> 'ALL\uE000';
 
 syntax AltAllLeadingFirst
     = \all: 'ALL'
@@ -663,7 +663,7 @@ syntax AltProceduresAllProcedures
 syntax AllReferencesOf = \all: 'ALL' 'REFERENCES'? 'OF'? NotReferences Identifier;
 
 // REFERENCES is the keyword, not a data name qualified by the identifier (`REFERENCES OF FREC`)
-syntax NotReferences = () !>> 'REFERENCES ' !>> 'REFERENCES\n';
+syntax NotReferences = () !>> 'REFERENCES ' !>> 'REFERENCES\n' !>> 'REFERENCES\uE000';
 
 syntax AltReversedWithNoRewind
     = reversed: 'REVERSED'
