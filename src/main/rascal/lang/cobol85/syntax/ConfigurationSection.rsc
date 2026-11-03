@@ -20,7 +20,6 @@ keyword CobwordKeywords
   | 'MODE'
   | 'MODULES'
   | 'NATIVE'
-  | 'OBJECT-COMPUTER'
   | 'OFF'
   | 'ON'
   | 'PROGRAM'
@@ -28,8 +27,6 @@ keyword CobwordKeywords
   | 'SEQUENCE'
   | 'SIGN'
   | 'SIZE'
-  | 'SOURCE-COMPUTER'
-  | 'SPECIAL-NAMES'
   | 'STANDARD-1'
   | 'STANDARD-2'
   | 'STATUS'
@@ -53,16 +50,13 @@ syntax Special_names_paragraph_phrase =
    systemName: Id Special_names_paragraph_phrase_tail 
   ; 
 syntax Special_names_paragraph_status_phrase =
-   \on: 'ON' 'STATUS'? 'IS'? Expression
- |  \on: 'ON' 'STATUS'? 'IS'? Expression 'OFF' 'STATUS'? 'IS'? Expression 
-  |  \off: 'OFF' 'STATUS'? 'IS'? Expression
- |  \off: 'OFF' 'STATUS'? 'IS'? Expression 'ON' 'STATUS'? 'IS'? Expression 
+   \on: 'ON' 'STATUS'? 'IS'? Expression ('OFF' 'STATUS'? 'IS'? Expression)?
+  |  \off: 'OFF' 'STATUS'? 'IS'? Expression ('ON' 'STATUS'? 'IS'? Expression)?
   ; 
 syntax Special_names_paragraph_clause =
    decimalPoint: 'DECIMAL-POINT' 'IS'? 'COMMA' 
   |  class: 'CLASS' Id 'IS'? Literal_through_literal+ 
-  |  symbolic: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+
- |  symbolic: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ 'IN' Id 
+  |  symbolic: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ ('IN' Id)?
   |  currency: 'CURRENCY' 'SIGN'? 'IS'? Literal 
   |  alphabet: 'ALPHABET' Id 'IS'? Alphabet_type 
   ; 
@@ -77,25 +71,13 @@ syntax Symbolic_character_mapping =
   symbolicCharacter: Id+ Are? Integer+ 
   ;
 
-syntax Configuration_section_paragraph =
-   objectComputer: 'OBJECT-COMPUTER' "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Id "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Id 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Id 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Id 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Id 'MEMORY' 'SIZE'? Integer Memory_size_type "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Id 'MEMORY' 'SIZE'? Integer Memory_size_type 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Id 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Id 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id 'SEGMENT-LIMIT' 'IS'? Priority_number  "." 
-  |  sourceComputer: 'SOURCE-COMPUTER' "."
- |  sourceComputer: 'SOURCE-COMPUTER' "." Id "."
- |  sourceComputer: 'SOURCE-COMPUTER' "." Id 'WITH'? 'DEBUGGING' 'MODE'  "." 
-  |  specialNames: 'SPECIAL-NAMES' "." Special_names_paragraph_phrase* Special_names_paragraph_clause*  "."? 
-  // the contents of a paragraph can come from a copybook
-  |  objectComputer: 'OBJECT-COMPUTER' "." Copy_statement
-  |  sourceComputer: 'SOURCE-COMPUTER' "." Copy_statement
-  |  specialNames: 'SPECIAL-NAMES' "." Copy_statement
-  ; 
+// the clauses of SOURCE-COMPUTER and OBJECT-COMPUTER, in any order; a checker rejects the combinations COBOL does not allow
+syntax Computer_clause
+  = memory: 'MEMORY' 'SIZE'? Integer Memory_size_type
+  | sequence: 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id
+  | segmentLimit: 'SEGMENT-LIMIT' 'IS'? Priority_number
+  | debugging: 'WITH'? 'DEBUGGING' 'MODE'
+  ;
 syntax Alphabet_type =
   native: 'NATIVE' 
   | ebcdic: 'EBCDIC' 

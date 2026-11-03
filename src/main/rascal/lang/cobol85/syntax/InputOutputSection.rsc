@@ -10,7 +10,6 @@ keyword CobwordKeywords
   | 'APPLY'
   | 'AREA'
   | 'AREAS'
-  | 'ASSIGN'
   | 'CHARACTER'
   | 'CONTAINS'
   | 'DELIMITER'
@@ -27,7 +26,6 @@ keyword CobwordKeywords
   | 'MULTIPLE'
   | 'OF'
   | 'ON'
-  | 'OPTIONAL'
   | 'ORGANIZATION'
   | 'PADDING'
   | 'PASSWORD'
@@ -39,22 +37,17 @@ keyword CobwordKeywords
   | 'RERUN'
   | 'RESERVE'
   | 'SAME'
-  | 'SELECT'
   | 'SEQUENTIAL'
   | 'SORT'
   | 'SORT-MERGE'
   | 'STANDARD-1'
   | 'STATUS'
   | 'TAPE'
-  | 'TO'
   | 'WITH'
   | 'WRITE-ONLY'
   ;
 
-syntax File_name_position
-  = fileName: Id
-  | fileName: Id 'POSITION' Integer
-  ;
+syntax File_name_position = fileName: Id ('POSITION' Integer)?;
 syntax Record_delimiter_name
   = assignmentName: Id
   | standard1: 'STANDARD-1'
@@ -69,8 +62,9 @@ syntax Alt_indexed_relative_sequential
   | indexed: 'INDEXED'
   | sequential: 'SEQUENTIAL'
   ;
-syntax Qsam_or_sam_or_vsam_i_o_control_entries
-  = rerun: 'RERUN' 'ON' Alt_assignment_name_file_name 'EVERY'? Every_phrase 'OF'? Id
+// the entries of the I-O-CONTROL paragraph
+syntax Io_control_entry
+  = rerun: 'RERUN' 'ON' Id ('EVERY'? Every_phrase 'OF'? Id)?
   // SAME SORT AREA FOR SQ-FS1 ST-FS1,
   | same: 'SAME' Record_sort? 'AREA'? 'FOR'? Id Id+
   | apply: 'APPLY' 'WRITE-ONLY' 'ON'? Id+
@@ -83,30 +77,20 @@ syntax Every_phrase
 syntax Fce_phrase
   = record: 'RECORD' 'KEY'? 'IS'? Qualified_data_name
   | access: 'ACCESS' 'MODE'? 'IS'? Alt_sequential_random_dynamic
-  | access: 'ACCESS' 'MODE'? 'IS'? Alt_sequential_random_dynamic 'RELATIVE' 'KEY'? 'IS'? Qualified_data_name
+  | relativeKey: 'RELATIVE' 'KEY'? 'IS'? Qualified_data_name
   | recordDelimiter: 'RECORD' 'DELIMITER' 'IS'? Record_delimiter_name
   | status: 'FILE'? 'STATUS' 'IS'? Qualified_data_name Qualified_data_name?
   | padding: 'PADDING' 'CHARACTER'? 'IS'? Alt_qualified_data_name_literal
-  | organization: Alt_indexed_relative_sequential
-  | organization: 'ORGANIZATION' 'IS'? Alt_indexed_relative_sequential
+  | organization: 'ORGANIZATION'? 'IS'? Alt_indexed_relative_sequential
   | passwordClause: Password_clause
   | alternate: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause?
-  | alternate: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause? 'WITH'? 'DUPLICATES'
+  | duplicates: 'WITH'? 'DUPLICATES'
   | reserve: 'RESERVE' Integer Areas?
   ;
 syntax Password_clause = password: 'PASSWORD' 'IS'? Id;
 syntax Alt_assignment_name_literal
   = literal: Literal
   | assignmentName: Id
-  ;
-syntax Alt_assignment_name_file_name
-  = assignmentName: Id
-  | fileName: Id
-  ;
-syntax File_control_entry
-  // the clauses may come in any order, also before ASSIGN (as in `SELECT SQ-FS4 RESERVE 1 ASSIGN "SEQ1.DAT"`)
-  = select: 'SELECT' 'OPTIONAL'? Id Fce_phrase* 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* "."
-  | copy: Copy_statement
   ;
 
 syntax Alt_sequential_random_dynamic
@@ -120,4 +104,3 @@ syntax Areas
   | area: 'AREA'
   ;
   
-syntax Same_area = same: 'SAME' Record_sort 'AREA'? 'FOR'? Id Id+;
