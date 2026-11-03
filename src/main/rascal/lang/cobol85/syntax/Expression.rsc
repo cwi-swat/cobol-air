@@ -45,8 +45,8 @@ syntax Identifier
   = linageCounter: 'LINAGE-COUNTER'
   | linageCounter: 'LINAGE-COUNTER' In File_name
   | qualifiedDataName: Qualified_data_name Subscript_parentheses*
-  | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression ":" ")"
-  | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Arithmetic_expression ":" Arithmetic_expression ")"
+  | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Expression ":" ")"
+  | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Expression ":" Expression ")"
   ;
 syntax Subscript_expression
   = literal: Literal
@@ -141,22 +141,23 @@ syntax Procedure_name
   | paragraphOrSectionName: Paragraph_or_section_name In Section_name
   ;
 syntax In_data_or_file_name = \in: In Alphabetic_user_defined_word;
-// priorities follow COBOL-85: unary plus and minus, then exponentiation, then multiplication and division,
+// arithmetic expressions; the conditions in Condition.rsc continue this priority chain below minus.
+// Priorities follow COBOL-85: unary plus and minus, then exponentiation, then multiplication and division,
 // then addition and subtraction; operators of equal priority are evaluated from left to right
-syntax Arithmetic_expression
+syntax Expression
   = literal: Literal
   | identifier: Identifier
-  | brackets: "(" Arithmetic_expression ")"
-  > positive: "+" Arithmetic_expression
-  | negative: "-" Arithmetic_expression
-  > left power: Arithmetic_expression "**" !>> "*" Arithmetic_expression
+  | brackets: "(" Expression ")"
+  > unaryPlus: "+" Expression
+  | unaryMinus: "-" Expression
+  > left power: Expression "**" !>> "*" Expression
   > left (
-      times: Arithmetic_expression "*" !>> "*" Arithmetic_expression
-    | dividedBy: Arithmetic_expression "/" Arithmetic_expression
+      times: Expression "*" !>> "*" Expression
+    | dividedBy: Expression "/" Expression
     )
   > left (
-      plus: Arithmetic_expression "+" Arithmetic_expression
-    | minus: Arithmetic_expression "-" Arithmetic_expression
+      plus: Expression "+" Expression
+    | minus: Expression "-" Expression
     )
   ;
 syntax Computer_name = systemName: System_name;

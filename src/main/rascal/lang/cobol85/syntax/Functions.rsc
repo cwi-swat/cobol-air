@@ -22,7 +22,8 @@ syntax Identifier
 
 syntax Function_arguments = brackets: "(" Function_argument+ ")";
 
-syntax Function_argument = arithmeticExpression: Arithmetic_expression EndFunctionArgument;
+// arguments are separated by spaces, so an IS-less class or zero condition would also read as two arguments
+syntax Function_argument = expression: Expression!inClass!notInClass!zero!notZero EndFunctionArgument;
 
 // longest match: an argument can not be followed by a binary operator or a subscript, so `MAX(1 - 2)` and `MAX(A (1))`
 // have one argument. A sign glued to its number starts the next argument, so `MAX(-1, -2)` has two.
@@ -36,7 +37,7 @@ syntax EndFunctionArgument
 // the same amendment introduced ALL subscripts, to pass all elements of a table to a function: `FUNCTION MAX(T(ALL))`
 syntax Subscript_expression = \all: 'ALL';
 
-syntax Reference_modification = brackets: "(" Arithmetic_expression ":" Arithmetic_expression? ")";
+syntax Reference_modification = brackets: "(" Expression ":" Expression? ")";
 
 syntax Function_name
   = 'ACOS'

@@ -53,10 +53,10 @@ syntax Special_names_paragraph_phrase =
    systemName: System_name Special_names_paragraph_phrase_tail 
   ; 
 syntax Special_names_paragraph_status_phrase =
-   \on: 'ON' 'STATUS'? 'IS'? Condition
- |  \on: 'ON' 'STATUS'? 'IS'? Condition 'OFF' 'STATUS'? 'IS'? Condition 
-  |  \off: 'OFF' 'STATUS'? 'IS'? Condition
- |  \off: 'OFF' 'STATUS'? 'IS'? Condition 'ON' 'STATUS'? 'IS'? Condition 
+   \on: 'ON' 'STATUS'? 'IS'? Expression
+ |  \on: 'ON' 'STATUS'? 'IS'? Expression 'OFF' 'STATUS'? 'IS'? Expression 
+  |  \off: 'OFF' 'STATUS'? 'IS'? Expression
+ |  \off: 'OFF' 'STATUS'? 'IS'? Expression 'ON' 'STATUS'? 'IS'? Expression 
   ; 
 syntax Special_names_paragraph_clause =
    decimalPoint: 'DECIMAL-POINT' 'IS'? 'COMMA' 

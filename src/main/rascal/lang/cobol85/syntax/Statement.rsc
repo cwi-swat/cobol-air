@@ -200,7 +200,7 @@ syntax Search_statement
   | search: 'SEARCH' Identifier At_end_statement_list? When_condition_stats+ EndSearch
   | search: 'SEARCH' Identifier 'VARYING' Identifier At_end_statement_list? When_condition_stats+ EndSearch
   ;
-syntax Perform_until_phrase = until: With_test? 'UNTIL' Condition;
+syntax Perform_until_phrase = until: With_test? 'UNTIL' Expression;
 syntax Search_statement_condition_tail = and: 'AND' Search_statement_condition;
 
 syntax Procedure_to_procedure
@@ -214,7 +214,7 @@ syntax Inspect_by_argument
   | nonnumeric: Nonnumeric
   | identifier: Identifier
   ;
-syntax Perform_after_phrase = after: 'AFTER' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Condition;
+syntax Perform_after_phrase = after: 'AFTER' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Expression;
 syntax Initialize_replacing_argument = by: Initialize_replacing_type 'DATA'? 'BY' Id_or_lit;
 syntax Sort_statement_out
   = givingFileNames: Giving_file_names
@@ -242,9 +242,9 @@ syntax Id_or_lit
   | identifier: Identifier
   ;
 syntax Evaluate_phrase
-  = through: 'NOT'? Arithmetic_expression Through Arithmetic_expression
+  = through: 'NOT'? Expression!negation Through Expression
   | \true: 'TRUE'
-  | condition: Condition // also covers [NOT] value, via bareExpression; the EVALUATE subject decides which it is
+  | condition: Expression // also covers [NOT] value; the EVALUATE subject decides which it is
   | \false: 'FALSE'
   | \any: 'ANY'
   ;
@@ -337,7 +337,7 @@ syntax Output_procedure = output: 'OUTPUT' 'PROCEDURE' 'IS'? Procedure_name Thro
 
 syntax Evaluate_condition
   = \false: 'FALSE'
-  | condition: Condition
+  | condition: Expression
   | \true: 'TRUE'
   ;
 syntax When_phrases = whenPhrase: When_phrase+ Statement_list;
@@ -354,7 +354,7 @@ syntax Equal
   | equal: 'EQUAL'
   ;
 syntax Search_statement_condition
-  = equal: Identifier 'IS'? Equal_to Arithmetic_expression
+  = equal: Identifier 'IS'? Equal_to Expression!conjunction // AND starts the next key condition
   | conditionName: Alphabetic_user_defined_word In_data_or_file_or_mnemonic_name* Subscript_parentheses*
   ;
 
@@ -396,7 +396,7 @@ syntax Sort_statement_in
   ;
 
 syntax Invalid_key_statement_list = invalid: 'INVALID' 'KEY'? Statement_list;
-syntax When_condition_stats = \when: 'WHEN' Condition Alt_statement_list_next_sentence;
+syntax When_condition_stats = \when: 'WHEN' Expression Alt_statement_list_next_sentence;
 syntax Inspect_replacing_argument = by: Inspect_by_argument 'BY' Inspect_by_argument Before_after_phrase*;
 // a BY CONTENT or BY REFERENCE phrase applies to all the parameters that follow it, up to the next BY phrase;
 // parameters before the first BY phrase are passed by reference
@@ -436,8 +436,8 @@ syntax Set_oper
   | to: 'TO'
   ;
 syntax If_statement
-  = \if: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' EndIf
-  | ifElse: 'IF' Condition 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence EndIf
+  = \if: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' EndIf
+  | ifElse: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence EndIf
   ;
 
 // an IF without END-IF ends at the period, or at the ELSE or WHEN of an enclosing IF or EVALUATE
@@ -478,7 +478,7 @@ syntax Statement
   | purge: 'PURGE' File_name
   | merge: 'MERGE' File_name On_key_phrase+ Collating_sequence? 'USING' File_name File_name+ Merge_statement_tail
   | search: Search_statement
-  | compute: 'COMPUTE' Cobword_rounded+ Equal Arithmetic_expression On_size_error_statement_list? Not_on_size_error_statement_list? EndCompute
+  | compute: 'COMPUTE' Cobword_rounded+ Equal Expression On_size_error_statement_list? Not_on_size_error_statement_list? EndCompute
   | exit: 'EXIT'
   | alter: 'ALTER' Procedure_to_procedure+
   | call: 'CALL' Id_or_lit On_overflow_statement_list? EndCall
@@ -719,4 +719,4 @@ syntax Perform_statement_1_alts
 syntax Set_statement_phrase = identifier: Identifier+ Set_oper Set_src;
 
 syntax Tallying_argument = \for: Identifier 'FOR' Tallying_for_argument+;
-syntax Perform_varying_phrase = varying: With_test? 'VARYING' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Condition;
+syntax Perform_varying_phrase = varying: With_test? 'VARYING' Identifier 'FROM' Id_or_lit 'BY' Id_or_lit 'UNTIL' Expression;

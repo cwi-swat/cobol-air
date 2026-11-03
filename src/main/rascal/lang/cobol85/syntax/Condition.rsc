@@ -35,76 +35,91 @@ syntax Greater_than =
   greaterThanSign: "\>" 
   |  greaterThan: 'GREATER' 'THAN'? 
   ; 
-// relations bind stronger than NOT, NOT stronger than AND, and AND stronger than OR (COBOL-85)
-syntax Condition
-  = bareExpression: Arithmetic_expression 
-  // sign conditions
-  | positive: Arithmetic_expression 'IS'? 'POSITIVE'
-  | notPositive: Arithmetic_expression (('NOT' 'IS') | ('IS'? 'NOT')) 'POSITIVE'
-  | negative: Arithmetic_expression 'IS'? 'NEGATIVE'
-  | notNegative: Arithmetic_expression (('NOT' 'IS') | ('IS'? 'NOT')) 'NEGATIVE'
-  | zero: Arithmetic_expression 'IS'? ('ZERO' | 'ZEROES' | 'ZEROS')
-  | notZero: Arithmetic_expression (('NOT' 'IS') | ('IS'? 'NOT')) ('ZERO' | 'ZEROES' | 'ZEROS')
-  // class conditions
-  | numeric: Identifier 'IS'? 'NUMERIC'
-  | notNumeric: Identifier (('NOT' 'IS') | ('IS'? 'NOT')) 'NUMERIC'
-  | alphabetic: Identifier 'IS'? 'ALPHABETIC'
-  | notAlphabetic: Identifier (('NOT' 'IS') | ('IS'? 'NOT')) 'ALPHABETIC'
-  | alphabeticLower: Identifier 'IS'? 'ALPHABETIC-LOWER'
-  | notAlphabeticLower: Identifier (('NOT' 'IS') | ('IS'? 'NOT')) 'ALPHABETIC-LOWER'
-  | alphabeticUpper: Identifier 'IS'? 'ALPHABETIC-UPPER'
-  | notAlphabeticUpper: Identifier (('NOT' 'IS') | ('IS'? 'NOT')) 'ALPHABETIC-UPPER'
-  | dbcs: Identifier 'IS'? 'DBCS'
-  | notDbcs: Identifier (('NOT' 'IS') | ('IS'? 'NOT')) 'DBCS'
-  | kanji: Identifier 'IS'? 'KANJI'
-  | notKanji: Identifier (('NOT' 'IS') | ('IS'? 'NOT')) 'KANJI'
-  | inClass: Identifier 'IS'? Class_name
-  | notInClass: Identifier (('NOT' 'IS') | ('IS'? 'NOT')) Class_name
-  // condition brackets only around real conditions; brackets around a bare expression are expression brackets
-  | brackets: "(" Condition!bareExpression ")"
+// conditions bind weaker than arithmetic; among the conditions (COBOL-85) sign and class conditions bind strongest,
+// then relations, then NOT, then AND, and OR binds weakest
+syntax Expression
+  = :minus
+  > non-assoc (
+      // sign conditions
+      positive: Expression 'IS'? 'POSITIVE' NotArithmetic
+    | notPositive: Expression 'IS'? 'NOT' 'POSITIVE' NotArithmetic
+    | notPositive: Expression 'NOT' 'IS' 'POSITIVE' NotArithmetic
+    | negative: Expression 'IS'? 'NEGATIVE' NotArithmetic
+    | notNegative: Expression 'IS'? 'NOT' 'NEGATIVE' NotArithmetic
+    | notNegative: Expression 'NOT' 'IS' 'NEGATIVE' NotArithmetic
+    | zero: Expression 'IS'? ('ZERO' | 'ZEROES' | 'ZEROS') NotArithmetic
+    | notZero: Expression 'IS'? 'NOT' ('ZERO' | 'ZEROES' | 'ZEROS') NotArithmetic
+    | notZero: Expression 'NOT' 'IS' ('ZERO' | 'ZEROES' | 'ZEROS') NotArithmetic
+      // class conditions
+    | numeric: Expression 'IS'? 'NUMERIC' NotArithmetic
+    | notNumeric: Expression 'IS'? 'NOT' 'NUMERIC' NotArithmetic
+    | notNumeric: Expression 'NOT' 'IS' 'NUMERIC' NotArithmetic
+    | alphabetic: Expression 'IS'? 'ALPHABETIC' NotArithmetic
+    | notAlphabetic: Expression 'IS'? 'NOT' 'ALPHABETIC' NotArithmetic
+    | notAlphabetic: Expression 'NOT' 'IS' 'ALPHABETIC' NotArithmetic
+    | alphabeticLower: Expression 'IS'? 'ALPHABETIC-LOWER' NotArithmetic
+    | notAlphabeticLower: Expression 'IS'? 'NOT' 'ALPHABETIC-LOWER' NotArithmetic
+    | notAlphabeticLower: Expression 'NOT' 'IS' 'ALPHABETIC-LOWER' NotArithmetic
+    | alphabeticUpper: Expression 'IS'? 'ALPHABETIC-UPPER' NotArithmetic
+    | notAlphabeticUpper: Expression 'IS'? 'NOT' 'ALPHABETIC-UPPER' NotArithmetic
+    | notAlphabeticUpper: Expression 'NOT' 'IS' 'ALPHABETIC-UPPER' NotArithmetic
+    | dbcs: Expression 'IS'? 'DBCS' NotArithmetic
+    | notDbcs: Expression 'IS'? 'NOT' 'DBCS' NotArithmetic
+    | notDbcs: Expression 'NOT' 'IS' 'DBCS' NotArithmetic
+    | kanji: Expression 'IS'? 'KANJI' NotArithmetic
+    | notKanji: Expression 'IS'? 'NOT' 'KANJI' NotArithmetic
+    | notKanji: Expression 'NOT' 'IS' 'KANJI' NotArithmetic
+    | inClass: Expression 'IS'? Class_name NotArithmetic
+    | notInClass: Expression 'IS'? 'NOT' Class_name NotArithmetic
+    | notInClass: Expression 'NOT' 'IS' Class_name NotArithmetic
+    )
   // GREATER and LESS end at a word boundary: `EQUAL TO ZEROS AND GREATERZERO` has the condition name GREATERZERO
   > right (
-      greaterThan: Condition 'IS'? 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Condition
-    | greaterThan: Condition 'IS'? "\>" NotEqualSign Condition
-    | notGreaterThan: Condition 'IS'? 'NOT' 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Condition
-    | notGreaterThan: Condition 'IS'? 'NOT' "\>" NotEqualSign Condition
-    | lessThan: Condition 'IS'? 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Condition
-    | lessThan: Condition 'IS'? "\<" NotEqualSign Condition
-    | notLessThan: Condition 'IS'? 'NOT' 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Condition
-    | notLessThan: Condition 'IS'? 'NOT' "\<" NotEqualSign Condition
-    | equal: Condition 'IS'? 'EQUAL' 'TO'? Condition
-    | equal: Condition 'IS'? "=" Condition
-    | notEqual: Condition 'IS'? 'NOT' 'EQUAL' 'TO'? Condition
-    | notEqual: Condition 'IS'? 'NOT' "=" Condition
-    | greaterThanOrEqual: Condition 'IS'? 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? 'OR' 'EQUAL' 'TO'? Condition
-    | greaterThanOrEqual: Condition 'IS'? "\>=" Condition
-    | lessThanOrEqual: Condition 'IS'? 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? 'OR' 'EQUAL' 'TO'? Condition
-    | lessThanOrEqual: Condition 'IS'? "\<" "=" Condition
+      greaterThan: Expression 'IS'? 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Expression
+    | greaterThan: Expression 'IS'? "\>" NotEqualSign Expression
+    | notGreaterThan: Expression 'IS'? 'NOT' 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Expression
+    | notGreaterThan: Expression 'IS'? 'NOT' "\>" NotEqualSign Expression
+    | lessThan: Expression 'IS'? 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Expression
+    | lessThan: Expression 'IS'? "\<" NotEqualSign Expression
+    | notLessThan: Expression 'IS'? 'NOT' 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Expression
+    | notLessThan: Expression 'IS'? 'NOT' "\<" NotEqualSign Expression
+    | equal: Expression 'IS'? 'EQUAL' 'TO'? Expression
+    | equal: Expression 'IS'? "=" Expression
+    | notEqual: Expression 'IS'? 'NOT' 'EQUAL' 'TO'? Expression
+    | notEqual: Expression 'IS'? 'NOT' "=" Expression
+    | greaterThanOrEqual: Expression 'IS'? 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? 'OR' 'EQUAL' 'TO'? Expression
+    | greaterThanOrEqual: Expression 'IS'? "\>=" Expression
+    | lessThanOrEqual: Expression 'IS'? 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? 'OR' 'EQUAL' 'TO'? Expression
+    | lessThanOrEqual: Expression 'IS'? "\<" "=" Expression
     )
   // abbreviated combined relation conditions leave out the subject: `A > B AND < C` means `A > B AND A < C`;
   // `AND NOT < C` is the negation of `< C`. Below the full relations, so `A >= B` is not `A > (= B)`
   > non-assoc (
-      greaterThan: 'IS'? 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Condition
-    | greaterThan: 'IS'? "\>" NotEqualSign Condition
-    | notGreaterThan: 'IS' 'NOT' 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Condition
-    | notGreaterThan: 'IS' 'NOT' "\>" NotEqualSign Condition
-    | lessThan: 'IS'? 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Condition
-    | lessThan: 'IS'? "\<" NotEqualSign Condition
-    | notLessThan: 'IS' 'NOT' 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Condition
-    | notLessThan: 'IS' 'NOT' "\<" NotEqualSign Condition
-    | equal: 'IS'? 'EQUAL' 'TO'? Condition
-    | equal: 'IS'? "=" Condition
-    | notEqual: 'IS' 'NOT' 'EQUAL' 'TO'? Condition
-    | notEqual: 'IS' 'NOT' "=" Condition
-    | greaterThanOrEqual: 'IS'? 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? 'OR' 'EQUAL' 'TO'? Condition
-    | greaterThanOrEqual: 'IS'? "\>=" Condition
-    | lessThanOrEqual: 'IS'? 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? 'OR' 'EQUAL' 'TO'? Condition
-    | lessThanOrEqual: 'IS'? "\<" "=" Condition
+      greaterThan: 'IS'? 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Expression
+    | greaterThan: 'IS'? "\>" NotEqualSign Expression
+    | notGreaterThan: 'IS' 'NOT' 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Expression
+    | notGreaterThan: 'IS' 'NOT' "\>" NotEqualSign Expression
+    | lessThan: 'IS'? 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Expression
+    | lessThan: 'IS'? "\<" NotEqualSign Expression
+    | notLessThan: 'IS' 'NOT' 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? Expression
+    | notLessThan: 'IS' 'NOT' "\<" NotEqualSign Expression
+    | equal: 'IS'? 'EQUAL' 'TO'? Expression
+    | equal: 'IS'? "=" Expression
+    | notEqual: 'IS' 'NOT' 'EQUAL' 'TO'? Expression
+    | notEqual: 'IS' 'NOT' "=" Expression
+    | greaterThanOrEqual: 'IS'? 'GREATER' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? 'OR' 'EQUAL' 'TO'? Expression
+    | greaterThanOrEqual: 'IS'? "\>=" Expression
+    | lessThanOrEqual: 'IS'? 'LESS' !>> [A-Za-z0-9\-] ('THAN' | 'THEN')? 'OR' 'EQUAL' 'TO'? Expression
+    | lessThanOrEqual: 'IS'? "\<" "=" Expression
     )
-  > negation: 'NOT' Condition 
-  > left conjunction: Condition 'AND' Condition 
-  > left disjunction: Condition 'OR' Condition 
+  > negation: 'NOT' Expression 
+  > left conjunction: Expression 'AND' Expression 
+  > left disjunction: Expression 'OR' Expression 
   ; 
+
+// a sign or class condition is no operand of arithmetic; without this guard `MAX(E + 4, H * 2)` would also read as
+// `(E + 4 H) * 2`, an IS-less class condition, because priorities do not filter a postfix rule in a leftmost position
+syntax NotArithmetic = () !>> [*/+\-];
 
 // priorities do not keep the abbreviated `= B` out of `A < = B` and `A > = B`, so `<` and `>` exclude it here
 syntax NotEqualSign = () !>> "=";
