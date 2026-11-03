@@ -11,7 +11,7 @@ keyword CobwordKeywords
 
 // todo check precede restriction
 // todo: check keywords not allowed in pic strings.
-lexical PictureString = [\t-\n\ ,.;\uE000] << PictureContents \ CobwordKeywords !>> ![\t-\n\ ,.;\uE000] !>> ",." !>> ";.";
+lexical PictureString = @category="type" [\t-\n\ ,.;\uE000] << PictureContents \ CobwordKeywords !>> ![\t-\n\ ,.;\uE000] !>> ",." !>> ";.";
 
 // longest match: in 9,9,. the last comma is part of the picture
 lexical PictureContents = PictureChar+;
@@ -30,7 +30,7 @@ syntax ReplaceDirective
     | replace: 'REPLACE' ReplacePseudoTextPair+ "."
     ;
 
-lexical Id = @category="variable" ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za-z]* !>> [\-_0-9A-Za-z]) \ CobwordKeywords;
+lexical Id = @category="struct" ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za-z]* !>> [\-_0-9A-Za-z]) \ CobwordKeywords;
 
 syntax Nonnumeric = NonnumericPart* NonnumericWhole;
 
