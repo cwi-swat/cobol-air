@@ -51,14 +51,8 @@ syntax AltFdSd
 syntax RecordClauseTail
   = to: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'?
   | integer: 'CONTAINS'? Integer 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'? 'DEPENDING' 'ON'? Id
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Id
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Id
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Id
+  // not ('FROM'? Integer)?: rascal 0.43.1-RC1 mishandles some sequence groups, see EnvironmentDivision.rsc
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer? ('TO' Integer)? 'CHARACTERS'? ('DEPENDING' 'ON'? Id)?
   ;
 syntax AltCharactersRecords
   = characters: 'CHARACTERS'
@@ -68,14 +62,7 @@ syntax AltCharactersRecords
 syntax FileAndSortDescriptionEntryClause
   = label: 'LABEL' RecordsAre LabelRecordsClauseTail
   | block: 'BLOCK' 'CONTAINS'? IntegerTo? Integer AltCharactersRecords?
-  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'?
-  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'AT'? 'BOTTOM' AltDataNameInteger
-  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'AT'? 'TOP' AltDataNameInteger
-  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'AT'? 'TOP' AltDataNameInteger 'LINES'? 'AT'? 'BOTTOM' AltDataNameInteger
-  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger
-  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger 'LINES'? 'AT'? 'BOTTOM' AltDataNameInteger
-  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger 'LINES'? 'AT'? 'TOP' AltDataNameInteger
-  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger 'LINES'? 'AT'? 'TOP' AltDataNameInteger 'LINES'? 'AT'? 'BOTTOM' AltDataNameInteger
+  | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? LinagePhrase*
   | recording: 'RECORDING' 'MODE'? 'IS'? Id
   | globalClause: GlobalClause
   | record: 'RECORD' RecordClauseTail
@@ -84,6 +71,13 @@ syntax FileAndSortDescriptionEntryClause
   | codeSet: 'CODE-SET' 'IS'? Id
   | externalClause: ExternalClause
   ;
+// the phrases of LINAGE, in any order; LINES belongs to the number before it
+syntax LinagePhrase
+  = footing: 'WITH'? 'FOOTING' 'AT'? AltDataNameInteger 'LINES'?
+  | top: 'AT'? 'TOP' AltDataNameInteger 'LINES'?
+  | bottom: 'AT'? 'BOTTOM' AltDataNameInteger 'LINES'?
+  ;
+
 syntax RecordsAre = records: Records Are?;
 
 syntax AltQualifiedDataNameLiteral
