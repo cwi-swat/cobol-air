@@ -69,9 +69,9 @@ syntax Expression
     | kanji: Expression 'IS'? 'KANJI' NotArithmetic
     | notKanji: Expression 'IS'? 'NOT' 'KANJI' NotArithmetic
     | notKanji: Expression 'NOT' 'IS' 'KANJI' NotArithmetic
-    | inClass: Expression 'IS'? Class_name NotArithmetic
-    | notInClass: Expression 'IS'? 'NOT' Class_name NotArithmetic
-    | notInClass: Expression 'NOT' 'IS' Class_name NotArithmetic
+    | inClass: Expression 'IS'? Id NotArithmetic
+    | notInClass: Expression 'IS'? 'NOT' Id NotArithmetic
+    | notInClass: Expression 'NOT' 'IS' Id NotArithmetic
     )
   // GREATER and LESS end at a word boundary: `EQUAL TO ZEROS AND GREATERZERO` has the condition name GREATERZERO
   > right (

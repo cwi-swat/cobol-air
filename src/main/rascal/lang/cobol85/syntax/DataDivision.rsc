@@ -15,8 +15,8 @@ keyword CobwordKeywords
   ;
 
 syntax File_section_entry
-  = fd: Alt_fd_sd File_name File_and_sort_description_entry_clause* "." Data_description_entry+
-  | fd: Alt_fd_sd File_name Copy_statement Data_description_entry* // the clauses come from a copybook
+  = fd: Alt_fd_sd Id File_and_sort_description_entry_clause* "." Data_description_entry+
+  | fd: Alt_fd_sd Id Copy_statement Data_description_entry* // the clauses come from a copybook
   ;
 // the sections of the data division, in any order; a checker rejects the orders COBOL does not allow
 syntax Data_division = dataDivision: 'DATA' 'DIVISION' "." Data_section*;

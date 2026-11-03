@@ -52,11 +52,11 @@ keyword CobwordKeywords
   ;
 
 syntax File_name_position
-  = fileName: File_name
-  | fileName: File_name 'POSITION' Integer
+  = fileName: Id
+  | fileName: Id 'POSITION' Integer
   ;
 syntax Record_delimiter_name
-  = assignmentName: Assignment_name
+  = assignmentName: Id
   | standard1: 'STANDARD-1'
   ;
 syntax Record_sort
@@ -70,10 +70,10 @@ syntax Alt_indexed_relative_sequential
   | sequential: 'SEQUENTIAL'
   ;
 syntax Qsam_or_sam_or_vsam_i_o_control_entries
-  = rerun: 'RERUN' 'ON' Alt_assignment_name_file_name 'EVERY'? Every_phrase 'OF'? File_name
+  = rerun: 'RERUN' 'ON' Alt_assignment_name_file_name 'EVERY'? Every_phrase 'OF'? Id
   // SAME SORT AREA FOR SQ-FS1 ST-FS1,
-  | same: 'SAME' Record_sort? 'AREA'? 'FOR'? File_name File_name+
-  | apply: 'APPLY' 'WRITE-ONLY' 'ON'? File_name+
+  | same: 'SAME' Record_sort? 'AREA'? 'FOR'? Id Id+
+  | apply: 'APPLY' 'WRITE-ONLY' 'ON'? Id+
   | multiple: 'MULTIPLE' 'FILE' 'TAPE'? 'CONTAINS'? File_name_position+
   ;
 syntax Every_phrase
@@ -94,18 +94,18 @@ syntax Fce_phrase
   | alternate: 'ALTERNATE' 'RECORD'? 'KEY'? 'IS'? Qualified_data_name Password_clause? 'WITH'? 'DUPLICATES'
   | reserve: 'RESERVE' Integer Areas?
   ;
-syntax Password_clause = password: 'PASSWORD' 'IS'? Data_name;
+syntax Password_clause = password: 'PASSWORD' 'IS'? Id;
 syntax Alt_assignment_name_literal
   = literal: Literal
-  | assignmentName: Assignment_name
+  | assignmentName: Id
   ;
 syntax Alt_assignment_name_file_name
-  = assignmentName: Assignment_name
-  | fileName: File_name
+  = assignmentName: Id
+  | fileName: Id
   ;
 syntax File_control_entry
   // the clauses may come in any order, also before ASSIGN (as in `SELECT SQ-FS4 RESERVE 1 ASSIGN "SEQ1.DAT"`)
-  = select: 'SELECT' 'OPTIONAL'? File_name Fce_phrase* 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* "."
+  = select: 'SELECT' 'OPTIONAL'? Id Fce_phrase* 'ASSIGN' 'TO'? Alt_assignment_name_literal+ Fce_phrase* "."
   | copy: Copy_statement
   ;
 
@@ -120,4 +120,4 @@ syntax Areas
   | area: 'AREA'
   ;
   
-syntax Same_area = same: 'SAME' Record_sort 'AREA'? 'FOR'? File_name File_name+;
+syntax Same_area = same: 'SAME' Record_sort 'AREA'? 'FOR'? Id Id+;

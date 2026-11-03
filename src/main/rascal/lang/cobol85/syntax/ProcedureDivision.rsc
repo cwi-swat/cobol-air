@@ -21,7 +21,7 @@ syntax Procedure_division
   ;
 syntax Using_phrase
   = copy: Copy_statement
-  | copy: 'USING' Data_name* Copy_statement
+  | copy: 'USING' Id* Copy_statement
   | using: Using_data_name_pluslist? "."
   ;
 syntax Section_with_header = sectionHeader: Section_header "." Paragraphs;

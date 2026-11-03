@@ -100,7 +100,7 @@ syntax Data_description_entry_clause
   | sign: 'SIGN' 'IS'? Alt_leading_trailing 'SEPARATE' 'CHARACTER'?
   | values: Values Are? Literal_through_literal+
   | picture: Picture 'IS'? Picture_string
-  | redefines: 'REDEFINES' Data_name
+  | redefines: 'REDEFINES' Id
   | usage: Usage
   | usage: 'USAGE' 'IS'? Usage
   | renames: 'RENAMES' Qualified_data_name
@@ -133,11 +133,11 @@ syntax Usage
   | display1: 'DISPLAY-1'
   | computational3: 'COMPUTATIONAL-3'
   ;
-syntax Indexed_by = indexed: 'INDEXED' 'BY'? Index_name+;
+syntax Indexed_by = indexed: 'INDEXED' 'BY'? Id+;
 
 syntax Alt_data_name_filler
   = filler: 'FILLER'
-  | dataName: Data_name
+  | dataName: Id
   ;
 
 syntax Occurs_clause

@@ -240,10 +240,10 @@ syntax Alt_beginning_ending
 syntax When_phrase = \when: 'WHEN' Evaluate_phrase When_phrase_also_phrase*;
 
 syntax Open_statement_phrase
-  = io: 'I-O' File_name+
+  = io: 'I-O' Id+
   | input: 'INPUT' Open_statement_input_file_name+
   | output: 'OUTPUT' Open_statement_output_file_name+
-  | \extend: 'EXTEND' File_name+
+  | \extend: 'EXTEND' Id+
   ;
 
 
@@ -291,11 +291,11 @@ syntax Alt_all_leading
   = \all: 'ALL'
   | leading: 'LEADING'
   ;
-syntax Using_data_name_pluslist = using: 'USING' Data_name+;
+syntax Using_data_name_pluslist = using: 'USING' Id+;
 
 
 syntax Alt_file_names_i_o
-  = fileName: File_name+
+  = fileName: Id+
   | output: 'OUTPUT'
   | input: 'INPUT'
   | io: 'I-O'
@@ -309,7 +309,7 @@ syntax Evaluate_condition
   ;
 syntax When_phrases = whenPhrase: When_phrase+ Statement_list;
 
-syntax Open_statement_output_file_name = fileName: File_name With_no_rewind?;
+syntax Open_statement_output_file_name = fileName: Id With_no_rewind?;
 
 syntax Content_parameter_value
   = identifier: Identifier
@@ -322,7 +322,7 @@ syntax Equal
   ;
 syntax Search_statement_condition
   = equal: Identifier 'IS'? Equal_to Expression!conjunction // AND starts the next key condition
-  | conditionName: Alphabetic_user_defined_word In_data_or_file_or_mnemonic_name* Subscript_parentheses*
+  | conditionName: Id In_data_or_file_or_mnemonic_name* Subscript_parentheses*
   ;
 
 syntax EndMultiply = 'END-MULTIPLY'?;
@@ -332,8 +332,8 @@ syntax Alt_statement_list_next_sentence
   | nextSentence: 'NEXT' 'SENTENCE'
   ;
 
-syntax Open_statement_input_file_name = fileName: File_name Alt_reversed_with_no_rewind?;
-syntax Close_statement_file_name = fileName: File_name Close_statement_options?;
+syntax Open_statement_input_file_name = fileName: Id Alt_reversed_with_no_rewind?;
+syntax Close_statement_file_name = fileName: Id Close_statement_options?;
 syntax Initialize_replacing_type
   = alphabetic: 'ALPHABETIC'
   | numericEdited: 'NUMERIC-EDITED'
@@ -458,11 +458,11 @@ syntax Overflow_phrase
 syntax Sort_phrase
   = key: 'ON'? Alt_ascending_descending 'KEY'? 'IS'? Qualified_data_name+
   | duplicates: 'WITH'? 'DUPLICATES' 'IN'? 'ORDER'?
-  | sequence: 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name
-  | using: 'USING' File_name+
+  | sequence: 'COLLATING'? 'SEQUENCE' 'IS'? Id
+  | using: 'USING' Id+
   | input: 'INPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?
   | output: 'OUTPUT' 'PROCEDURE' 'IS'? Procedure_name Through_procedure_name?
-  | giving: 'GIVING' File_name+
+  | giving: 'GIVING' Id+
   ;
 
 syntax Inspect_phrase
@@ -479,12 +479,12 @@ syntax Perform_phrase
 
 syntax Statement
   = exitProgram: 'EXIT' 'PROGRAM'
-  | receive: 'RECEIVE' File_name Io_phrase!endOfPage!notEndOfPage*
-  | enable: 'ENABLE' Communication_io_mode File_name Communication_key_phrase?
-  | disable: 'DISABLE' Communication_io_mode File_name Communication_key_phrase?
-  | send: 'SEND' File_name Io_phrase!atEnd!notAtEnd*
-  | purge: 'PURGE' File_name
-  | merge: 'MERGE' File_name Sort_phrase*
+  | receive: 'RECEIVE' Id Io_phrase!endOfPage!notEndOfPage*
+  | enable: 'ENABLE' Communication_io_mode Id Communication_key_phrase?
+  | disable: 'DISABLE' Communication_io_mode Id Communication_key_phrase?
+  | send: 'SEND' Id Io_phrase!atEnd!notAtEnd*
+  | purge: 'PURGE' Id
+  | merge: 'MERGE' Id Sort_phrase*
   | searchAll: 'SEARCH' 'ALL' Identifier Io_phrase!endOfPage!notEndOfPage* 'WHEN' Search_statement_condition Search_statement_condition_tail* Alt_statement_list_next_sentence EndSearch
   | search: 'SEARCH' Identifier Io_phrase!endOfPage!notEndOfPage* When_condition_stats+ EndSearch
   | compute: 'COMPUTE' Cobword_rounded+ Equal Expression Arithmetic_phrase* EndCompute
@@ -494,8 +494,8 @@ syntax Statement
   | \set: 'SET' Set_statement_phrase+
   | stop: 'STOP' Alt_run_literal
   | divide: 'DIVIDE' Id_or_lit Arithmetic_phrase* EndDivide
-  | display: 'DISPLAY' Id_or_lit+ ('UPON' Cobword \ CobwordKeywords)? ('WITH'? 'NO' 'ADVANCING')?
-  | read: 'READ' File_name 'NEXT'? 'RECORD'? Io_phrase!endOfPage!notEndOfPage* EndRead
+  | display: 'DISPLAY' Id_or_lit+ ('UPON' Id)? ('WITH'? 'NO' 'ADVANCING')?
+  | read: 'READ' Id 'NEXT'? 'RECORD'? Io_phrase!endOfPage!notEndOfPage* EndRead
   | string: 'STRING' Delimited_by_phrase+ Overflow_phrase* EndString
   | subtract: 'SUBTRACT' Corresponding? Id_or_lit+ Arithmetic_phrase* EndSubtract
   | move: 'MOVE' Corresponding? Id_or_lit 'TO' Identifier+
@@ -504,9 +504,9 @@ syntax Statement
   | goback: 'GOBACK'
   | add: 'ADD' Corresponding? Id_or_lit+ Arithmetic_phrase* EndAdd
   | accept: 'ACCEPT' Identifier ('FROM' Date)?
-  | acceptMessage: 'ACCEPT' File_name 'MESSAGE' 'COUNT'
-  | acceptCount: 'ACCEPT' File_name 'COUNT'
-  | delete: 'DELETE' File_name 'RECORD'? Io_phrase!atEnd!notAtEnd* EndDelete
+  | acceptMessage: 'ACCEPT' Id 'MESSAGE' 'COUNT'
+  | acceptCount: 'ACCEPT' Id 'COUNT'
+  | delete: 'DELETE' Id 'RECORD'? Io_phrase!atEnd!notAtEnd* EndDelete
   | initialize: 'INITIALIZE' Identifier+ ('REPLACING' Initialize_replacing_argument+)?
   | \continue: 'CONTINUE'
   | release: 'RELEASE' Record_name Io_phrase!atEnd!notAtEnd*
@@ -515,11 +515,11 @@ syntax Statement
   | \if: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence () !>> 'ELSE' EndIf
   | ifElse: 'IF' Expression 'THEN'? Alt_statement_list_next_sentence 'ELSE' Alt_statement_list_next_sentence EndIf
   | inspect: 'INSPECT' Identifier Inspect_phrase+
-  | sort: 'SORT' File_name Sort_phrase*
+  | sort: 'SORT' Id Sort_phrase*
   | write: 'WRITE' Record_name Io_phrase!atEnd!notAtEnd* EndWrite
   | evaluate: 'EVALUATE' Evaluate_condition Also_phrase* When_phrases+ EndEvaluate
-  | \start: 'START' File_name Io_phrase!atEnd!notAtEnd* EndStart
-  | \return: 'RETURN' File_name 'RECORD'? Io_phrase!endOfPage!notEndOfPage* EndReturn
+  | \start: 'START' Id Io_phrase!atEnd!notAtEnd* EndStart
+  | \return: 'RETURN' Id 'RECORD'? Io_phrase!endOfPage!notEndOfPage* EndReturn
   | perform: 'PERFORM' Procedure_name Through_procedure_name? Perform_phrase?
   | endPerform: 'PERFORM' Perform_phrase? Statement_list 'END-PERFORM'
   | entry: 'ENTRY' Literal Using_data_name_pluslist?
@@ -546,7 +546,7 @@ syntax Date
   | day: 'DAY'
   | date: 'DATE'
   | dayOfWeek: 'DAY-OF-WEEK'
-  | mnemonicName: Cobword \ CobwordKeywords
+  | mnemonicName: Id
   ;
 syntax Cobword_rounded = idOrLit: Id_or_lit 'ROUNDED'?;
 

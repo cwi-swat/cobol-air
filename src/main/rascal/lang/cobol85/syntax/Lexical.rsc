@@ -82,4 +82,3 @@ lexical Int
 // TODO: write as `!>> ([,][0-9])` once the parser generator supports sequence conditions (0.43.0 silently drops them)
 lexical Digits = [0-9]+ !>> [0-9] !>> ",0" !>> ",1" !>> ",2" !>> ",3" !>> ",4" !>> ",5" !>> ",6" !>> ",7" !>> ",8" !>> ",9";
 
-syntax Cobword = Id;

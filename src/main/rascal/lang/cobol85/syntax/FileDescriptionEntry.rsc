@@ -42,7 +42,7 @@ keyword CobwordKeywords
 syntax Label_records_clause_tail
   = standard: 'STANDARD'
   | omitted: 'OMITTED'
-  | dataName: Data_name+
+  | dataName: Id+
   ;
 syntax Alt_fd_sd
   = fd: 'FD'
@@ -52,13 +52,13 @@ syntax Record_clause_tail
   = to: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'?
   | integer: 'CONTAINS'? Integer 'CHARACTERS'?
   | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'CHARACTERS'? 'DEPENDING' 'ON'? Id
   | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Id
   | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Id
   | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'?
-  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Data_name
+  | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer 'TO' Integer 'CHARACTERS'? 'DEPENDING' 'ON'? Id
   ;
 syntax Alt_characters_records
   = characters: 'CHARACTERS'
@@ -76,12 +76,12 @@ syntax File_and_sort_description_entry_clause
   | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
   | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer
   | linage: 'LINAGE' 'IS'? Alt_data_name_integer 'LINES'? 'WITH'? 'FOOTING' 'AT'? Alt_data_name_integer 'LINES'? 'AT'? 'TOP' Alt_data_name_integer 'LINES'? 'AT'? 'BOTTOM' Alt_data_name_integer
-  | recording: 'RECORDING' 'MODE'? 'IS'? Cobword \ CobwordKeywords
+  | recording: 'RECORDING' 'MODE'? 'IS'? Id
   | globalClause: Global_clause
   | record: 'RECORD' Record_clause_tail
-  | \data: 'DATA' Records_are Data_name+
+  | \data: 'DATA' Records_are Id+
   | \value: 'VALUE' 'OF' Value_of_clause_tail+
-  | codeSet: 'CODE-SET' 'IS'? Alphabet_name
+  | codeSet: 'CODE-SET' 'IS'? Id
   | externalClause: External_clause
   ;
 syntax Records_are = records: Records Are?;
@@ -91,8 +91,8 @@ syntax Alt_qualified_data_name_literal
   | qualifiedDataName: Qualified_data_name
   ;
 syntax Alt_data_name_integer
-  = dataName: Data_name
+  = dataName: Id
   | integer: Integer
   ;
 
-syntax Value_of_clause_tail = systemName: System_name 'IS'? Alt_qualified_data_name_literal;
+syntax Value_of_clause_tail = systemName: Id 'IS'? Alt_qualified_data_name_literal;

@@ -50,7 +50,7 @@ syntax Alphabet_type_also =
   also: 'ALSO' Literal 
   ; 
 syntax Special_names_paragraph_phrase =
-   systemName: System_name Special_names_paragraph_phrase_tail 
+   systemName: Id Special_names_paragraph_phrase_tail 
   ; 
 syntax Special_names_paragraph_status_phrase =
    \on: 'ON' 'STATUS'? 'IS'? Expression
@@ -60,36 +60,36 @@ syntax Special_names_paragraph_status_phrase =
   ; 
 syntax Special_names_paragraph_clause =
    decimalPoint: 'DECIMAL-POINT' 'IS'? 'COMMA' 
-  |  class: 'CLASS' Class_name 'IS'? Literal_through_literal+ 
+  |  class: 'CLASS' Id 'IS'? Literal_through_literal+ 
   |  symbolic: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+
- |  symbolic: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ 'IN' Alphabet_name 
+ |  symbolic: 'SYMBOLIC' 'CHARACTERS'? Symbolic_character_mapping+ 'IN' Id 
   |  currency: 'CURRENCY' 'SIGN'? 'IS'? Literal 
-  |  alphabet: 'ALPHABET' Alphabet_name 'IS'? Alphabet_type 
+  |  alphabet: 'ALPHABET' Id 'IS'? Alphabet_type 
   ; 
 syntax Alphabet_type_other =
   literal: Literal Alphabet_type_also_through? 
   ; 
 syntax Special_names_paragraph_phrase_tail =
-   word: 'IS'? Alphabetic_user_defined_word  Special_names_paragraph_status_phrase? 
+   word: 'IS'? Id  Special_names_paragraph_status_phrase? 
   | status: Special_names_paragraph_status_phrase 
   ; 
 syntax Symbolic_character_mapping =
-  symbolicCharacter: Symbolic_character+ Are? Integer+ 
+  symbolicCharacter: Id+ Are? Integer+ 
   ;
 
 syntax Configuration_section_paragraph =
    objectComputer: 'OBJECT-COMPUTER' "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Computer_name "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Computer_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Computer_name 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Computer_name 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name "."
- |  objectComputer: 'OBJECT-COMPUTER' "." Computer_name 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Alphabet_name 'SEGMENT-LIMIT' 'IS'? Priority_number  "." 
+ |  objectComputer: 'OBJECT-COMPUTER' "." Id "."
+ |  objectComputer: 'OBJECT-COMPUTER' "." Id 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  objectComputer: 'OBJECT-COMPUTER' "." Id 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id "."
+ |  objectComputer: 'OBJECT-COMPUTER' "." Id 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  objectComputer: 'OBJECT-COMPUTER' "." Id 'MEMORY' 'SIZE'? Integer Memory_size_type "."
+ |  objectComputer: 'OBJECT-COMPUTER' "." Id 'MEMORY' 'SIZE'? Integer Memory_size_type 'SEGMENT-LIMIT' 'IS'? Priority_number  "."
+ |  objectComputer: 'OBJECT-COMPUTER' "." Id 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id "."
+ |  objectComputer: 'OBJECT-COMPUTER' "." Id 'MEMORY' 'SIZE'? Integer Memory_size_type 'PROGRAM'? 'COLLATING'? 'SEQUENCE' 'IS'? Id 'SEGMENT-LIMIT' 'IS'? Priority_number  "." 
   |  sourceComputer: 'SOURCE-COMPUTER' "."
- |  sourceComputer: 'SOURCE-COMPUTER' "." Computer_name "."
- |  sourceComputer: 'SOURCE-COMPUTER' "." Computer_name 'WITH'? 'DEBUGGING' 'MODE'  "." 
+ |  sourceComputer: 'SOURCE-COMPUTER' "." Id "."
+ |  sourceComputer: 'SOURCE-COMPUTER' "." Id 'WITH'? 'DEBUGGING' 'MODE'  "." 
   |  specialNames: 'SPECIAL-NAMES' "." Special_names_paragraph_phrase* Special_names_paragraph_clause*  "."? 
   // the contents of a paragraph can come from a copybook
   |  objectComputer: 'OBJECT-COMPUTER' "." Copy_statement

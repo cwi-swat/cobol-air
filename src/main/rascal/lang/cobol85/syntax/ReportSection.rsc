@@ -74,17 +74,16 @@ keyword CobwordKeywords
   | 'WHEN'
   ;
 
-syntax Report_name = dataName: Data_name;
 
 // FD PRINT-FILE REPORT IS SALES-REPORT.
 syntax File_and_sort_description_entry_clause
-  = report: 'REPORT' 'IS'? Report_name+
-  | report: 'REPORTS' 'ARE'? Report_name+
+  = report: 'REPORT' 'IS'? Id+
+  | report: 'REPORTS' 'ARE'? Id+
   ;
 
 // the records of a report file are described by its report groups, so its FD has no record descriptions
 syntax File_section_entry
-  = reportFd: Alt_fd_sd File_name File_and_sort_description_entry_clause* "."
+  = reportFd: Alt_fd_sd Id File_and_sort_description_entry_clause* "."
   ;
 
 syntax Data_section = report: Report_section;
@@ -92,7 +91,7 @@ syntax Data_section = report: Report_section;
 syntax Report_section = reportSection: 'REPORT' 'SECTION' "." Report_description*;
 
 syntax Report_description
-  = rd: 'RD' Report_name Report_description_clause* "." Report_group_description_entry*
+  = rd: 'RD' Id Report_description_clause* "." Report_group_description_entry*
   ;
 
 syntax Report_description_clause
@@ -106,8 +105,8 @@ syntax Report_description_clause
 
 // the control data names, from the most to the least major
 syntax Control_names
-  = final: 'FINAL' Data_name*
-  | dataName: Data_name+
+  = final: 'FINAL' Id*
+  | dataName: Id+
   ;
 
 syntax Page_limit
@@ -188,26 +187,26 @@ syntax Report_group_type
 
 syntax Control_name
   = final: 'FINAL'
-  | dataName: Data_name
+  | dataName: Id
   ;
 
-syntax Upon_phrase = upon: 'UPON' Data_name+;
+syntax Upon_phrase = upon: 'UPON' Id+;
 
 syntax Reset_phrase = reset: 'RESET' 'ON'? Control_name;
 
 // the special registers, one per report, qualified by the report name when there are several reports
 syntax Identifier
   = lineCounter: 'LINE-COUNTER'
-  | lineCounter: 'LINE-COUNTER' In Report_name
+  | lineCounter: 'LINE-COUNTER' In Id
   | pageCounter: 'PAGE-COUNTER'
-  | pageCounter: 'PAGE-COUNTER' In Report_name
+  | pageCounter: 'PAGE-COUNTER' In Id
   ;
 
 syntax Statement
-  = initiate: 'INITIATE' Report_name+
+  = initiate: 'INITIATE' Id+
   // a report group name (TYPE DETAIL) or a report name (summary reporting)
   | generate: 'GENERATE' Qualified_data_name
-  | terminate: 'TERMINATE' Report_name+
+  | terminate: 'TERMINATE' Id+
   // only in a USE BEFORE REPORTING procedure
   | suppress: 'SUPPRESS' 'PRINTING'?
   ;

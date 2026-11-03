@@ -36,9 +36,9 @@ syntax Communication_section = communicationSection: 'COMMUNICATION' 'SECTION' "
 
 // a CD entry is followed by the record descriptions of its message area
 syntax Communication_description_entry
-  = cd: 'CD' Data_name Communication_direction Communication_description_clause* "." Data_description_entry*
+  = cd: 'CD' Id Communication_direction Communication_description_clause* "." Data_description_entry*
   // the input form can also list its eleven data names by position, without the clause keywords
-  | cdInput: 'CD' Data_name Communication_input Alt_data_name_filler+ "." Data_description_entry*
+  | cdInput: 'CD' Id Communication_input Alt_data_name_filler+ "." Data_description_entry*
   ;
 
 syntax Communication_direction
@@ -54,20 +54,20 @@ syntax Communication_input
 
 syntax Communication_description_clause
   // input clauses
-  = queue: 'SYMBOLIC'? 'QUEUE' 'IS'? Data_name
-  | subQueue1: 'SYMBOLIC'? 'SUB-QUEUE-1' 'IS'? Data_name
-  | subQueue2: 'SYMBOLIC'? 'SUB-QUEUE-2' 'IS'? Data_name
-  | subQueue3: 'SYMBOLIC'? 'SUB-QUEUE-3' 'IS'? Data_name
-  | date: 'MESSAGE'? 'DATE' 'IS'? Data_name
-  | time: 'MESSAGE'? 'TIME' 'IS'? Data_name
-  | source: 'SYMBOLIC'? 'SOURCE' 'IS'? Data_name
-  | text: 'TEXT' 'LENGTH' 'IS'? Data_name
-  | end: 'END' 'KEY' 'IS'? Data_name
-  | status: 'STATUS' 'KEY' 'IS'? Data_name
-  | count: 'MESSAGE'? 'COUNT' 'IS'? Data_name
+  = queue: 'SYMBOLIC'? 'QUEUE' 'IS'? Id
+  | subQueue1: 'SYMBOLIC'? 'SUB-QUEUE-1' 'IS'? Id
+  | subQueue2: 'SYMBOLIC'? 'SUB-QUEUE-2' 'IS'? Id
+  | subQueue3: 'SYMBOLIC'? 'SUB-QUEUE-3' 'IS'? Id
+  | date: 'MESSAGE'? 'DATE' 'IS'? Id
+  | time: 'MESSAGE'? 'TIME' 'IS'? Id
+  | source: 'SYMBOLIC'? 'SOURCE' 'IS'? Id
+  | text: 'TEXT' 'LENGTH' 'IS'? Id
+  | end: 'END' 'KEY' 'IS'? Id
+  | status: 'STATUS' 'KEY' 'IS'? Id
+  | count: 'MESSAGE'? 'COUNT' 'IS'? Id
   // output clauses
-  | destinationCount: 'DESTINATION' 'COUNT' 'IS'? Data_name
+  | destinationCount: 'DESTINATION' 'COUNT' 'IS'? Id
   | destinationTable: 'DESTINATION' 'TABLE' 'OCCURS' Integer 'TIMES' Indexed_by?
-  | error: 'ERROR' 'KEY' 'IS'? Data_name
-  | destination: 'SYMBOLIC'? 'DESTINATION' 'IS'? Data_name
+  | error: 'ERROR' 'KEY' 'IS'? Id
+  | destination: 'SYMBOLIC'? 'DESTINATION' 'IS'? Id
   ;

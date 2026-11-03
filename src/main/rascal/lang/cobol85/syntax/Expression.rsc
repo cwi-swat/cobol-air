@@ -43,7 +43,7 @@ keyword CobwordKeywords
 
 syntax Identifier
   = linageCounter: 'LINAGE-COUNTER'
-  | linageCounter: 'LINAGE-COUNTER' In File_name
+  | linageCounter: 'LINAGE-COUNTER' In Id
   | qualifiedDataName: Qualified_data_name Subscript_parentheses*
   | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Expression ":" ")"
   | qualifiedDataName: Qualified_data_name Subscript_parentheses* "(" Expression ":" Expression ")"
@@ -55,22 +55,17 @@ syntax Subscript_expression
   | minus: Qualified_data_name "-" Integer
   ;
 
-syntax Data_name = word: Alphabetic_user_defined_word;
 syntax Record_name = qualifiedDataName: Qualified_data_name;
 
-syntax Index_name = word: Alphabetic_user_defined_word;
-syntax System_name = word: Cobword \ CobwordKeywords;
 syntax Qualified_data_name
   = length: 'LENGTH' 'OF' Identifier
-  | address: 'ADDRESS' 'OF' Data_name
-  | dataName: Data_name In_data_or_file_name*
+  | address: 'ADDRESS' 'OF' Id
+  | dataName: Id In_data_or_file_name*
   ;
 
-syntax Assignment_name = systemName: System_name;
 
-syntax Symbolic_character = word: Alphabetic_user_defined_word;
 syntax Paragraph_name
-  = word: User_defined_word
+  = word: Id
   | integer: Integer
   ;
 syntax Copy_operand
@@ -92,7 +87,7 @@ syntax Integer = \num: Num;
 
 syntax Paragraph_or_section_name
   = integer: Integer
-  | word: User_defined_word
+  | word: Id
   ;
 syntax Alt_reel_unit
   = reel: 'REEL'
@@ -115,7 +110,6 @@ syntax Figurative_constant_simple
   | nulls: 'NULLS'
   ;
 
-syntax Class_name = word: Alphabetic_user_defined_word;
 
 syntax Alt_ascending_descending
   = descending: 'DESCENDING'
@@ -125,22 +119,20 @@ syntax Alt_ascending_descending
 syntax Through_literal = through: Through Literal;
 
 syntax Alt_library_name_literal
-  = word: User_defined_word
+  = word: Id
   | literal: Literal
   ;
 
-syntax User_defined_word = word: Cobword \ CobwordKeywords;
 syntax Alt_text_name_literal
-  = word: User_defined_word
+  = word: Id
   | literal: Literal
   ;
-syntax Alphabet_name = word: Alphabetic_user_defined_word;
 
 syntax Procedure_name
   = paragraphOrSectionName: Paragraph_or_section_name
   | paragraphOrSectionName: Paragraph_or_section_name In Section_name
   ;
-syntax In_data_or_file_name = \in: In Alphabetic_user_defined_word;
+syntax In_data_or_file_name = \in: In Id;
 // arithmetic expressions; the conditions in Condition.rsc continue this priority chain below minus.
 // Priorities follow COBOL-85: unary plus and minus, then exponentiation, then multiplication and division,
 // then addition and subtraction; operators of equal priority are evaluated from left to right
@@ -160,7 +152,6 @@ syntax Expression
     | minus: Expression "-" Expression
     )
   ;
-syntax Computer_name = systemName: System_name;
 
 syntax Literal
   = \num: Num
@@ -168,15 +159,13 @@ syntax Literal
   | figurativeConstant: Figurative_constant
   ;
 
-syntax File_name = word: Alphabetic_user_defined_word;
 
-syntax In_data_or_file_or_mnemonic_name = \in: In Alphabetic_user_defined_word;
+syntax In_data_or_file_or_mnemonic_name = \in: In Id;
 syntax Records
   = records: 'RECORDS'
   | record: 'RECORD'
   ;
 
-syntax Alphabetic_user_defined_word = word: Cobword \ CobwordKeywords;
 
 syntax Values
   = values: 'VALUES'
@@ -184,7 +173,7 @@ syntax Values
   ;
 
 syntax Section_name
-  = word: User_defined_word
+  = word: Id
   | integer: Integer
   ;
 
@@ -217,4 +206,3 @@ syntax Equal_to
   | equalSign: "="
   ;
 
-syntax Program_name = word: User_defined_word;
