@@ -44,21 +44,25 @@ syntax LabelRecordsClauseTail
     | omitted: 'OMITTED'
     | dataName: Id+
     ;
+
 syntax AltFdSd
     = fd: 'FD'
     | sd: 'SD'
     ;
+
 syntax RecordClauseTail
     = to: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'?
     | integer: 'CONTAINS'? Integer 'CHARACTERS'?
     // not ('FROM'? Integer)?: rascal 0.43.1-RC1 mishandles some sequence groups, see EnvironmentDivision.rsc
     | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer? ('TO' Integer)? 'CHARACTERS'? ('DEPENDING' 'ON'? Id)?
     ;
+
 syntax AltCharactersRecords
     = characters: 'CHARACTERS'
     | records: 'RECORDS'
     | record: 'RECORD'
     ;
+
 syntax FileAndSortDescriptionEntryClause
     = label: 'LABEL' RecordsAre LabelRecordsClauseTail
     | block: 'BLOCK' 'CONTAINS'? IntegerTo? Integer AltCharactersRecords?
@@ -85,6 +89,7 @@ syntax AltQualifiedDataNameLiteral
     = literal: Literal
     | qualifiedDataName: QualifiedDataName
     ;
+
 syntax AltDataNameInteger
     = dataName: Id
     | integer: Integer

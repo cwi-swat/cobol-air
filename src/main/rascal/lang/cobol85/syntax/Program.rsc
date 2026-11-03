@@ -21,5 +21,7 @@ syntax CommonInitial
     = initial: 'INITIAL' 'COMMON'?
     | common: 'COMMON' 'INITIAL'?
     ;
+
 syntax NestedCobolSourceProgram = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Id ('IS'? CommonInitial 'PROGRAM'?)? "."? ReplaceDirective* IdentificationDivisionContent EnvironmentDivision? DataDivision? ProcedureDivision? NestedCobolSourceProgram* 'END' 'PROGRAM' Id ".";
+
 syntax CobolSourceProgram = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Id ('IS'? CommonInitial 'PROGRAM'?)? "."? ReplaceDirective* IdentificationDivisionContent EnvironmentDivision? DataDivision? ProcedureDivision? (NestedCobolSourceProgram* 'END' 'PROGRAM' Id ".")?;

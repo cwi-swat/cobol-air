@@ -41,16 +41,21 @@ syntax MemorySizeType
     | modules: 'MODULES'
     | words: 'WORDS'
     ;
+
 syntax Are
     = \is: 'IS'
     | are: 'ARE'
     ;
+
 syntax AlphabetTypeAlso = also: 'ALSO' Literal;
+
 syntax SpecialNamesParagraphPhrase = systemName: Id SpecialNamesParagraphPhraseTail;
+
 syntax SpecialNamesParagraphStatusPhrase
     = \on: 'ON' 'STATUS'? 'IS'? Expression ('OFF' 'STATUS'? 'IS'? Expression)?
     | \off: 'OFF' 'STATUS'? 'IS'? Expression ('ON' 'STATUS'? 'IS'? Expression)?
     ;
+
 syntax SpecialNamesParagraphClause
     = decimalPoint: 'DECIMAL-POINT' 'IS'? 'COMMA'
     | class: 'CLASS' Id 'IS'? LiteralThroughLiteral+
@@ -58,11 +63,14 @@ syntax SpecialNamesParagraphClause
     | currency: 'CURRENCY' 'SIGN'? 'IS'? Literal
     | alphabet: 'ALPHABET' Id 'IS'? AlphabetType
     ;
+
 syntax AlphabetTypeOther = literal: Literal AlphabetTypeAlsoThrough?;
+
 syntax SpecialNamesParagraphPhraseTail
     = word: 'IS'? Id SpecialNamesParagraphStatusPhrase?
     | status: SpecialNamesParagraphStatusPhrase
     ;
+
 syntax SymbolicCharacterMapping = symbolicCharacter: Id+ Are? Integer+;
 
 // the clauses of SOURCE-COMPUTER and OBJECT-COMPUTER, in any order; a checker rejects the combinations COBOL does not allow
@@ -72,6 +80,7 @@ syntax ComputerClause
     | segmentLimit: 'SEGMENT-LIMIT' 'IS'? PriorityNumber
     | debugging: 'WITH'? 'DEBUGGING' 'MODE'
     ;
+
 syntax AlphabetType
     = native: 'NATIVE'
     | ebcdic: 'EBCDIC'

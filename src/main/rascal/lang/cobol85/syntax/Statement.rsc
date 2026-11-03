@@ -197,12 +197,15 @@ syntax ProcedureToProcedure
     ;
 
 syntax DelimitedByPhrase = delimited: IdOrLit+ 'DELIMITED' 'BY'? IdOrLitSize;
+
 syntax InspectByArgument
     = figurativeConstantSimple: FigurativeConstantSimple
     | nonnumeric: Nonnumeric
     | identifier: Identifier
     ;
+
 syntax PerformAfterPhrase = after: 'AFTER' Identifier 'FROM' IdOrLit 'BY' IdOrLit 'UNTIL' Expression;
+
 syntax InitializeReplacingArgument = by: InitializeReplacingType 'DATA'? 'BY' IdOrLit;
 
 syntax BeforeAfterPhrase = beforeAfter: AltBeforeAfter 'INITIAL'? IdOrLit;
@@ -211,19 +214,23 @@ syntax TallyingForArgument
     = characters: 'CHARACTERS' BeforeAfterPhrase*
     | allLeading: AltAllLeading TallyingForIdOrLit+
     ;
+
 syntax AltFileReelUnit
     = unit: 'UNIT'
     | reel: 'REEL'
     | file: 'FILE'
     ;
+
 syntax Lines
     = lines: 'LINES'
     | line: 'LINE'
     ;
+
 syntax IdOrLit
     = literal: Literal
     | identifier: Identifier
     ;
+
 syntax EvaluatePhrase
     = through: 'NOT'? Expression ! negation Through Expression
     | \true: 'TRUE'
@@ -233,6 +240,7 @@ syntax EvaluatePhrase
     | \any: 'ANY'
     | other: 'OTHER'
     ;
+
 syntax AltBeginningEnding
     = beginning: 'BEGINNING'
     | ending: 'ENDING'
@@ -269,6 +277,7 @@ syntax CobwordInt
     = identifier: Identifier
     | integer: Integer
     ;
+
 syntax Corresponding
     = corr: 'CORR'
     | corresponding: 'CORRESPONDING'
@@ -278,18 +287,22 @@ syntax EndOfPage
     = endOfPage: 'END-OF-PAGE'
     | eop: 'EOP'
     ;
+
 syntax InspectReplacingPhrase
     = characters: 'CHARACTERS' 'BY' IdOrLit BeforeAfterPhrase*
     | allLeadingFirst: AltAllLeadingFirst InspectReplacingArgument+
     ;
+
 syntax AltBeforeAfter
     = before: 'BEFORE'
     | after: 'AFTER'
     ;
+
 syntax AltAllLeading
     = \all: 'ALL'
     | leading: 'LEADING'
     ;
+
 syntax UsingDataNamePluslist = using: 'USING' Id+;
 
 syntax AltFileNamesIO
@@ -305,6 +318,7 @@ syntax EvaluateCondition
     | condition: Expression
     | \true: 'TRUE'
     ;
+
 syntax WhenPhrases = whenPhrase: WhenPhrase+ StatementList;
 
 syntax OpenStatementOutputFileName = fileName: Id WithNoRewind?;
@@ -318,6 +332,7 @@ syntax Equal
     = equalSign: "="
     | equal: 'EQUAL'
     ;
+
 syntax SearchStatementCondition
     = equal: Identifier 'IS'? EqualTo Expression ! conjunction
     // AND starts the next key condition
@@ -332,7 +347,9 @@ syntax AltStatementListNextSentence
     ;
 
 syntax OpenStatementInputFileName = fileName: Id AltReversedWithNoRewind?;
+
 syntax CloseStatementFileName = fileName: Id CloseStatementOptions?;
+
 syntax InitializeReplacingType
     = alphabetic: 'ALPHABETIC'
     | numericEdited: 'NUMERIC-EDITED'
@@ -350,6 +367,7 @@ syntax UseStatement
     ;
 
 syntax WhenConditionStats = \when: 'WHEN' Expression AltStatementListNextSentence;
+
 syntax InspectReplacingArgument = by: InspectByArgument 'BY' InspectByArgument BeforeAfterPhrase*;
 
 // a BY CONTENT or BY REFERENCE phrase applies to all the parameters that follow it, up to the next BY phrase;
@@ -386,19 +404,30 @@ syntax EndIf
     | () >> 'ELSE'
     | () >> 'WHEN'
     ;
+
 syntax EndCompute = 'END-COMPUTE'?;
+
 syntax EndCall = 'END-CALL'?;
+
 syntax EndString = 'END-STRING'?;
+
 syntax EndDelete = 'END-DELETE'?;
+
 syntax EndUnString = 'END-UNSTRING'?;
+
 syntax EndWrite = 'END-WRITE'?;
+
 syntax EndEvaluate = 'END-EVALUATE'?;
+
 syntax EndReturn
     = 'END-RETURN'
     | () >> "."
     ;
+
 syntax EndStart = 'END-START'?;
+
 syntax EndRewrite = 'END-REWRITE'?;
+
 syntax EndRead = 'END-READ'?;
 
 // the phrases of the arithmetic statements, in any order; a checker rejects the combinations COBOL does not allow
@@ -541,6 +570,7 @@ syntax Date
     | dayOfWeek: 'DAY-OF-WEEK'
     | mnemonicName: Id
     ;
+
 syntax CobwordRounded = idOrLit: IdOrLit 'ROUNDED'?;
 
 syntax StatementList = statement: Statement+ EndStatementList;
@@ -564,12 +594,14 @@ syntax IdOrLitSize
     | size: 'SIZE'
     | identifier: Identifier
     ;
+
 syntax UnstringStatementDst
     = identifier: Identifier
     | identifier: Identifier 'COUNT' 'IN'? Identifier
     | identifier: Identifier 'DELIMITER' 'IN'? Identifier
     | identifier: Identifier 'DELIMITER' 'IN'? Identifier 'COUNT' 'IN'? Identifier
     ;
+
 syntax WithNoRewind = no: 'WITH'? 'NO' 'REWIND';
 
 syntax TallyingForIdOrLit = idOrLit: NotAll IdOrLit BeforeAfterPhrase*;
@@ -589,6 +621,7 @@ syntax AltExceptionError
     ;
 
 syntax OrAllIdOrLit = or: 'OR' 'ALL'? NotAll IdOrLit;
+
 syntax AltRunLiteral
     = run: 'RUN'
     | literal: Literal
@@ -601,10 +634,12 @@ syntax RelOp
     | greaterThanOrEqualTo: GreaterThanOrEqualTo
     | greaterThan: GreaterThan
     ;
+
 syntax AltNoRewindLock
     = no: 'NO' 'REWIND'
     | lock: 'LOCK'
     ;
+
 syntax CloseStatementOptions
     = noRewindLock: 'WITH'? AltNoRewindLock
     | reelUnit: AltReelUnit AltRemovalNoRewind?

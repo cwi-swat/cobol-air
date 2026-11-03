@@ -33,6 +33,7 @@ syntax GreaterThanOrEqualTo
     | greaterThanOrEqual: "\>="
     | notLessThanSign: 'NOT' "\<"
     ;
+
 syntax GreaterThan
     = greaterThanSign: "\>"
     | greaterThan: 'GREATER' 'THAN'?

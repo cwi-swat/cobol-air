@@ -24,6 +24,7 @@ lexical PictureChar
 lexical QuotedPseudoText = "==" (![=] | ("=" ![=]))* "==";
 
 syntax ReplacePseudoTextPair = by: QuotedPseudoText 'BY' QuotedPseudoText;
+
 syntax ReplaceDirective
     = replaceOff: 'REPLACE' 'OFF' "."
     | replace: 'REPLACE' ReplacePseudoTextPair+ "."

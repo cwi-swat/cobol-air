@@ -48,6 +48,7 @@ syntax Identifier
     | qualifiedDataName: QualifiedDataName SubscriptParentheses* "(" Expression ":" ")"
     | qualifiedDataName: QualifiedDataName SubscriptParentheses* "(" Expression ":" Expression ")"
     ;
+
 syntax SubscriptExpression
     = literal: Literal
     | qualifiedDataName: QualifiedDataName
@@ -67,6 +68,7 @@ syntax ParagraphName
     = word: Id
     | integer: Integer
     ;
+
 syntax CopyOperand
     = literal: Literal
     | identifier: Identifier
@@ -83,12 +85,14 @@ syntax FigurativeConstant
     | figurativeConstantSimple: FigurativeConstantSimple !>> [A-Za-z0-9\-]
     // a keyword ends at a word boundary: ZERO-NULL is a data name
     ;
+
 syntax Integer = \num: Num;
 
 syntax ParagraphOrSectionName
     = integer: Integer
     | word: Id
     ;
+
 syntax AltReelUnit
     = reel: 'REEL'
     | unit: 'UNIT'
@@ -131,6 +135,7 @@ syntax ProcedureName
     = paragraphOrSectionName: ParagraphOrSectionName
     | paragraphOrSectionName: ParagraphOrSectionName In SectionName
     ;
+
 syntax InDataOrFileName = \in: In Id;
 
 // arithmetic expressions; the conditions in Condition.rsc continue this priority chain below minus.
@@ -154,6 +159,7 @@ syntax Literal
     ;
 
 syntax InDataOrFileOrMnemonicName = \in: In Id;
+
 syntax Records
     = records: 'RECORDS'
     | record: 'RECORD'
@@ -191,6 +197,7 @@ syntax In
     ;
 
 syntax PriorityNumber = \num: Num;
+
 syntax CopyStatementByPhrase = by: CopyOperand 'BY' CopyOperand;
 
 // a subscript does not follow a comma, so in `FUNCTION MIN(B, (C + 1) / 2)` the bracket starts the next argument

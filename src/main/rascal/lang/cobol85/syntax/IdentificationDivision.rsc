@@ -18,6 +18,7 @@ keyword CobwordKeywords
     ;
 
 syntax IdentificationDivisionContent = identificationDivisionPhrase: IdentificationDivisionPhrase*;
+
 syntax Identification
     = id: 'ID'
     | identification: 'IDENTIFICATION'

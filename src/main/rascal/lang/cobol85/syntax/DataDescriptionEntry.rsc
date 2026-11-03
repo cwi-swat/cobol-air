@@ -63,18 +63,22 @@ syntax Picture
     = pic: 'PIC'
     | picture: 'PICTURE'
     ;
+
 syntax Zeroes
     = zeros: 'ZEROS'
     | zero: 'ZERO'
     | zeroes: 'ZEROES'
     ;
+
 syntax ExternalClause = external: 'IS'? 'EXTERNAL';
+
 syntax DataDescriptionEntry
     = // the follow restriction ensures that digits are eaten up by picture strings.
      entry: Num ! decimal ! signedDecimal ! signedInteger !>> [.,] AltDataNameFiller? DataDescriptionEntryClause* "."?
     | copy: CopyStatement
     | replaceDirective: ReplaceDirective
     ;
+
 syntax AltLeftRight
     = \left: 'LEFT'
     | \right: 'RIGHT'
@@ -84,6 +88,7 @@ syntax Justified
     = justified: 'JUSTIFIED'
     | just: 'JUST'
     ;
+
 syntax Synchronized
     = synchronized: 'SYNCHRONIZED'
     | sync: 'SYNC'
@@ -115,6 +120,7 @@ syntax AltLeadingTrailing
     = trailing: 'TRAILING'
     | leading: 'LEADING'
     ;
+
 syntax Usage
     = comp1: 'COMP-1'
     | display: 'DISPLAY'
@@ -133,6 +139,7 @@ syntax Usage
     | display1: 'DISPLAY-1'
     | computational3: 'COMPUTATIONAL-3'
     ;
+
 syntax IndexedBy = indexed: 'INDEXED' 'BY'? Id+;
 
 syntax AltDataNameFiller

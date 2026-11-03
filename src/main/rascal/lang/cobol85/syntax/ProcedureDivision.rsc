@@ -19,21 +19,27 @@ syntax ProcedureDivision
     = procedureDivision: 'PROCEDURE' 'DIVISION' UsingPhrase Paragraphs SectionWithHeader*
     | procedureDivision: 'PROCEDURE' 'DIVISION' UsingPhrase 'DECLARATIVES' "." DeclarativesContent+ 'END' 'DECLARATIVES' "." Paragraphs SectionWithHeader*
     ;
+
 syntax UsingPhrase
     = copy: CopyStatement
     | copy: 'USING' Id* CopyStatement
     | using: UsingDataNamePluslist? "."
     ;
+
 syntax SectionWithHeader = sectionHeader: SectionHeader "." Paragraphs;
+
 syntax Paragraphs = items: ParagraphItem* Paragraph*;
+
 syntax Paragraph
     = items: ParagraphName "." ParagraphItem*
     | go: ParagraphName "." 'GO' 'TO'? "."
     ;
+
 syntax ParagraphItem
     = sentence: Sentence
     | replaceDirective: ReplaceDirective
     ;
+
 syntax Sentence
     = statementList: StatementList "."+
     | copy: StatementList? CopyStatement

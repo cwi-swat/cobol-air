@@ -48,15 +48,18 @@ keyword CobwordKeywords
     ;
 
 syntax FileNamePosition = fileName: Id ('POSITION' Integer)?;
+
 syntax RecordDelimiterName
     = assignmentName: Id
     | standard1: 'STANDARD-1'
     ;
+
 syntax RecordSort
     = sort: 'SORT'
     | record: 'RECORD'
     | sortMerge: 'SORT-MERGE'
     ;
+
 syntax AltIndexedRelativeSequential
     = relative: 'RELATIVE'
     | indexed: 'INDEXED'
@@ -71,10 +74,12 @@ syntax IoControlEntry
     | apply: 'APPLY' 'WRITE-ONLY' 'ON'? Id+
     | multiple: 'MULTIPLE' 'FILE' 'TAPE'? 'CONTAINS'? FileNamePosition+
     ;
+
 syntax EveryPhrase
     = end: 'END' 'OF'? AltReelUnit
     | records: Integer 'RECORDS'
     ;
+
 syntax FileControlClause
     = record: 'RECORD' 'KEY'? 'IS'? QualifiedDataName
     | access: 'ACCESS' 'MODE'? 'IS'? AltSequentialRandomDynamic
@@ -88,7 +93,9 @@ syntax FileControlClause
     | duplicates: 'WITH'? 'DUPLICATES'
     | reserve: 'RESERVE' Integer Areas?
     ;
+
 syntax PasswordClause = password: 'PASSWORD' 'IS'? Id;
+
 syntax AltAssignmentNameLiteral
     = literal: Literal
     | assignmentName: Id
