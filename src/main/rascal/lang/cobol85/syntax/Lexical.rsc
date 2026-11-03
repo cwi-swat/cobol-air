@@ -32,8 +32,7 @@ lexical Id = ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za-z]* !>> [\-_0-9A-Z
   ;
 
 syntax Nonnumeric
-  = NonnumericWhole
-  | NonnumericPart+ NonnumericWhole
+  = NonnumericPart* NonnumericWhole
   ;
 
 lexical NonnumericWhole
