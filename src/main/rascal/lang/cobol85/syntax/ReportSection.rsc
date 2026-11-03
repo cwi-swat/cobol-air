@@ -131,7 +131,7 @@ syntax Page_phrase
 // share one list of clauses, in any order.
 syntax Report_group_description_entry
   = // the follow restriction ensures that digits are eaten up by picture strings (as in Data_description_entry)
-    entry: Nat !>> [.,] Alt_data_name_filler? Report_group_clause* "."
+    entry: Num!decimal!signedDecimal!signedInteger !>> [.,] Alt_data_name_filler? Report_group_clause* "."
   | copy: Copy_statement
   ;
 

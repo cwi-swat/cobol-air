@@ -57,25 +57,12 @@ lexical SingleStrChar
   // assuming same convention as for "
   ;
 
-// lexical Nonnumeric_ =
-//   [\"] ![\"]* [\"]
-//   | [\'] ![\']* [\']
-//   ;
-// lexical Num_ =
-//   [0-9\-+] !<<
-//     [+ \-]? (  ( [0-9]*  [, .]  [0-9]+  ) | [0-9]+) !>> [0-9]
-//   ;
+// a sign glued to a number belongs to it: -1 is a literal, A -1 is A minus 1 only with a space after the minus
 lexical Num
-  = [0-9\-+] !<< [0-9]* [,.] [0-9]+ !>> [0-9]
-  | [0-9A-Za-z.] !<< [+\-] [0-9]* [,.] [0-9]+ !>> [0-9]
-  | Int
-  ;
-
-lexical Nat = [0-9\-+.A-Za-z] !<< Digits;
-
-lexical Int
-  = [0-9A-Za-z.] !<< [+\-] Digits
-  | Nat
+  = decimal: [0-9\-+] !<< [0-9]* [,.] [0-9]+ !>> [0-9]
+  | signedDecimal: [0-9A-Za-z.] !<< [+\-] [0-9]* [,.] [0-9]+ !>> [0-9]
+  | signedInteger: [0-9A-Za-z.] !<< [+\-] Digits
+  | integer: [0-9\-+.A-Za-z] !<< Digits
   ;
 
 // longest match: 1,5 is a decimal number, not 1 followed by 5

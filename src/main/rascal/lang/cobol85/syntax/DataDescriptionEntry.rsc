@@ -71,7 +71,7 @@ syntax Zeroes
 syntax External_clause = external: 'IS'? 'EXTERNAL';
 syntax Data_description_entry
   = // the follow restriction ensures that digits are eaten up by picture strings.
-   entry: Nat !>> [.,] Alt_data_name_filler? Data_description_entry_clause* "."?
+   entry: Num!decimal!signedDecimal!signedInteger !>> [.,] Alt_data_name_filler? Data_description_entry_clause* "."?
   | copy: Copy_statement
   | replaceDirective: Replace_directive
   ;
