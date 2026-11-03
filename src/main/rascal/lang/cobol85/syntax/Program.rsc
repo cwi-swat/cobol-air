@@ -22,12 +22,8 @@ syntax Common_initial
   | common: 'COMMON' 'INITIAL'?
   ;
 syntax Nested_cobol_source_program
-  = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "."
-  | programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name 'IS'? Common_initial 'PROGRAM'? "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "."
+  = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name ('IS'? Common_initial 'PROGRAM'?)? "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "."
   ;
 syntax Cobol_source_program
-  = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division?
-  | programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "."
-  | programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name 'IS'? 'INITIAL' 'PROGRAM'? "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division?
-  | programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name 'IS'? 'INITIAL' 'PROGRAM'? "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division? Nested_cobol_source_program* 'END' 'PROGRAM' Program_name "."
+  = programId: Identification 'DIVISION' "." 'PROGRAM-ID' "."? Program_name ('IS'? Common_initial 'PROGRAM'?)? "."? Replace_directive* Identification_division_content Environment_division? Data_division? Procedure_division? (Nested_cobol_source_program* 'END' 'PROGRAM' Program_name ".")?
   ;

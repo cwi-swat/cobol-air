@@ -87,8 +87,7 @@ syntax File_section_entry
   = reportFd: Alt_fd_sd File_name File_and_sort_description_entry_clause* "."
   ;
 
-// the REPORT SECTION is the last section of the data division
-syntax Data_division = reportSection: Data_division Report_section;
+syntax Data_section = report: Report_section;
 
 syntax Report_section = reportSection: 'REPORT' 'SECTION' "." Report_description*;
 
