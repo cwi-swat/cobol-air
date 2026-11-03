@@ -1,5 +1,4 @@
-module lang::cobol85::\syntax::Main 
-
+module lang::cobol85::\syntax::Main
 
 extend lang::cobol85::\syntax::Program;
 extend lang::cobol85::\syntax::ProcedureDivision;
