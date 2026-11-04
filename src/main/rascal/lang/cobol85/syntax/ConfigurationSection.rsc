@@ -48,8 +48,6 @@ syntax Are
     | are: 'ARE'
     ;
 
-syntax AlphabetTypeAlso = also: 'ALSO' Literal;
-
 syntax SpecialNamesParagraphPhrase = systemName: Id SpecialNamesParagraphPhraseTail;
 
 syntax SpecialNamesParagraphStatusPhrase
@@ -65,7 +63,11 @@ syntax SpecialNamesParagraphClause
     | alphabet: 'ALPHABET' Id 'IS'? AlphabetType
     ;
 
-syntax AlphabetTypeOther = literal: Literal AlphabetTypeAlsoThrough?;
+// a single character, a range, or characters of the same position in the collating sequence
+syntax AlphabetTypeOther
+    = also: {Literal 'ALSO'}+
+    | through: Literal Through Literal
+    ;
 
 syntax SpecialNamesParagraphPhraseTail
     = word: 'IS'? Id SpecialNamesParagraphStatusPhrase?
@@ -88,9 +90,4 @@ syntax AlphabetType
     | standard2: 'STANDARD-2'
     | standard1: 'STANDARD-1'
     | alphabetTypeOther: AlphabetTypeOther+
-    ;
-
-syntax AlphabetTypeAlsoThrough
-    = alphabetTypeAlso: AlphabetTypeAlso+
-    | throughLiteral: ThroughLiteral
     ;

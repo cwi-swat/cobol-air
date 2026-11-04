@@ -189,8 +189,6 @@ syntax EndSearch
     | () >> "."
     ;
 
-syntax SearchStatementConditionTail = and: 'AND' SearchStatementCondition;
-
 syntax ProcedureToProcedure
     = to: ProcedureName 'TO' ProcedureName
     | to: ProcedureName 'TO' 'PROCEED' 'TO' ProcedureName
@@ -246,7 +244,7 @@ syntax AltBeginningEnding
     | ending: 'ENDING'
     ;
 
-syntax WhenPhrase = \when: 'WHEN' EvaluatePhrase WhenPhraseAlsoPhrase*;
+syntax WhenPhrase = \when: 'WHEN' {EvaluatePhrase 'ALSO'}+;
 
 syntax OpenStatementPhrase
     = io: 'I-O' Id+
@@ -256,8 +254,6 @@ syntax OpenStatementPhrase
     ;
 
 syntax EndAdd = 'END-ADD'?;
-
-syntax AlsoPhrase = also: 'ALSO' EvaluateCondition;
 
 syntax ThroughProcedureName = through: Through ProcedureName;
 
@@ -270,8 +266,6 @@ syntax AltUpDown
     = down: 'DOWN'
     | up: 'UP'
     ;
-
-syntax WhenPhraseAlsoPhrase = also: 'ALSO' EvaluatePhrase;
 
 syntax CobwordInt
     = identifier: Identifier
@@ -470,7 +464,7 @@ syntax IoPhrase
 
 // the phrases of CALL, STRING and UNSTRING, in any order; a checker rejects the combinations COBOL does not allow
 syntax OverflowPhrase
-    = delimitedBy: 'DELIMITED' 'BY'? 'ALL'? NotAll IdOrLit OrAllIdOrLit*
+    = delimitedBy: 'DELIMITED' 'BY'? {AllIdOrLit 'OR'}+
     | into: 'INTO' UnstringStatementDst+
     | pointer: 'WITH'? 'POINTER' Identifier
     | tallying: 'TALLYING' 'IN'? Identifier
@@ -512,7 +506,7 @@ syntax Statement
     | send: 'SEND' Id IoPhrase ! atEnd ! notAtEnd*
     | purge: 'PURGE' Id
     | merge: 'MERGE' Id SortPhrase*
-    | searchAll: 'SEARCH' 'ALL' Identifier IoPhrase ! endOfPage ! notEndOfPage* 'WHEN' SearchStatementCondition SearchStatementConditionTail* AltStatementListNextSentence EndSearch
+    | searchAll: 'SEARCH' 'ALL' Identifier IoPhrase ! endOfPage ! notEndOfPage* 'WHEN' {SearchStatementCondition 'AND'}+AltStatementListNextSentence EndSearch
     | search: 'SEARCH' Identifier IoPhrase ! endOfPage ! notEndOfPage* WhenConditionStats+ EndSearch
     | compute: 'COMPUTE' CobwordRounded+ Equal Expression ArithmeticPhrase* EndCompute
     | exit: 'EXIT'
@@ -544,7 +538,7 @@ syntax Statement
     | inspect: 'INSPECT' Identifier InspectPhrase+
     | sort: 'SORT' Id SortPhrase*
     | write: 'WRITE' RecordName IoPhrase ! atEnd ! notAtEnd* EndWrite
-    | evaluate: 'EVALUATE' EvaluateCondition AlsoPhrase* WhenPhrases+ EndEvaluate
+    | evaluate: 'EVALUATE' {EvaluateCondition 'ALSO'}+ WhenPhrases+ EndEvaluate
     | \start: 'START' Id IoPhrase ! atEnd ! notAtEnd* EndStart
     | \return: 'RETURN' Id 'RECORD'? IoPhrase ! endOfPage ! notEndOfPage* EndReturn
     | perform: 'PERFORM' ProcedureName ThroughProcedureName? PerformPhrase?
@@ -620,7 +614,7 @@ syntax AltExceptionError
     | error: 'ERROR'
     ;
 
-syntax OrAllIdOrLit = or: 'OR' 'ALL'? NotAll IdOrLit;
+syntax AllIdOrLit = idOrLit: 'ALL'? NotAll IdOrLit;
 
 syntax AltRunLiteral
     = run: 'RUN'
