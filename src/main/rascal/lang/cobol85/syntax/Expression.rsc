@@ -158,8 +158,6 @@ syntax Literal
     | figurativeConstant: FigurativeConstant
     ;
 
-syntax InDataOrFileOrMnemonicName = \in: In Id;
-
 syntax Records
     = records: 'RECORDS'
     | record: 'RECORD'

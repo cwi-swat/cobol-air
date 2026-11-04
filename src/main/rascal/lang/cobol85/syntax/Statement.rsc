@@ -327,12 +327,6 @@ syntax Equal
     | equal: 'EQUAL'
     ;
 
-syntax SearchStatementCondition
-    = equal: Identifier 'IS'? EqualTo Expression ! conjunction
-    // AND starts the next key condition
-    | conditionName: Id InDataOrFileOrMnemonicName* SubscriptParentheses*
-    ;
-
 syntax EndMultiply = 'END-MULTIPLY'?;
 
 syntax AltStatementListNextSentence
@@ -506,7 +500,7 @@ syntax Statement
     | send: 'SEND' Id IoPhrase ! atEnd ! notAtEnd*
     | purge: 'PURGE' Id
     | merge: 'MERGE' Id SortPhrase*
-    | searchAll: 'SEARCH' 'ALL' Identifier IoPhrase ! endOfPage ! notEndOfPage* 'WHEN' {SearchStatementCondition 'AND'}+AltStatementListNextSentence EndSearch
+    | searchAll: 'SEARCH' 'ALL' Identifier IoPhrase ! endOfPage ! notEndOfPage* WhenConditionStats EndSearch
     | search: 'SEARCH' Identifier IoPhrase ! endOfPage ! notEndOfPage* WhenConditionStats+ EndSearch
     | compute: 'COMPUTE' CobwordRounded+ Equal Expression ArithmeticPhrase* EndCompute
     | exit: 'EXIT'
