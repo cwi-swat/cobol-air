@@ -48,7 +48,10 @@ syntax Are
     | are: 'ARE'
     ;
 
-syntax SpecialNamesParagraphPhrase = systemName: Id SpecialNamesParagraphPhraseTail;
+syntax SpecialNamesParagraphPhrase
+    = systemName: Id 'IS'? Id SpecialNamesParagraphStatusPhrase?
+    | status: Id SpecialNamesParagraphStatusPhrase
+    ;
 
 syntax SpecialNamesParagraphStatusPhrase
     = \on: 'ON' 'STATUS'? 'IS'? Expression ('OFF' 'STATUS'? 'IS'? Expression)?
@@ -67,11 +70,6 @@ syntax SpecialNamesParagraphClause
 syntax AlphabetTypeOther
     = also: {Literal 'ALSO'}+
     | through: Literal Through Literal
-    ;
-
-syntax SpecialNamesParagraphPhraseTail
-    = word: 'IS'? Id SpecialNamesParagraphStatusPhrase?
-    | status: SpecialNamesParagraphStatusPhrase
     ;
 
 syntax SymbolicCharacterMapping = symbolicCharacter: Id+ Are? Integer+;

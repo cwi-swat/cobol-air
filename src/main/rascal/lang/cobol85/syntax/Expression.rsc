@@ -119,8 +119,6 @@ syntax AltAscendingDescending
     | ascending: 'ASCENDING'
     ;
 
-syntax ThroughLiteral = through: Through Literal;
-
 syntax AltLibraryNameLiteral
     = word: Id
     | literal: Literal
@@ -178,7 +176,7 @@ syntax Through
     | thru: 'THRU'
     ;
 
-syntax LiteralThroughLiteral = literal: Literal ThroughLiteral?;
+syntax LiteralThroughLiteral = literal: Literal (Through Literal)?;
 
 syntax CopyStatement = copy: 'COPY' AltTextNameLiteral CopyPhrase* ".";
 

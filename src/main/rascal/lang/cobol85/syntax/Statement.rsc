@@ -255,8 +255,6 @@ syntax OpenStatementPhrase
 
 syntax EndAdd = 'END-ADD'?;
 
-syntax ThroughProcedureName = through: Through ProcedureName;
-
 syntax AltRemovalNoRewind
     = withNoRewind: WithNoRewind
     | removal: 'FOR'? 'REMOVAL'
@@ -475,8 +473,8 @@ syntax SortPhrase
     | duplicates: 'WITH'? 'DUPLICATES' 'IN'? 'ORDER'?
     | sequence: 'COLLATING'? 'SEQUENCE' 'IS'? Id
     | using: 'USING' Id+
-    | input: 'INPUT' 'PROCEDURE' 'IS'? ProcedureName ThroughProcedureName?
-    | output: 'OUTPUT' 'PROCEDURE' 'IS'? ProcedureName ThroughProcedureName?
+    | input: 'INPUT' 'PROCEDURE' 'IS'? ProcedureName (Through ProcedureName)?
+    | output: 'OUTPUT' 'PROCEDURE' 'IS'? ProcedureName (Through ProcedureName)?
     | giving: 'GIVING' Id+
     ;
 
@@ -535,7 +533,7 @@ syntax Statement
     | evaluate: 'EVALUATE' {EvaluateCondition 'ALSO'}+ WhenPhrases+ EndEvaluate
     | \start: 'START' Id IoPhrase ! atEnd ! notAtEnd* EndStart
     | \return: 'RETURN' Id 'RECORD'? IoPhrase ! endOfPage ! notEndOfPage* EndReturn
-    | perform: 'PERFORM' ProcedureName ThroughProcedureName? PerformPhrase?
+    | perform: 'PERFORM' ProcedureName (Through ProcedureName)? PerformPhrase?
     | endPerform: 'PERFORM' PerformPhrase? StatementList 'END-PERFORM'
     | entry: 'ENTRY' Literal UsingDataNamePluslist?
     | cancel: 'CANCEL' IdOrLit+

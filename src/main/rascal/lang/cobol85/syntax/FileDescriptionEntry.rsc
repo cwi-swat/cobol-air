@@ -40,22 +40,9 @@ keyword CobwordKeywords
     | 'WITH'
     ;
 
-syntax LabelRecordsClauseTail
-    = standard: 'STANDARD'
-    | omitted: 'OMITTED'
-    | dataName: Id+
-    ;
-
 syntax AltFdSd
     = fd: 'FD'
     | sd: 'SD'
-    ;
-
-syntax RecordClauseTail
-    = to: 'CONTAINS'? Integer 'TO' Integer 'CHARACTERS'?
-    | integer: 'CONTAINS'? Integer 'CHARACTERS'?
-    // not ('FROM'? Integer)?: rascal 0.43.1-RC1 mishandles some sequence groups, see EnvironmentDivision.rsc
-    | varying: 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer? ('TO' Integer)? 'CHARACTERS'? ('DEPENDING' 'ON'? Id)?
     ;
 
 syntax AltCharactersRecords
@@ -65,14 +52,18 @@ syntax AltCharactersRecords
     ;
 
 syntax FileAndSortDescriptionEntryClause
-    = label: 'LABEL' RecordsAre LabelRecordsClauseTail
-    | block: 'BLOCK' 'CONTAINS'? IntegerTo? Integer AltCharactersRecords?
+    = standard: 'LABEL' Records Are? 'STANDARD'
+    | omitted: 'LABEL' Records Are? 'OMITTED'
+    | label: 'LABEL' Records Are? Id+
+    | block: 'BLOCK' 'CONTAINS'? Integer ('TO' Integer)? AltCharactersRecords?
     | linage: 'LINAGE' 'IS'? AltDataNameInteger 'LINES'? LinagePhrase*
     | recording: 'RECORDING' 'MODE'? 'IS'? Id
     | globalClause: GlobalClause
-    | record: 'RECORD' RecordClauseTail
-    | \data: 'DATA' RecordsAre Id+
-    | \value: 'VALUE' 'OF' ValueOfClauseTail+
+    | record: 'RECORD' 'CONTAINS'? Integer ('TO' Integer)? 'CHARACTERS'?
+    // not ('FROM'? Integer)?: rascal 0.43.1-RC1 mishandles some sequence groups, see EnvironmentDivision.rsc
+    | varying: 'RECORD' 'IS'? 'VARYING' 'IN'? 'SIZE'? 'FROM'? Integer? ('TO' Integer)? 'CHARACTERS'? ('DEPENDING' 'ON'? Id)?
+    | \data: 'DATA' Records Are? Id+
+    | \value: 'VALUE' 'OF' ValueOfPhrase+
     | codeSet: 'CODE-SET' 'IS'? Id
     | externalClause: ExternalClause
     ;
@@ -84,8 +75,6 @@ syntax LinagePhrase
     | bottom: 'AT'? 'BOTTOM' AltDataNameInteger 'LINES'?
     ;
 
-syntax RecordsAre = records: Records Are?;
-
 syntax AltQualifiedDataNameLiteral
     = literal: Literal
     | qualifiedDataName: QualifiedDataName
@@ -96,4 +85,4 @@ syntax AltDataNameInteger
     | integer: Integer
     ;
 
-syntax ValueOfClauseTail = systemName: Id 'IS'? AltQualifiedDataNameLiteral;
+syntax ValueOfPhrase = systemName: Id 'IS'? AltQualifiedDataNameLiteral;

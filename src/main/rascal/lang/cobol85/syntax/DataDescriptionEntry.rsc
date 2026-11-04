@@ -57,8 +57,6 @@ keyword CobwordKeywords
     | 'ZEROS'
     ;
 
-syntax IntegerTo = to: Integer 'TO';
-
 syntax Picture
     = pic: 'PIC'
     | picture: 'PICTURE'
@@ -148,7 +146,7 @@ syntax AltDataNameFiller
     ;
 
 syntax OccursClause
-    = occursDepending: 'OCCURS' IntegerTo? Integer 'TIMES'? 'DEPENDING' 'ON'? QualifiedDataName OccursClauseKey* IndexedBy?
+    = occursDepending: 'OCCURS' Integer ('TO' Integer)? 'TIMES'? 'DEPENDING' 'ON'? QualifiedDataName OccursClauseKey* IndexedBy?
     | occurs: 'OCCURS' Integer 'TIMES'? OccursClauseKey* IndexedBy?
     ;
 
