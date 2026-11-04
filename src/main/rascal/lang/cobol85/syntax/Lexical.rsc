@@ -35,14 +35,14 @@ lexical Id = @category="struct" ([\-0-9A-Za-z] !<< [\-0-9]* [A-Za-z] [\-_0-9A-Za
 syntax Nonnumeric = NonnumericPart* NonnumericWhole;
 
 lexical NonnumericWhole
-    = [\"] DoubleStrChar* [\"] !>> [\"]
-    | [\'] SingleStrChar* [\'] !>> [\']
+    = @category="string.quoted.double" [\"] DoubleStrChar* [\"] !>> [\"]
+    | @category="string.quoted.single" [\'] SingleStrChar* [\'] !>> [\']
     ;
 
 // a literal that is continued on the next line ends at the margin (column 73) or at the end of a line without one
 lexical NonnumericPart
-    = [\"] DoubleStrChar* !>> ![\n\uE000]
-    | [\'] SingleStrChar* !>> ![\n\uE000]
+    = @category="string.quoted.double" [\"] DoubleStrChar* !>> ![\n\uE000]
+    | @category="string.quoted.single" [\'] SingleStrChar* !>> ![\n\uE000]
     ;
 
 lexical DoubleStrChar

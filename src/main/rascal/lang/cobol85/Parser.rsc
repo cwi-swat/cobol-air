@@ -6,6 +6,7 @@ import lang::cobol85::\syntax::Preprocess;
 import ParseTree;
 import IO;
 import Set;
+import Exception;
 
 start[Cobol85] parseCobol85(loc org, bool allowAmbiguity=false, bool allowRecovery=false, bool doPreprocess=true) {
     str src = readFile(org);
