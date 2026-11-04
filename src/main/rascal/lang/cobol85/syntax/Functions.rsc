@@ -17,19 +17,7 @@ keyword CobwordKeywords
 
 syntax Identifier = \function: 'FUNCTION' FunctionName !>> [A-Za-z0-9\-] FunctionArguments? ReferenceModification?;
 
-syntax FunctionArguments = brackets: "(" FunctionArgument+ ")";
-
-// arguments are separated by spaces, so an IS-less class or zero condition would also read as two arguments
-syntax FunctionArgument = expression: Expression ! inClass ! notInClass ! zero ! notZero EndFunctionArgument;
-
-// longest match: an argument can not be followed by a binary operator or a subscript, so `MAX(1 - 2)` and `MAX(A (1))`
-// have one argument. A sign glued to its number starts the next argument, so `MAX(-1, -2)` has two.
-// After a comma a bracket starts the next argument, so `MIN(A, (1 + 2) / 3)` has two.
-syntax EndFunctionArgument
-    = () !>> [*/(] !>> "+ " !>> "- " !>> "+\n" !>> "-\n" !>> "+\uE000" !>> "-\uE000"
-    | "," << () >> "("
-    | ", " << () >> "("
-    ;
+syntax FunctionArguments = brackets: "(" Operand+ ")";
 
 // the same amendment introduced ALL subscripts, to pass all elements of a table to a function: `FUNCTION MAX(T(ALL))`
 syntax SubscriptExpression = \all: 'ALL';

@@ -49,11 +49,22 @@ syntax Identifier
     | qualifiedDataName: QualifiedDataName SubscriptParentheses* "(" Expression ":" Expression ")"
     ;
 
-syntax SubscriptExpression
-    = literal: Literal
-    | qualifiedDataName: QualifiedDataName
-    | plus: QualifiedDataName "+" Integer
-    | minus: QualifiedDataName "-" Integer
+// a relative subscript (`I + 1`) is an expression too; a checker rejects the other expressions
+syntax SubscriptExpression = operand: Operand;
+
+// an operand in a list of operands, such as the arguments of a function, the subscripts of an identifier, or the
+// sending fields of DISPLAY and ADD. Operands are separated by spaces, so an IS-less class or zero condition would
+// also read as two operands. OR separates the operands of `DELIMITED BY "A" OR "B"`, so an operand is no conjunction
+// or disjunction. A checker rejects the expressions COBOL does not allow in a place.
+syntax Operand = expression: Expression ! inClass ! notInClass ! zero ! notZero ! conjunction ! disjunction EndOperand;
+
+// longest match: an operand can not be followed by a binary operator or a subscript, so `MAX(1 - 2)` and `MAX(A (1))`
+// have one operand. A sign glued to its number starts the next operand, so `MAX(-1, -2)` has two.
+// After a comma a bracket starts the next operand, so `MIN(A, (1 + 2) / 3)` has two.
+syntax EndOperand
+    = () !>> [*/(] !>> "+ " !>> "- " !>> "+\n" !>> "-\n" !>> "+" !>> "-"
+    | "," << () >> "("
+    | ", " << () >> "("
     ;
 
 syntax RecordName = qualifiedDataName: QualifiedDataName;
@@ -138,16 +149,17 @@ syntax InDataOrFileName = \in: In Id;
 
 // arithmetic expressions; the conditions in Condition.rsc continue this priority chain below minus.
 // Priorities follow COBOL-85: unary plus and minus, then exponentiation, then multiplication and division,
-// then addition and subtraction; operators of equal priority are evaluated from left to right
+// then addition and subtraction; operators of equal priority are evaluated from left to right.
+// An operator does not follow the left margin: there `*` and `/` start a comment line and `-` continues a line.
 syntax Expression
     = literal: Literal
     | identifier: Identifier
     | brackets: "(" Expression ")"
     > unaryPlus: "+" Expression
-    | unaryMinus: "-" Expression
-    > left power: Expression "**" !>> "*" Expression
-    > left ( times: Expression "*" !>> "*" Expression | dividedBy: Expression "/" Expression )
-    > left ( plus: Expression "+" Expression | minus: Expression "-" Expression )
+    | unaryMinus: [] !<< "-" Expression
+    > left power: Expression [] !<< "**" !>> "*" Expression
+    > left ( times: Expression [] !<< "*" !>> "*" Expression | dividedBy: Expression [] !<< "/" Expression )
+    > left ( plus: Expression "+" Expression | minus: Expression [] !<< "-" Expression )
     ;
 
 syntax Literal

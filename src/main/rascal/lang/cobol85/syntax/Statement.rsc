@@ -194,23 +194,17 @@ syntax ProcedureToProcedure
     | to: ProcedureName 'TO' 'PROCEED' 'TO' ProcedureName
     ;
 
-syntax DelimitedByPhrase = delimited: IdOrLit+ 'DELIMITED' 'BY'? IdOrLitSize;
+syntax DelimitedByPhrase = delimited: Operand+ 'DELIMITED' 'BY'? OperandOrSize;
 
-syntax InspectByArgument
-    = figurativeConstantSimple: FigurativeConstantSimple
-    | nonnumeric: Nonnumeric
-    | identifier: Identifier
-    ;
+syntax PerformAfterPhrase = after: 'AFTER' Identifier 'FROM' Expression 'BY' Expression 'UNTIL' Expression;
 
-syntax PerformAfterPhrase = after: 'AFTER' Identifier 'FROM' IdOrLit 'BY' IdOrLit 'UNTIL' Expression;
+syntax InitializeReplacingArgument = by: InitializeReplacingType 'DATA'? 'BY' Expression;
 
-syntax InitializeReplacingArgument = by: InitializeReplacingType 'DATA'? 'BY' IdOrLit;
-
-syntax BeforeAfterPhrase = beforeAfter: AltBeforeAfter 'INITIAL'? IdOrLit;
+syntax BeforeAfterPhrase = beforeAfter: AltBeforeAfter 'INITIAL'? Operand;
 
 syntax TallyingForArgument
     = characters: 'CHARACTERS' BeforeAfterPhrase*
-    | allLeading: AltAllLeading TallyingForIdOrLit+
+    | allLeading: AltAllLeading TallyingOperand+
     ;
 
 syntax AltFileReelUnit
@@ -222,11 +216,6 @@ syntax AltFileReelUnit
 syntax Lines
     = lines: 'LINES'
     | line: 'LINE'
-    ;
-
-syntax IdOrLit
-    = literal: Literal
-    | identifier: Identifier
     ;
 
 syntax EvaluatePhrase
@@ -265,11 +254,6 @@ syntax AltUpDown
     | up: 'UP'
     ;
 
-syntax CobwordInt
-    = identifier: Identifier
-    | integer: Integer
-    ;
-
 syntax Corresponding
     = corr: 'CORR'
     | corresponding: 'CORRESPONDING'
@@ -281,7 +265,7 @@ syntax EndOfPage
     ;
 
 syntax InspectReplacingPhrase
-    = characters: 'CHARACTERS' 'BY' IdOrLit BeforeAfterPhrase*
+    = characters: 'CHARACTERS' 'BY' Expression BeforeAfterPhrase*
     | allLeadingFirst: AltAllLeadingFirst InspectReplacingArgument+
     ;
 
@@ -314,11 +298,6 @@ syntax EvaluateCondition
 syntax WhenPhrases = whenPhrase: WhenPhrase+ StatementList;
 
 syntax OpenStatementOutputFileName = fileName: Id WithNoRewind?;
-
-syntax ContentParameterValue
-    = identifier: Identifier
-    | literal: Literal
-    ;
 
 syntax Equal
     = equalSign: "="
@@ -354,7 +333,7 @@ syntax UseStatement
 
 syntax WhenConditionStats = \when: 'WHEN' Expression AltStatementListNextSentence;
 
-syntax InspectReplacingArgument = by: InspectByArgument 'BY' InspectByArgument BeforeAfterPhrase*;
+syntax InspectReplacingArgument = by: NotAll Operand 'BY' Operand BeforeAfterPhrase*;
 
 // a BY CONTENT or BY REFERENCE phrase applies to all the parameters that follow it, up to the next BY phrase;
 // parameters before the first BY phrase are passed by reference
@@ -364,14 +343,14 @@ syntax UsingParameters
     ;
 
 syntax ParameterGroup
-    = content: 'BY'? 'CONTENT' ContentParameterValue+
+    = content: 'BY'? 'CONTENT' Operand+
     | reference: 'BY'? 'REFERENCE' Identifier+
     ;
 
 syntax PagePhrase
     = page: 'PAGE'
-    | cobwordInt: CobwordInt Lines?
-    | zeroes: Zeroes Lines?
+    // also ZERO LINES, a figurative constant
+    | lines: Expression Lines?
     ;
 
 syntax EndDivide = 'END-DIVIDE'?;
@@ -456,7 +435,7 @@ syntax IoPhrase
 
 // the phrases of CALL, STRING and UNSTRING, in any order; a checker rejects the combinations COBOL does not allow
 syntax OverflowPhrase
-    = delimitedBy: 'DELIMITED' 'BY'? {AllIdOrLit 'OR'}+
+    = delimitedBy: 'DELIMITED' 'BY'? {AllOperand 'OR'}+
     | into: 'INTO' UnstringStatementDst+
     | pointer: 'WITH'? 'POINTER' Identifier
     | tallying: 'TALLYING' 'IN'? Identifier
@@ -481,13 +460,13 @@ syntax SortPhrase
 syntax InspectPhrase
     = tallying: 'TALLYING' TallyingArgument+
     | replacing: 'REPLACING' InspectReplacingPhrase+
-    | converting: 'CONVERTING' IdOrLit 'TO' IdOrLit BeforeAfterPhrase*
+    | converting: 'CONVERTING' Expression 'TO' Expression BeforeAfterPhrase*
     ;
 
 syntax PerformPhrase
-    = times: CobwordInt 'TIMES'
+    = times: Expression 'TIMES'
     | until: WithTest? 'UNTIL' Expression
-    | varying: WithTest? 'VARYING' Identifier 'FROM' IdOrLit 'BY' IdOrLit 'UNTIL' Expression PerformAfterPhrase*
+    | varying: WithTest? 'VARYING' Identifier 'FROM' Expression 'BY' Expression 'UNTIL' Expression PerformAfterPhrase*
     ;
 
 syntax Statement
@@ -503,19 +482,19 @@ syntax Statement
     | compute: 'COMPUTE' CobwordRounded+ Equal Expression ArithmeticPhrase* EndCompute
     | exit: 'EXIT'
     | alter: 'ALTER' ProcedureToProcedure+
-    | call: 'CALL' IdOrLit OverflowPhrase* EndCall
+    | call: 'CALL' Expression OverflowPhrase* EndCall
     | \set: 'SET' SetStatementPhrase+
     | stop: 'STOP' AltRunLiteral
-    | divide: 'DIVIDE' IdOrLit ArithmeticPhrase* EndDivide
-    | display: 'DISPLAY' IdOrLit+ ('UPON' Id)? ('WITH'? 'NO' 'ADVANCING')?
+    | divide: 'DIVIDE' Expression ArithmeticPhrase* EndDivide
+    | display: 'DISPLAY' Operand+ ('UPON' Id)? ('WITH'? 'NO' 'ADVANCING')?
     | read: 'READ' Id 'NEXT'? 'RECORD'? IoPhrase ! endOfPage ! notEndOfPage* EndRead
     | string: 'STRING' DelimitedByPhrase+ OverflowPhrase* EndString
-    | subtract: 'SUBTRACT' Corresponding? IdOrLit+ ArithmeticPhrase* EndSubtract
-    | move: 'MOVE' Corresponding? IdOrLit 'TO' Identifier+
+    | subtract: 'SUBTRACT' Corresponding? Operand+ ArithmeticPhrase* EndSubtract
+    | move: 'MOVE' Corresponding? Expression 'TO' Identifier+
     | goMoreLabels: 'GO' 'TO'? 'MORE-LABELS'
     | goTo: 'GO' 'TO'? ProcedureName+ ('DEPENDING' 'ON'? Identifier)?
     | goback: 'GOBACK'
-    | add: 'ADD' Corresponding? IdOrLit+ ArithmeticPhrase* EndAdd
+    | add: 'ADD' Corresponding? Operand+ ArithmeticPhrase* EndAdd
     | accept: 'ACCEPT' Identifier ('FROM' Date)?
     | acceptMessage: 'ACCEPT' Id 'MESSAGE' 'COUNT'
     | acceptCount: 'ACCEPT' Id 'COUNT'
@@ -536,9 +515,9 @@ syntax Statement
     | perform: 'PERFORM' ProcedureName (Through ProcedureName)? PerformPhrase?
     | endPerform: 'PERFORM' PerformPhrase? StatementList 'END-PERFORM'
     | entry: 'ENTRY' Literal UsingDataNamePluslist?
-    | cancel: 'CANCEL' IdOrLit+
+    | cancel: 'CANCEL' Operand+
     | open: 'OPEN' OpenStatementPhrase+
-    | multiply: 'MULTIPLY' IdOrLit ArithmeticPhrase* EndMultiply
+    | multiply: 'MULTIPLY' Expression ArithmeticPhrase* EndMultiply
     | rewrite: 'REWRITE' RecordName IoPhrase ! atEnd ! notAtEnd* EndRewrite
     ;
 
@@ -547,7 +526,7 @@ syntax CommunicationIoMode
     | output: 'OUTPUT'
     ;
 
-syntax CommunicationKeyPhrase = key: 'WITH'? 'KEY' IdOrLit;
+syntax CommunicationKeyPhrase = key: 'WITH'? 'KEY' Expression;
 
 syntax Date
     = time: 'TIME'
@@ -557,7 +536,7 @@ syntax Date
     | mnemonicName: Id
     ;
 
-syntax CobwordRounded = idOrLit: IdOrLit 'ROUNDED'?;
+syntax CobwordRounded = operand: Operand 'ROUNDED'?;
 
 syntax StatementList = statement: Statement+ EndStatementList;
 
@@ -575,10 +554,9 @@ syntax EndStatementList
     | () >> 'COPY'
     ;
 
-syntax IdOrLitSize
-    = literal: Literal
-    | size: 'SIZE'
-    | identifier: Identifier
+syntax OperandOrSize
+    = size: 'SIZE'
+    | operand: Operand
     ;
 
 syntax UnstringStatementDst
@@ -590,7 +568,7 @@ syntax UnstringStatementDst
 
 syntax WithNoRewind = no: 'WITH'? 'NO' 'REWIND';
 
-syntax TallyingForIdOrLit = idOrLit: NotAll IdOrLit BeforeAfterPhrase*;
+syntax TallyingOperand = operand: NotAll Operand BeforeAfterPhrase*;
 
 // operands of INSPECT and UNSTRING can not be ALL literals; ALL is the keyword of the statement
 syntax NotAll = () !>> 'ALL ' !>> 'ALL\"' !>> 'ALL\uE000';
@@ -606,7 +584,7 @@ syntax AltExceptionError
     | error: 'ERROR'
     ;
 
-syntax AllIdOrLit = idOrLit: 'ALL'? NotAll IdOrLit;
+syntax AllOperand = operand: 'ALL'? NotAll Operand;
 
 syntax AltRunLiteral
     = run: 'RUN'
@@ -633,8 +611,7 @@ syntax CloseStatementOptions
 
 syntax SetSrc
     = \off: 'OFF'
-    | identifier: Identifier
-    | literal: Literal
+    | operand: Operand
     | \on: 'ON'
     | \true: 'TRUE'
     ;
