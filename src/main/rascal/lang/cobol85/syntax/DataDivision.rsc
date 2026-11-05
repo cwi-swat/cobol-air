@@ -4,7 +4,6 @@ extend lang::cobol85::\syntax::FileDescriptionEntry;
 extend lang::cobol85::\syntax::DataDescriptionEntry;
 extend lang::cobol85::\syntax::CommunicationSection;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'DATA'
     | 'DIVISION'

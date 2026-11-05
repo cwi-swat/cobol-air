@@ -7,7 +7,6 @@ extend lang::cobol85::\syntax::DataDivision;
 extend lang::cobol85::\syntax::Expression;
 extend lang::cobol85::\syntax::Functions;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'COMMON'
     | 'DIVISION'

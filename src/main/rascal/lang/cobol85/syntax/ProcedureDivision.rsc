@@ -3,7 +3,6 @@ module lang::cobol85::\syntax::ProcedureDivision
 extend lang::cobol85::\syntax::Statement;
 extend lang::cobol85::\syntax::Expression;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'DECLARATIVES'
     | 'DIVISION'

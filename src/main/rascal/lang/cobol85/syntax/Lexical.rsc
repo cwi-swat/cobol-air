@@ -2,7 +2,6 @@ module lang::cobol85::\syntax::Lexical
 
 extend lang::cobol85::\syntax::Layout;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'BY'
     | 'OFF'

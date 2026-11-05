@@ -14,7 +14,7 @@ start[Cobol85] parseCobol85(loc org, bool allowAmbiguity=false, bool allowRecove
 }
 
 start[Cobol85] parseCobol85(str src, loc org, bool allowAmbiguity=false, bool allowRecovery=false, bool doPreprocess=true) {
-    return parse(#start[Cobol85], doPreprocess ? preprocess(src) : src, org, allowAmbiguity=allowAmbiguity, allowRecovery=allowRecovery, doPreprocess=doPreprocess);
+    return parse(#start[Cobol85], doPreprocess ? preprocess(src) : src, org, allowAmbiguity=allowAmbiguity, allowRecovery=allowRecovery);
 }
 
 start[Copybook] parseCobol85Copybook(loc org, bool allowRecovery=false, bool doPreprocess=true) {

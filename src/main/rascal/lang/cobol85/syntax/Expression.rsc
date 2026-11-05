@@ -2,7 +2,6 @@ module lang::cobol85::\syntax::Expression
 
 extend lang::cobol85::\syntax::Lexical;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'ADDRESS'
     | 'ALL'

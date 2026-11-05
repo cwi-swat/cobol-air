@@ -188,7 +188,6 @@ syntax UponPhrase = upon: 'UPON' Id+;
 
 syntax ResetPhrase = reset: 'RESET' 'ON'? ControlName;
 
-// the special registers, one per report, qualified by the report name when there are several reports
 syntax Identifier
     = lineCounter: 'LINE-COUNTER'
     | lineCounter: 'LINE-COUNTER' In Id

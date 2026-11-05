@@ -3,7 +3,6 @@ module lang::cobol85::\syntax::InputOutputSection
 extend lang::cobol85::\syntax::FileDescriptionEntry;
 extend lang::cobol85::\syntax::Expression;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'ACCESS'
     | 'ALTERNATE'

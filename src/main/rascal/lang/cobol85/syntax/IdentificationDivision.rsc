@@ -2,7 +2,6 @@ module lang::cobol85::\syntax::IdentificationDivision
 
 extend lang::cobol85::\syntax::Expression;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'AUTHOR'
     | 'DATA'

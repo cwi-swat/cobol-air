@@ -3,7 +3,6 @@ module lang::cobol85::\syntax::EnvironmentDivision
 extend lang::cobol85::\syntax::ConfigurationSection;
 extend lang::cobol85::\syntax::InputOutputSection;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'ASSIGN'
     | 'CONFIGURATION'

@@ -4,7 +4,6 @@ extend lang::cobol85::\syntax::Condition;
 extend lang::cobol85::\syntax::Lexical;
 extend lang::cobol85::\syntax::Expression;
 
-// the reserved words of this module
 keyword CobwordKeywords
     = 'ACCEPT'
     | 'ADD'

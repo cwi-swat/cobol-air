@@ -1,8 +1,7 @@
 module lang::cobol85::\syntax::CommunicationSection
 
 extend lang::cobol85::\syntax::Expression;
-
-// the reserved words of this module
+extend lang::cobol85::\syntax::DataDescriptionEntry;
 keyword CobwordKeywords
     = 'CD'
     | 'COMMUNICATION'
@@ -33,8 +32,6 @@ keyword CobwordKeywords
     ;
 
 syntax CommunicationSection = communicationSection: 'COMMUNICATION' 'SECTION' "." CommunicationDescriptionEntry+;
-
-// a CD entry is followed by the record descriptions of its message area
 syntax CommunicationDescriptionEntry
     = cd: 'CD' Id CommunicationDirection CommunicationDescriptionClause* "." DataDescriptionEntry*
     // the input form can also list its eleven data names by position, without the clause keywords
