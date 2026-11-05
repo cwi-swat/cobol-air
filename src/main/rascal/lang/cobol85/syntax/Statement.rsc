@@ -242,8 +242,6 @@ syntax OpenStatementPhrase
     | \extend: 'EXTEND' Id+
     ;
 
-syntax EndAdd = 'END-ADD'?;
-
 syntax AltRemovalNoRewind
     = withNoRewind: WithNoRewind
     | removal: 'FOR'? 'REMOVAL'
@@ -304,8 +302,6 @@ syntax Equal
     | equal: 'EQUAL'
     ;
 
-syntax EndMultiply = 'END-MULTIPLY'?;
-
 syntax AltStatementListNextSentence
     = statementList: StatementList
     | nextSentence: 'NEXT' 'SENTENCE'
@@ -353,8 +349,6 @@ syntax PagePhrase
     | lines: Expression Lines?
     ;
 
-syntax EndDivide = 'END-DIVIDE'?;
-
 syntax WithTest = \test: 'WITH'? 'TEST' AltBeforeAfter;
 
 syntax SetOper
@@ -370,30 +364,12 @@ syntax EndIf
     | () >> 'WHEN'
     ;
 
-syntax EndCompute = 'END-COMPUTE'?;
-
-syntax EndCall = 'END-CALL'?;
-
-syntax EndString = 'END-STRING'?;
-
-syntax EndDelete = 'END-DELETE'?;
-
-syntax EndUnString = 'END-UNSTRING'?;
-
-syntax EndWrite = 'END-WRITE'?;
-
 syntax EndEvaluate = 'END-EVALUATE'?;
 
 syntax EndReturn
     = 'END-RETURN'
     | () >> "."
     ;
-
-syntax EndStart = 'END-START'?;
-
-syntax EndRewrite = 'END-REWRITE'?;
-
-syntax EndRead = 'END-READ'?;
 
 // the phrases of the arithmetic statements, in any order; a checker rejects the combinations COBOL does not allow
 syntax ArithmeticPhrase
@@ -403,13 +379,15 @@ syntax ArithmeticPhrase
     | into: 'INTO' CobwordRounded+
     | giving: 'GIVING' CobwordRounded+
     | remainder: 'REMAINDER' Identifier
-    | sizeError: 'ON'? 'SIZE' 'ERROR' StatementList
-    | notSizeError: 'NOT' 'ON'? 'SIZE' 'ERROR' StatementList
     ;
 
-// the phrases of the input-output statements, in any order; a checker rejects the combinations COBOL does not allow.
-// READ, RETURN, SEARCH and RECEIVE exclude END-OF-PAGE and the others exclude AT END, so that a statement nested in
-// an AT END or END-OF-PAGE phrase can not take the NOT AT END or NOT END-OF-PAGE of its parent
+// the conditional phrases of the arithmetic statements, which follow the other phrases
+syntax ArithmeticConditionalPhrase
+    = sizeError: 'ON'? 'SIZE' 'ERROR' ImperativeStatementList
+    | notSizeError: 'NOT' 'ON'? 'SIZE' 'ERROR' ImperativeStatementList
+    ;
+
+// the phrases of the input-output statements, in any order; a checker rejects the combinations COBOL does not allow
 syntax IoPhrase
     = into: 'INTO' Identifier
     | from: 'FROM' Identifier
@@ -424,13 +402,17 @@ syntax IoPhrase
     | withEgi: 'WITH' 'EGI'
     | with: 'WITH' Identifier
     | replacing: 'REPLACING' 'LINE'
-    | atEnd: 'AT'? 'END' StatementList
-    | notAtEnd: 'NOT' 'AT'? 'END' StatementList
-    | invalidKey: 'INVALID' 'KEY'? StatementList
-    | notInvalidKey: 'NOT' 'INVALID' 'KEY'? StatementList
-    | endOfPage: 'AT'? EndOfPage StatementList
-    | notEndOfPage: 'NOT' 'AT'? EndOfPage StatementList
     | noData: 'NO' 'DATA' Statement
+    ;
+
+// the conditional phrases of the input-output statements, which follow the other phrases
+syntax IoConditionalPhrase
+    = atEnd: 'AT'? 'END' ImperativeStatementList
+    | notAtEnd: 'NOT' 'AT'? 'END' ImperativeStatementList
+    | invalidKey: 'INVALID' 'KEY'? ImperativeStatementList
+    | notInvalidKey: 'NOT' 'INVALID' 'KEY'? ImperativeStatementList
+    | endOfPage: 'AT'? EndOfPage ImperativeStatementList
+    | notEndOfPage: 'NOT' 'AT'? EndOfPage ImperativeStatementList
     ;
 
 // the phrases of CALL, STRING and UNSTRING, in any order; a checker rejects the combinations COBOL does not allow
@@ -440,10 +422,14 @@ syntax OverflowPhrase
     | pointer: 'WITH'? 'POINTER' Identifier
     | tallying: 'TALLYING' 'IN'? Identifier
     | using: 'USING' UsingParameters
-    | overflow: 'ON'? 'OVERFLOW' StatementList
-    | notOverflow: 'NOT' 'ON'? 'OVERFLOW' StatementList
-    | exception: 'ON'? 'EXCEPTION' StatementList
-    | notException: 'NOT' 'ON'? 'EXCEPTION' StatementList
+    ;
+
+// the conditional phrases of CALL, STRING and UNSTRING, which follow the other phrases
+syntax OverflowConditionalPhrase
+    = overflow: 'ON'? 'OVERFLOW' ImperativeStatementList
+    | notOverflow: 'NOT' 'ON'? 'OVERFLOW' ImperativeStatementList
+    | exception: 'ON'? 'EXCEPTION' ImperativeStatementList
+    | notException: 'NOT' 'ON'? 'EXCEPTION' ImperativeStatementList
     ;
 
 // the phrases of SORT and MERGE, in any order; a checker rejects the combinations COBOL does not allow
@@ -471,54 +457,80 @@ syntax PerformPhrase
 
 syntax Statement
     = exitProgram: 'EXIT' 'PROGRAM'
-    | receive: 'RECEIVE' Id IoPhrase ! endOfPage ! notEndOfPage*
+    | receive: 'RECEIVE' Id IoPhrase*
     | enable: 'ENABLE' CommunicationIoMode Id CommunicationKeyPhrase?
     | disable: 'DISABLE' CommunicationIoMode Id CommunicationKeyPhrase?
-    | send: 'SEND' Id IoPhrase ! atEnd ! notAtEnd*
+    | send: 'SEND' Id IoPhrase*
     | purge: 'PURGE' Id
     | merge: 'MERGE' Id SortPhrase*
-    | searchAll: 'SEARCH' 'ALL' Identifier IoPhrase ! endOfPage ! notEndOfPage* WhenConditionStats EndSearch
-    | search: 'SEARCH' Identifier IoPhrase ! endOfPage ! notEndOfPage* WhenConditionStats+ EndSearch
-    | compute: 'COMPUTE' CobwordRounded+ Equal Expression ArithmeticPhrase* EndCompute
+    | searchAll: 'SEARCH' 'ALL' Identifier IoPhrase* IoConditionalPhrase* WhenConditionStats EndSearch
+    | search: 'SEARCH' Identifier IoPhrase* IoConditionalPhrase* WhenConditionStats+ EndSearch
+    | compute: 'COMPUTE' CobwordRounded+ Equal Expression ArithmeticPhrase* ArithmeticConditionalPhrase* 'END-COMPUTE'
+    | compute: 'COMPUTE' CobwordRounded+ Equal Expression ArithmeticPhrase* () !>> 'END-COMPUTE'
+    | computeConditional: 'COMPUTE' CobwordRounded+ Equal Expression ArithmeticPhrase* ArithmeticConditionalPhrase+ () !>> 'END-COMPUTE'
     | exit: 'EXIT'
     | alter: 'ALTER' ProcedureToProcedure+
-    | call: 'CALL' Expression OverflowPhrase* EndCall
+    | call: 'CALL' Expression OverflowPhrase* OverflowConditionalPhrase* 'END-CALL'
+    | call: 'CALL' Expression OverflowPhrase* () !>> 'END-CALL'
+    | callConditional: 'CALL' Expression OverflowPhrase* OverflowConditionalPhrase+ () !>> 'END-CALL'
     | \set: 'SET' SetStatementPhrase+
     | stop: 'STOP' AltRunLiteral
-    | divide: 'DIVIDE' Expression ArithmeticPhrase* EndDivide
+    | divide: 'DIVIDE' Expression ArithmeticPhrase* ArithmeticConditionalPhrase* 'END-DIVIDE'
+    | divide: 'DIVIDE' Expression ArithmeticPhrase* () !>> 'END-DIVIDE'
+    | divideConditional: 'DIVIDE' Expression ArithmeticPhrase* ArithmeticConditionalPhrase+ () !>> 'END-DIVIDE'
     | display: 'DISPLAY' Operand+ ('UPON' Id)? ('WITH'? 'NO' 'ADVANCING')?
-    | read: 'READ' Id 'NEXT'? 'RECORD'? IoPhrase ! endOfPage ! notEndOfPage* EndRead
-    | string: 'STRING' DelimitedByPhrase+ OverflowPhrase* EndString
-    | subtract: 'SUBTRACT' Corresponding? Operand+ ArithmeticPhrase* EndSubtract
+    | read: 'READ' Id 'NEXT'? 'RECORD'? IoPhrase* IoConditionalPhrase* 'END-READ'
+    | read: 'READ' Id 'NEXT'? 'RECORD'? IoPhrase* () !>> 'END-READ'
+    | readConditional: 'READ' Id 'NEXT'? 'RECORD'? IoPhrase* IoConditionalPhrase+ () !>> 'END-READ'
+    | string: 'STRING' DelimitedByPhrase+ OverflowPhrase* OverflowConditionalPhrase* 'END-STRING'
+    | string: 'STRING' DelimitedByPhrase+ OverflowPhrase* () !>> 'END-STRING'
+    | stringConditional: 'STRING' DelimitedByPhrase+ OverflowPhrase* OverflowConditionalPhrase+ () !>> 'END-STRING'
+    | subtract: 'SUBTRACT' Corresponding? Operand+ ArithmeticPhrase* ArithmeticConditionalPhrase* 'END-SUBTRACT'
+    | subtract: 'SUBTRACT' Corresponding? Operand+ ArithmeticPhrase* () !>> 'END-SUBTRACT'
+    | subtractConditional: 'SUBTRACT' Corresponding? Operand+ ArithmeticPhrase* ArithmeticConditionalPhrase+ () !>> 'END-SUBTRACT'
     | move: 'MOVE' Corresponding? Expression 'TO' Identifier+
     | goMoreLabels: 'GO' 'TO'? 'MORE-LABELS'
     | goTo: 'GO' 'TO'? ProcedureName+ ('DEPENDING' 'ON'? Identifier)?
     | goback: 'GOBACK'
-    | add: 'ADD' Corresponding? Operand+ ArithmeticPhrase* EndAdd
+    | add: 'ADD' Corresponding? Operand+ ArithmeticPhrase* ArithmeticConditionalPhrase* 'END-ADD'
+    | add: 'ADD' Corresponding? Operand+ ArithmeticPhrase* () !>> 'END-ADD'
+    | addConditional: 'ADD' Corresponding? Operand+ ArithmeticPhrase* ArithmeticConditionalPhrase+ () !>> 'END-ADD'
     | accept: 'ACCEPT' Identifier ('FROM' Date)?
     | acceptMessage: 'ACCEPT' Id 'MESSAGE' 'COUNT'
     | acceptCount: 'ACCEPT' Id 'COUNT'
-    | delete: 'DELETE' Id 'RECORD'? IoPhrase ! atEnd ! notAtEnd* EndDelete
+    | delete: 'DELETE' Id 'RECORD'? IoPhrase* IoConditionalPhrase* 'END-DELETE'
+    | delete: 'DELETE' Id 'RECORD'? IoPhrase* () !>> 'END-DELETE'
+    | deleteConditional: 'DELETE' Id 'RECORD'? IoPhrase* IoConditionalPhrase+ () !>> 'END-DELETE'
     | initialize: 'INITIALIZE' Identifier+ ('REPLACING' InitializeReplacingArgument+)?
     | \continue: 'CONTINUE'
-    | release: 'RELEASE' RecordName IoPhrase ! atEnd ! notAtEnd*
-    | unstring: 'UNSTRING' Identifier OverflowPhrase* EndUnString
+    | release: 'RELEASE' RecordName IoPhrase*
+    | unstring: 'UNSTRING' Identifier OverflowPhrase* OverflowConditionalPhrase* 'END-UNSTRING'
+    | unstring: 'UNSTRING' Identifier OverflowPhrase* () !>> 'END-UNSTRING'
+    | unstringConditional: 'UNSTRING' Identifier OverflowPhrase* OverflowConditionalPhrase+ () !>> 'END-UNSTRING'
     | close: 'CLOSE' CloseStatementFileName+
     | \if: 'IF' Expression 'THEN'? AltStatementListNextSentence () !>> 'ELSE' EndIf
     | ifElse: 'IF' Expression 'THEN'? AltStatementListNextSentence 'ELSE' AltStatementListNextSentence EndIf
     | inspect: 'INSPECT' Identifier InspectPhrase+
     | sort: 'SORT' Id SortPhrase*
-    | write: 'WRITE' RecordName IoPhrase ! atEnd ! notAtEnd* EndWrite
+    | write: 'WRITE' RecordName IoPhrase* IoConditionalPhrase* 'END-WRITE'
+    | write: 'WRITE' RecordName IoPhrase* () !>> 'END-WRITE'
+    | writeConditional: 'WRITE' RecordName IoPhrase* IoConditionalPhrase+ () !>> 'END-WRITE'
     | evaluate: 'EVALUATE' {EvaluateCondition 'ALSO'}+ WhenPhrases+ EndEvaluate
-    | \start: 'START' Id IoPhrase ! atEnd ! notAtEnd* EndStart
-    | \return: 'RETURN' Id 'RECORD'? IoPhrase ! endOfPage ! notEndOfPage* EndReturn
+    | \start: 'START' Id IoPhrase* IoConditionalPhrase* 'END-START'
+    | \start: 'START' Id IoPhrase* () !>> 'END-START'
+    | startConditional: 'START' Id IoPhrase* IoConditionalPhrase+ () !>> 'END-START'
+    | \return: 'RETURN' Id 'RECORD'? IoPhrase* IoConditionalPhrase* EndReturn
     | perform: 'PERFORM' ProcedureName (Through ProcedureName)? PerformPhrase?
     | endPerform: 'PERFORM' PerformPhrase? StatementList 'END-PERFORM'
     | entry: 'ENTRY' Literal UsingDataNamePluslist?
     | cancel: 'CANCEL' Operand+
     | open: 'OPEN' OpenStatementPhrase+
-    | multiply: 'MULTIPLY' Expression ArithmeticPhrase* EndMultiply
-    | rewrite: 'REWRITE' RecordName IoPhrase ! atEnd ! notAtEnd* EndRewrite
+    | multiply: 'MULTIPLY' Expression ArithmeticPhrase* ArithmeticConditionalPhrase* 'END-MULTIPLY'
+    | multiply: 'MULTIPLY' Expression ArithmeticPhrase* () !>> 'END-MULTIPLY'
+    | multiplyConditional: 'MULTIPLY' Expression ArithmeticPhrase* ArithmeticConditionalPhrase+ () !>> 'END-MULTIPLY'
+    | rewrite: 'REWRITE' RecordName IoPhrase* IoConditionalPhrase* 'END-REWRITE'
+    | rewrite: 'REWRITE' RecordName IoPhrase* () !>> 'END-REWRITE'
+    | rewriteConditional: 'REWRITE' RecordName IoPhrase* IoConditionalPhrase+ () !>> 'END-REWRITE'
     ;
 
 syntax CommunicationIoMode
@@ -539,6 +551,12 @@ syntax Date
 syntax CobwordRounded = operand: Operand 'ROUNDED'?;
 
 syntax StatementList = statement: Statement+ EndStatementList;
+
+// the statements of a conditional phrase are imperative (COBOL-85): a statement with a conditional phrase of its own
+// needs its scope terminator there. So in `ADD A TO B ON SIZE ERROR ADD C TO D NOT ON SIZE ERROR ...` the NOT ON SIZE
+// ERROR phrase belongs to the first ADD.
+syntax ImperativeStatementList
+    = statement: Statement ! addConditional ! subtractConditional ! multiplyConditional ! divideConditional ! computeConditional ! readConditional ! writeConditional ! rewriteConditional ! deleteConditional ! startConditional ! callConditional ! stringConditional ! unstringConditional+ EndStatementList;
 
 // a statement list extends to the end of the sentence, a scope terminator, or the next phrase of its enclosing statement
 syntax EndStatementList
@@ -590,8 +608,6 @@ syntax AltRunLiteral
     = run: 'RUN'
     | literal: Literal
     ;
-
-syntax EndSubtract = 'END-SUBTRACT'?;
 
 syntax RelOp
     = equalTo: EqualTo
