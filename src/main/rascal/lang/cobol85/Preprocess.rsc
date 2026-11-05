@@ -1,9 +1,10 @@
-module lang::cobol85::\syntax::Preprocess
+module lang::cobol85::Preprocess
 
 import String;
 import List;
 import IO;
 
+@synopsis{COBOL pre-processing involves (mostly) replacing the margins with a control character.}
 str preprocess(str src) {
     list[str] lines = split("\n", src);
     // the sequence area (columns 1-6) and the identification area (from column 73) are filled with the margin
