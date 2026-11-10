@@ -1,2 +1,5 @@
 target
 *.code-workspace
+# leftovers of the maven-release-plugin
+*.releaseBackup
+release.properties
