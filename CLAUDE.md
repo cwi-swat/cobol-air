@@ -39,7 +39,7 @@ Rascal grammar and analysis library for COBOL-85 (IBM VS COBOL II dialect). Gram
   line). A new keyword goes into every module that uses it.
 - New features go in separate modules (e.g. `Functions.rsc`), with a comment on when the feature was introduced.
 - The preprocessor keeps all offsets and fills the margins (columns 1-6 and from 73) with U+E000. Any lexical or
-  restriction that looks for whitespace must also accept ``.
+  restriction that looks for whitespace must also accept `\uE000`.
 - For mechanical edits to `.rsc` modules (renaming labels or nonterminals), work on parse trees: `parseModuleWithSpaces`
   from `util::Reflective`, `visit`, then `treeDiff` from `analysis::diff::edits::HiFiTreeDiff` and `executeTextEdits`.
   Do not use regular expressions.

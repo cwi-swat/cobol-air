@@ -85,7 +85,7 @@ syntax Operand = expression: Expression ! inClass ! notInClass ! zero ! notZero 
 // have one operand. A sign glued to its number starts the next operand, so `MAX(-1, -2)` has two.
 // After a comma a bracket starts the next operand, so `MIN(A, (1 + 2) / 3)` has two.
 syntax EndOperand
-    = () !>> [*/(] !>> "+ " !>> "- " !>> "+\n" !>> "-\n" !>> "+" !>> "-"
+    = () !>> [*/(] !>> "+ " !>> "- " !>> "+\n" !>> "-\n" !>> "+\uE000" !>> "-\uE000"
     | "," << () >> "("
     | ", " << () >> "("
     ;
@@ -179,10 +179,10 @@ syntax Expression
     | identifier: Identifier
     | brackets: "(" Expression ")"
     > unaryPlus: "+" Expression
-    | unaryMinus: [] !<< "-" Expression
-    > left power: Expression [] !<< "**" !>> "*" Expression
-    > left ( times: Expression [] !<< "*" !>> "*" Expression | dividedBy: Expression [] !<< "/" Expression )
-    > left ( plus: Expression "+" Expression | minus: Expression [] !<< "-" Expression )
+    | unaryMinus: [\uE000] !<< "-" Expression
+    > left power: Expression [\uE000] !<< "**" !>> "*" Expression
+    > left ( times: Expression [\uE000] !<< "*" !>> "*" Expression | dividedBy: Expression [\uE000] !<< "/" Expression )
+    > left ( plus: Expression "+" Expression | minus: Expression [\uE000] !<< "-" Expression )
     ;
 
 syntax Literal
