@@ -90,7 +90,7 @@ void removeUnused() {
         start[Module] m = parseModuleWithSpaces(modul);
         solve (m) {
             m = top-down visit (m) {
-                case h:(Header)`<Tags ts> module <QualifiedName q>  <Import* is0> <Start st> syntax <Nonterminal nt> = <Prod p>; <Import* is1>`
+                case (Header)`<Tags ts> module <QualifiedName q>  <Import* is0> <Start _> syntax <Nonterminal nt> = <Prod _>; <Import* is1>`
                     => (Header)`<Tags ts> module <QualifiedName q>  <Import* is0> 
                                '<Import* is1>`
                     when "<nt>" in unused
