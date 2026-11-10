@@ -78,8 +78,9 @@ Found with 0.43.0 and 0.43.1-RC1; recheck them when the Rascal version in `pom.x
 - `readTextValueFile` resolves constructors through the environments on the call stack, not from the reified type
   argument, so the calling module must import the modules that define them (`ParseTree`, `util::Maybe` for the
   regression model).
-- The type checker (0.43.1-RC2-SNAPSHOT) hung at full CPU, with no message, on a module that imported a module that
-  does not exist (`import lang::cobol85::\syntax::Preprocess;`); removing the import fixed it. When `mvn compile` never finishes, check the
+- The type checker (0.43.1-RC2-SNAPSHOT) hangs at full CPU, with no message, on an import of a module that does not
+  exist when the name has an escaped package segment (`import lang::cobol85::\syntax::Preprocess;`); without the
+  escape it reports "Module not found". When `mvn compile` never finishes, check the
   modules one by one (see Type checking) and look for a wrong import.
 
 ## Tests
