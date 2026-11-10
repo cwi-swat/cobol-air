@@ -37,7 +37,7 @@ syntax test cobolSourceProgram1 (CobolSourceProgram) expects ok {
 }
 
 syntax test cobolSourceProgram2 (CobolSourceProgram) expects ok {
-IDENTIFICATION DIVISION.
+       IDENTIFICATION DIVISION.
  PROGRAM-ID. AMBTEST.
 *    NO IDENTIFICATION DIVISION CONTENT, AN EMPTY ENVIRONMENT DIVI
  ENVIRONMENT DIVISION.
@@ -48,7 +48,7 @@ IDENTIFICATION DIVISION.
 }
 
 syntax test sentence1 (Sentence) expects ok {
-RETURN   SORT3 RECORD AT END
+       RETURN   SORT3 RECORD AT END
               PERFORM PASS-3 GO TO SORT-WRITE-15.
 }
 
@@ -93,7 +93,7 @@ INSPECT WC-XN-83 TALLYING WRK-DU-999-1 FOR ALL SPACES
 }
 
 syntax test statement4 (Statement) expects ok {
-UNSTRING ID1-XN-7 DELIMITED BY ZERO
+       UNSTRING ID1-XN-7 DELIMITED BY ZERO
               INTO ID4-X DELIMITER IN ID5-XN-4
               COUNT IN ID6-DU-2V0
 }
@@ -107,7 +107,7 @@ ZERO-NULL + 1
 }
 
 syntax test statement5 (Statement) expects ok {
-EVALUATE WRK-DU-08V00
+           EVALUATE WRK-DU-08V00
         WHEN (33 + (99 - 43))
              PERFORM PASS
         WHEN NOT (33 + (99 - 43))
@@ -120,7 +120,7 @@ EVALUATE WRK-DU-08V00
 }
 
 syntax test statement6 (Statement) expects ok {
-EVALUATE FUNCTION MOD(11, 5)
+           EVALUATE FUNCTION MOD(11, 5)
      WHEN 1
                     PERFORM PASS
      WHEN OTHER
@@ -161,7 +161,7 @@ COMPUTE WS-NUM = FUNCTION MAX(1 - 1.01) + FUNCTION MAX(A (1)) + FUNCTION MAX(T(A
 }
 
 syntax test identificationDivisionContent1 (IdentificationDivisionContent) expects ok {
-AUTHOR.
+       AUTHOR.
      NIST.
 *    A COMMENT LINE BETWEEN COMMENT-ENTRY LINES
      "4.2 ".
@@ -251,21 +251,21 @@ SEARCH ALL T WHEN K1 (I) = A AND K2 (I) = B AND C MOVE 1 TO X END-SEARCH
 }
 
 syntax test statement16 (Statement) expects ok {
-UNSTRING ID1-XN-12
+       UNSTRING ID1-XN-12
              DELIMITED BY "E" OR "H" OR "K" OR "L"
              INTO ID4C-XXX ID4B-XX ID4A-X
              TALLYING IN ID11-DU-2V0
 }
 
 syntax test statement17 (Statement) expects ok {
-INSPECT WRK-XN-83-1
+       INSPECT WRK-XN-83-1
          REPLACING LEADING "AH" BY "OH" BEFORE INITIAL " AH YES"
                    FIRST "I" BY "O" AFTER INITIAL "."
                    ALL ". " BY ", " AFTER INITIAL "HE"
 }
 
 syntax test sentence6 (Sentence) expects ok {
-DISPLAY  ALL "ABCD"
+       DISPLAY  ALL "ABCD"
 *        NOTE "ALL" LITERAL.
      MOVE     "ABCD" TO DIS-PLAYER.
 }
