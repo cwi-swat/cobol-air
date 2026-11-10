@@ -22,6 +22,18 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The lexical tokens of COBOL: words, numbers, nonnumeric literals, PICTURE strings and REPLACE directives.}
+@description{
+This module defines the tokens that the rest of the grammar is built from. `Id` is the single lexical for
+user-defined COBOL words, excluding the reserved words that the modules declare in `CobwordKeywords`. `Num` is the
+only number lexical; it distinguishes decimals from integers, and a sign glued to its digits makes a signed
+literal, so `-1` is a number but `A - 1` is a subtraction. Nonnumeric literals come in double and single quotes,
+with doubled quotes inside, and may be continued over several lines up to the margin. `PictureString` reads the
+character-string of a PICTURE clause by longest match, so a trailing comma or period ends the clause rather than
+the picture. The module also defines pseudo-text (`==...==`) and the REPLACE directive. Follow restrictions,
+instead of spacing rules, keep the tokens apart; for example `Digits` may not be followed by a comma and a digit,
+so `1,5` is one decimal number.
+}
 module lang::cobol85::\syntax::Lexical
 
 extend lang::cobol85::\syntax::Layout;

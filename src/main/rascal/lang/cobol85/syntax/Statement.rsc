@@ -22,6 +22,20 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{All procedure division statements, from ACCEPT to WRITE, with their phrases and scope terminators.}
+@description{
+This module defines the statements of the procedure division as one `Statement` nonterminal with one rule per
+statement kind, including the arithmetic statements, MOVE, IF and EVALUATE, PERFORM in all its forms, the
+input-output statements OPEN, READ, WRITE, REWRITE, START, DELETE and CLOSE, CALL, STRING, UNSTRING, INSPECT,
+SEARCH, SET, SORT and MERGE, the communication statements and the old ALTER, GO TO DEPENDING and ENTRY. Optional
+trailing phrases are lists in any order per statement family (`ArithmeticPhrase`, `IoPhrase`, `OverflowPhrase`,
+`SortPhrase`), followed by the conditional phrases such as ON SIZE ERROR, AT END and INVALID KEY. This replaces
+the many rules that encoded every permitted subset and order; a checker rejects the combinations COBOL does not
+allow. The statements of a conditional phrase are imperative, so a nested statement with a conditional phrase of
+its own needs its scope terminator, and an IF without END-IF ends at the period or at an enclosing ELSE or WHEN.
+Statement lists extend up to the end of the sentence, a scope terminator or the next phrase of the enclosing
+statement.
+}
 module lang::cobol85::\syntax::Statement
 
 extend lang::cobol85::\syntax::Condition;

@@ -22,6 +22,16 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The IDENTIFICATION DIVISION header and its optional paragraphs with comment entries.}
+@description{
+This module defines the start of a program: the IDENTIFICATION (or ID) DIVISION header followed by the optional
+paragraphs AUTHOR, INSTALLATION, DATE-WRITTEN, DATE-COMPILED, SECURITY and REMARKS. Their contents are comment
+entries, free text that may span several lines, which the grammar keeps as lines of words up to the margin, so the
+margin itself stays layout. A comment-entry line in Area B may start with a word that is also a paragraph or
+division header, because real headers start in Area A; the first word of a line stops at a period so that a header
+such as `AUTHOR.` is still recognized. The PROGRAM-ID paragraph itself is part of the program rules in the Program
+module.
+}
 module lang::cobol85::\syntax::IdentificationDivision
 
 extend lang::cobol85::\syntax::Expression;

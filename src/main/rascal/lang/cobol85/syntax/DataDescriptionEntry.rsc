@@ -22,6 +22,15 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{Data description entries: level numbers, data names and clauses such as PICTURE, USAGE, OCCURS and VALUE.}
+@description{
+This module defines the entries that describe data items in every section of the data division. An entry has a
+level number, a data name or FILLER, and its clauses in any order: PICTURE, USAGE, VALUE, OCCURS with DEPENDING ON, ASCENDING or DESCENDING KEY and INDEXED BY, REDEFINES, RENAMES
+for level 66, SIGN, SYNCHRONIZED, JUSTIFIED, BLANK WHEN ZERO, EXTERNAL and GLOBAL. Entries can also be COPY
+statements or REPLACE directives, because copybooks often supply record descriptions. The entries form one flat
+list; the hierarchy that the level numbers imply is not built by the parser, and the clause combinations that COBOL
+does not allow are left to a checker.
+}
 module lang::cobol85::\syntax::DataDescriptionEntry
 
 extend lang::cobol85::\syntax::ConfigurationSection;

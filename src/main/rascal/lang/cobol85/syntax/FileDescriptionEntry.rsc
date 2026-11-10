@@ -22,6 +22,14 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{FD and SD entries: the clauses that describe files and sort files in the FILE SECTION.}
+@description{
+This module defines the clauses of file description (FD) and sort-merge description (SD) entries: BLOCK
+CONTAINS, RECORD CONTAINS and RECORD VARYING, LABEL RECORDS, VALUE OF, DATA RECORDS, LINAGE with its FOOTING, TOP and
+BOTTOM phrases, CODE-SET, RECORDING MODE, EXTERNAL and GLOBAL. The clauses and the phrases of LINAGE may come in any
+order, and a checker rejects the combinations COBOL does not allow, for example clauses that are only valid for an
+FD. The REPORT clause of an FD is added by the ReportSection module.
+}
 module lang::cobol85::\syntax::FileDescriptionEntry
 
 extend lang::cobol85::\syntax::DataDescriptionEntry;

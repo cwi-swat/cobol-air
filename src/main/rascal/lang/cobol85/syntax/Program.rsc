@@ -22,6 +22,15 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{Composing an entire COBOL program from its constituents}
+@description{
+This module puts the four divisions together into a complete source program: the IDENTIFICATION DIVISION with
+PROGRAM-ID and the optional COMMON and INITIAL attributes, followed by the environment, data and procedure
+divisions, each optional, and REPLACE directives after the PROGRAM-ID paragraph. Nested programs follow the
+procedure division of the program that contains them, and each ends with END PROGRAM and its name; an outermost
+program needs END PROGRAM only when it contains nested programs. The module also brings in the intrinsic
+functions from the Functions module, so they can be used in expressions.
+}
 module lang::cobol85::\syntax::Program
 
 extend lang::cobol85::\syntax::ProcedureDivision;

@@ -22,6 +22,16 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The start nonterminal `Copybook` for parsing a copybook on its own.}
+@description{
+A copybook is a fragment of a program whose kind depends on where it is copied, so it can not be parsed with
+the start nonterminal for whole programs. This module defines `Copybook` with one alternative per kind of complete
+fragment: procedure paragraphs and sections, data description entries, the clauses of a file description,
+environment division entries, the remaining divisions after the environment division header, and SPECIAL-NAMES
+content. A copybook that fits several alternatives parses as an ambiguity at the top, which
+`parseCobol85Copybook` accepts. A fragment that is only part of an entry or a statement, such as the end of a data
+description entry or a single operand, does not parse on its own.
+}
 module lang::cobol85::\syntax::Copybook
 
 extend lang::cobol85::\syntax::Main;

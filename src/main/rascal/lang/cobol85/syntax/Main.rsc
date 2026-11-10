@@ -22,6 +22,14 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The complete COBOL-85 grammar, with the start nonterminal `Cobol85` for a source file.}
+@description{
+This is the top module of the grammar. It extends all other syntax modules, including the optional Report
+Writer, and defines the start nonterminal `Cobol85`: a source file is a list of one or more programs, each ending
+with or without END PROGRAM. Clients parse with this start nonterminal, preferably through the parse functions of
+the Parser module, which run the preprocessor first; the preprocessor fills the margins and glues continuation
+lines in the way the grammar expects. The Copybook module offers a second start nonterminal for copybooks.
+}
 module lang::cobol85::\syntax::Main
 
 extend lang::cobol85::\syntax::Program;

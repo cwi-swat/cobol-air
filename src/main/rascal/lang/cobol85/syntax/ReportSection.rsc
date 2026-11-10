@@ -22,16 +22,19 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{Cobol84 Report syntax: REPORT clause for FileDescriptionEntry, Report sections with contents}
+@description{
+The Report Writer: the REPORT clause of FD entries, the REPORT SECTION with RD entries and report group
+descriptions, the INITIATE, GENERATE, TERMINATE and SUPPRESS statements, USE BEFORE REPORTING, and the
+LINE-COUNTER and PAGE-COUNTER special registers.
+
+This feature is not part of VS COBOL II. It was part of COBOL-68 and COBOL-74 (and IBM's OS/VS COBOL), and
+is the optional Report Writer module of COBOL-85 (ANSI X3.23-1985), which this module follows. VS COBOL II
+dropped it; IBM offered a separate Report Writer precompiler instead. COBOL 2002 added more clauses
+(e.g. OCCURS and PRESENT WHEN in report groups) that are not included here.
+}
 module lang::cobol85::\syntax::ReportSection
 
-// The Report Writer: the REPORT clause of FD entries, the REPORT SECTION with RD entries and report group
-// descriptions, the INITIATE, GENERATE, TERMINATE and SUPPRESS statements, USE BEFORE REPORTING, and the
-// LINE-COUNTER and PAGE-COUNTER special registers.
-//
-// This feature is not part of VS COBOL II. It was part of COBOL-68 and COBOL-74 (and IBM's OS/VS COBOL), and
-// is the optional Report Writer module of COBOL-85 (ANSI X3.23-1985), which this module follows. VS COBOL II
-// dropped it; IBM offered a separate Report Writer precompiler instead. COBOL 2002 added more clauses
-// (e.g. OCCURS and PRESENT WHEN in report groups) that are not included here.
 extend lang::cobol85::\syntax::DataDivision;
 extend lang::cobol85::\syntax::Statement;
 

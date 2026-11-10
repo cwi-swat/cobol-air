@@ -22,6 +22,16 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{Whitespace, separators, comment lines and the preprocessed margins of fixed-format COBOL source.}
+@description{
+This module defines the layout that the parser skips between tokens: spaces, tabs and newlines, the separator
+comma and semicolon, comment lines (a `*` or `/` in the indicator column), and the margins. The preprocessor
+replaces the sequence number area (columns 1-6) and the identification area (from column 73) by U+E000, one code
+point per column, so source offsets stay the same and the margins can be recognized as comment layout; this is why
+an editor shows the original sequence numbers as comments. The module also accepts the `-` indicator of a
+continuation line as layout. Every other module builds on this one, so any lexical or restriction elsewhere that
+looks for whitespace must accept U+E000 as well.
+}
 module lang::cobol85::\syntax::Layout
 
 layout LAYOUTLIST = LAYOUT* !>> [\t-\n\ ,;\uE000];

@@ -22,6 +22,14 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The DATA DIVISION and its sections: FILE, WORKING-STORAGE, LINKAGE and COMMUNICATION.}
+@description{
+This module composes the data division from the file, working-storage, linkage and communication sections,
+which may come in any order; a checker rejects the orders COBOL does not allow. The FILE SECTION contains FD and SD
+entries, each followed by its record descriptions, and the clauses of an FD may also come from a copybook. The
+other sections contain data description entries from the DataDescriptionEntry module, and the communication
+section its CD entries. The REPORT SECTION is added to this division by the ReportSection module.
+}
 module lang::cobol85::\syntax::DataDivision
 
 extend lang::cobol85::\syntax::FileDescriptionEntry;
@@ -39,7 +47,7 @@ keyword CobwordKeywords
 
 syntax FileSectionEntry
     = fd: AltFdSd Id FileAndSortDescriptionEntryClause* "." DataDescriptionEntry+
-    | fd: AltFdSd Id CopyStatement DataDescriptionEntry*
+    | fdCopied: AltFdSd Id CopyStatement DataDescriptionEntry*
     // the clauses come from a copybook
     ;
 

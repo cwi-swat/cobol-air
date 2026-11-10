@@ -22,6 +22,16 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The COMMUNICATION SECTION: CD entries for message input and output.}
+@description{
+This module defines the communication description (CD) entries of the COMMUNICATION SECTION, for programs that
+exchange messages with a message control system. A CD entry is FOR INPUT, FOR INITIAL INPUT or FOR OUTPUT, and names the data
+items of its communication area: for input the symbolic queue and sub-queues, message date and time, source, text
+length, end key, status key and message count, and for output the destination count, text length, status key,
+destination table and error key. The input form can also list its eleven data names by position, without the
+clause keywords. Record descriptions may follow each CD entry. The statements that use these areas, such as SEND,
+RECEIVE, ENABLE and DISABLE, are in the Statement module.
+}
 module lang::cobol85::\syntax::CommunicationSection
 
 extend lang::cobol85::\syntax::Expression;

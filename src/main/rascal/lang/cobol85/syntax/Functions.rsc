@@ -22,14 +22,17 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{Intrinsic functions, as in `COMPUTE X = FUNCTION SQRT(Y)` or `MOVE FUNCTION CURRENT-DATE(1:8) TO D`.}
+@description{
+Intrinsic functions, as in `COMPUTE X = FUNCTION SQRT(Y)` or `MOVE FUNCTION CURRENT-DATE(1:8) TO D`.
+
+This feature is not part of VS COBOL II. It was introduced by the Intrinsic Function Module
+amendment to COBOL-85 (ANSI X3.23a-1989, ISO 1989:1985/Amd 1:1992), which defines the 42
+functions below. IBM first supported it in COBOL/370; later standards (COBOL 2002, 2014)
+added many more functions that are not included here.
+}
 module lang::cobol85::\syntax::Functions
 
-// Intrinsic functions, as in `COMPUTE X = FUNCTION SQRT(Y)` or `MOVE FUNCTION CURRENT-DATE(1:8) TO D`.
-//
-// This feature is not part of VS COBOL II. It was introduced by the Intrinsic Function Module
-// amendment to COBOL-85 (ANSI X3.23a-1989, ISO 1989:1985/Amd 1:1992), which defines the 42
-// functions below. IBM first supported it in COBOL/370; later standards (COBOL 2002, 2014)
-// added many more functions that are not included here.
 extend lang::cobol85::\syntax::Expression;
 
 keyword CobwordKeywords

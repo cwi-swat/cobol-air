@@ -22,6 +22,17 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{Arithmetic expressions, operands, identifiers, literals and the COPY statement.}
+@description{
+This module defines the recursive `Expression` nonterminal for arithmetic: identifiers, literals, brackets,
+unary plus and minus, `**`, `*`, `/`, `+` and `-`, with the COBOL-85 priorities and associativity. The conditions in
+the Condition module continue the same priority chain, so conditions and arithmetic are one nonterminal and a later
+checker rejects the expressions COBOL does not allow in a place. `Operand` is an expression in a list of operands,
+such as function arguments, subscripts or the sending fields of DISPLAY and ADD; the `EndOperand` guard decides by
+longest match where one operand ends and the next begins. The module further defines qualified data names with
+IN or OF, subscripts and reference modification, figurative constants such as ZERO and HIGH-VALUES, procedure and
+section names, and the COPY statement with its REPLACING phrase, which can appear in many places of a program.
+}
 module lang::cobol85::\syntax::Expression
 
 extend lang::cobol85::\syntax::Lexical;

@@ -22,6 +22,15 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The INPUT-OUTPUT SECTION: FILE-CONTROL entries and I-O-CONTROL entries.}
+@description{
+This module defines the SELECT entries of the FILE-CONTROL paragraph, which connect a file name to external
+storage with ASSIGN and describe it with clauses for organization (sequential, relative, indexed), access mode,
+record and alternate record keys, relative key, file status, reserved areas, padding character, record delimiter
+and password. The clauses may come in any order, also before ASSIGN, as some programs write them. The module also
+defines the entries of the I-O-CONTROL paragraph: RERUN, SAME AREA (also SAME RECORD and SAME SORT AREA), MULTIPLE
+FILE TAPE and APPLY. Orders and combinations that COBOL does not allow are left to a checker.
+}
 module lang::cobol85::\syntax::InputOutputSection
 
 extend lang::cobol85::\syntax::FileDescriptionEntry;

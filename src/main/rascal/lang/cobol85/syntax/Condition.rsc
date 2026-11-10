@@ -22,6 +22,17 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{Conditions: sign, class, relation and combined conditions, continuing the arithmetic Expression.}
+@description{
+This module extends `Expression` with the COBOL-85 conditions, below the arithmetic operators in one priority
+chain: sign conditions (POSITIVE, NEGATIVE, ZERO) and class conditions (NUMERIC, ALPHABETIC, a class name) bind
+strongest, then the relation conditions in words and in symbols (`GREATER THAN`, `>=`, `NOT EQUAL TO`), then
+abbreviated relations without a subject, then NOT, AND and OR. Abbreviated combined relation conditions such as
+`A > B AND < C` parse with the subject left out, and back ends supply it. Because Rascal priorities do not filter
+every unwanted reading, the guard nonterminals `NotArithmetic` and `NotEqualSign` prevent a sign or class condition
+from being read as an operand of arithmetic, and `< = B` from being read as an abbreviated relation. The grammar
+accepts more condition forms than COBOL allows in some places, which a checker can reject later.
+}
 module lang::cobol85::\syntax::Condition
 
 extend lang::cobol85::\syntax::Expression;

@@ -22,6 +22,15 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The ENVIRONMENT DIVISION as one flat list of its sections, paragraphs and entries.}
+@description{
+This module composes the environment division from the configuration section and the input-output section.
+Instead of nesting sections, paragraphs and entries, `EnvironmentDivision` is one flat list of `EnvironmentEntry`
+items in any order: section headers, the SOURCE-COMPUTER, OBJECT-COMPUTER, SPECIAL-NAMES, FILE-CONTROL and
+I-O-CONTROL paragraphs, SELECT and I-O-CONTROL entries, and COPY statements. The flat list gives a COPY statement
+exactly one place to go, wherever it occurs between entries, and keeps the grammar unambiguous for copybooks that
+contain the rest of a paragraph or of the division. A checker can reject the orders COBOL does not allow.
+}
 module lang::cobol85::\syntax::EnvironmentDivision
 
 extend lang::cobol85::\syntax::ConfigurationSection;

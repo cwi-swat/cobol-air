@@ -22,6 +22,15 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 }
+@synopsis{The CONFIGURATION SECTION: SOURCE-COMPUTER, OBJECT-COMPUTER and SPECIAL-NAMES.}
+@description{
+This module defines the paragraphs of the configuration section in the environment division. SOURCE-COMPUTER
+and OBJECT-COMPUTER take their clauses, such as WITH DEBUGGING MODE, MEMORY SIZE, PROGRAM COLLATING SEQUENCE and
+SEGMENT-LIMIT, in any order. SPECIAL-NAMES relates implementor names to mnemonic names and switch status
+conditions, and defines alphabets, symbolic characters, class names, the currency sign and DECIMAL-POINT IS COMMA.
+Alphabet definitions list single characters, ranges and characters of the same collating position. Clause orders
+and combinations that COBOL does not allow are accepted here and left to a checker.
+}
 module lang::cobol85::\syntax::ConfigurationSection
 
 extend lang::cobol85::\syntax::Condition;
