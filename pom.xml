@@ -29,7 +29,7 @@
       <dependency>
           <groupId>org.rascalmpl</groupId>
           <artifactId>rascal</artifactId>
-          <version>0.43.1-RC1</version>
+          <version>0.43.1-RC2-SNAPSHOT</version>
       </dependency>
       <dependency>
           <groupId>org.rascalmpl</groupId>
@@ -59,11 +59,12 @@
         <artifactId>rascal-maven-plugin</artifactId>
         <version>0.32.2</version>
         <configuration>
-          <errorsAsWarnings>true</errorsAsWarnings>
-          <bin>${project.build.outputDirectory}</bin>
-          <srcs>
-            <src>${project.basedir}/src/main/rascal</src>
-          </srcs>
+            <errorsAsWarnings>true</errorsAsWarnings>
+            <memory>4G</memory>
+            <bin>${project.build.outputDirectory}</bin>
+            <srcs>
+                <src>${project.basedir}/src/main/rascal</src>
+            </srcs>
       </configuration>
       <executions>
           <execution>
