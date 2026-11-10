@@ -37,6 +37,10 @@ Rascal grammar and analysis library for COBOL-85 (IBM VS COBOL II dialect). Gram
   nonterminal; rules without literals are named after their main nonterminal; escape Rascal keywords (`\if`).
 - Reserved words: every module declares `keyword CobwordKeywords` for the words its own productions use (sorted, one per
   line). A new keyword goes into every module that uses it.
+- Definition order within a module: dependency order, top nonterminal first; the members of a strongly connected
+  component next to each other; a nonterminal right after its last user in the module, so that what the current
+  definition uses and the next one does not comes in between; `keyword CobwordKeywords` last. Comments directly above
+  a definition belong to it.
 - New features go in separate modules (e.g. `Functions.rsc`), with a comment on when the feature was introduced.
 - The preprocessor keeps all offsets and fills the margins (columns 1-6 and from 73) with U+E000. Any lexical or
   restriction that looks for whitespace must also accept `\uE000`.
