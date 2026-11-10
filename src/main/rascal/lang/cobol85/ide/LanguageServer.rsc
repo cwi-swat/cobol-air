@@ -4,7 +4,6 @@ import ParseTree;
 import util::LanguageServer;
 import util::Reflective;
 import lang::cobol85::\syntax::Main;
-import lang::cobol85::\syntax::Preprocess;
 import lang::cobol85::Parser;
 
 set[LanguageService] contributions() = {

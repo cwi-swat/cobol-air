@@ -66,7 +66,7 @@ void inlineDummies() {
                 // optional named
                 case p:(Prod)`<ProdModifier* ms2_> <Name n>: <Nonterminal nt>? <Sym* ss12>`
                     => (Prod)`<ProdModifier* ms2_> <Name n>: <Sym* ss12>
-                            ' | <ProdModifier* ms2> <Name n>: <Sym* toInsert>  <Sym* ss12>`
+                            ' | <ProdModifier* ms2_> <Name n>: <Sym* toInsert>  <Sym* ss12>`
                     when "<nt>" in defs, Sym* toInsert := defs["<nt>"].syms, makeDone(p, "<nt>")
 
                 // optional unnamed
