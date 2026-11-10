@@ -2,7 +2,7 @@ module lang::cobol85::Parser
 
 import lang::cobol85::\syntax::Main;
 import lang::cobol85::\syntax::Copybook;
-import lang::cobol85::\syntax::Preprocess;
+import lang::cobol85::Preprocess;
 import ParseTree;
 import IO;
 import Set;
