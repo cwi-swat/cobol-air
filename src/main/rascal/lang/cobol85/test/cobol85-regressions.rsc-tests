@@ -1,0 +1,311 @@
+@synopsis{Regression tests for the ambiguities that were fixed in the COBOL 85 grammar}
+@description{
+Every example must parse without ambiguity as the nonterminal in its header. The examples are preprocessed text:
+the margins (columns 1-6 and from column 73) are U+E000 characters, as `lang::cobol85::Preprocess` makes them.
+Add a test here for every ambiguity discovered.
+}
+module lang::cobol85::\test::Regressions
+
+import lang::cobol85::\syntax::Main;
+
+syntax test id1 (Id) expects ok {
+-Gnl
+}
+
+syntax test id2 (Id) expects ok {
+-X
+}
+
+syntax test cobolSourceProgram1 (CobolSourceProgram) expects ok {
+       IDENTIFICATION DIVISION.
+ PROGRAM-ID. AMBTEST.
+*    A COMMENT BEFORE THE ENVIRONMENT DIVISION
+ ENVIRONMENT DIVISION.
+ INPUT-OUTPUT SECTION.
+ FILE-CONTROL.
+     SELECT PRINT-FILE ASSIGN TO PRINTER.
+ DATA DIVISION.
+ FILE SECTION.
+*    A COMMENT BEFORE THE FD
+ FD  PRINT-FILE.
+ 01  PRINT-REC PIC X(120).
+ PROCEDURE DIVISION.
+*    A COMMENT BEFORE THE SECTION
+ MAIN SECTION.
+ MAIN-PARA.
+     STOP RUN.
+}
+
+syntax test cobolSourceProgram2 (CobolSourceProgram) expects ok {
+IDENTIFICATION DIVISION.
+ PROGRAM-ID. AMBTEST.
+*    NO IDENTIFICATION DIVISION CONTENT, AN EMPTY ENVIRONMENT DIVI
+ ENVIRONMENT DIVISION.
+*    A COMMENT
+ PROCEDURE DIVISION.
+ MAIN-PARA.
+     STOP RUN.
+}
+
+syntax test sentence1 (Sentence) expects ok {
+RETURN   SORT3 RECORD AT END
+              PERFORM PASS-3 GO TO SORT-WRITE-15.
+}
+
+syntax test sentence2 (Sentence) expects ok {
+ADD 1 TO X ON SIZE ERROR MOVE 1 TO E MOVE 2 TO F NOT ON SIZE ERROR MOVE 0 TO E.
+}
+
+syntax test sentence3 (Sentence) expects ok {
+WRITE R AT EOP MOVE 1 TO X MOVE 2 TO Y.
+}
+
+syntax test sentence4 (Sentence) expects ok {
+IF A = 1 READ F AT END MOVE 1 TO X ELSE MOVE 2 TO X.
+}
+
+syntax test sentence5 (Sentence) expects ok {
+CALL "SUB" ON OVERFLOW MOVE 1 TO X MOVE 2 TO Y.
+}
+
+syntax test dataDescriptionEntry1 (DataDescriptionEntry) expects ok {
+02 WRK-DS PIC 9(7)V99 VALUE IS 1234567,89.
+}
+
+syntax test dataDescriptionEntry2 (DataDescriptionEntry) expects ok {
+02 WRK-EDIT-005 PIC  9,9,9,9,9,9,9,9,9,9,9,9,.
+}
+
+syntax test dataDescriptionEntry3 (DataDescriptionEntry) expects ok {
+88 COND-A VALUE "AB""CD" "EF" 1, 2 THRU 5.
+}
+
+syntax test statement1 (Statement) expects ok {
+DISPLAY "AB""CD" "EF"
+}
+
+syntax test statement2 (Statement) expects ok {
+INSPECT WC-XN-83 TALLYING WRK-DU-999-1 FOR ALL "A"
+}
+
+syntax test statement3 (Statement) expects ok {
+INSPECT WC-XN-83 TALLYING WRK-DU-999-1 FOR ALL SPACES
+}
+
+syntax test statement4 (Statement) expects ok {
+UNSTRING ID1-XN-7 DELIMITED BY ZERO
+              INTO ID4-X DELIMITER IN ID5-XN-4
+              COUNT IN ID6-DU-2V0
+}
+
+syntax test expression1 (Expression) expects ok {
+ZERO-NULL NOT EQUAL TO HIGH-VALUE
+}
+
+syntax test expression2 (Expression) expects ok {
+ZERO-NULL + 1
+}
+
+syntax test statement5 (Statement) expects ok {
+EVALUATE WRK-DU-08V00
+        WHEN (33 + (99 - 43))
+             PERFORM PASS
+        WHEN NOT (33 + (99 - 43))
+             PERFORM FAIL
+        WHEN 3
+             PERFORM FAIL
+        WHEN FLAG-ON
+             PERFORM FAIL
+     END-EVALUATE
+}
+
+syntax test statement6 (Statement) expects ok {
+EVALUATE FUNCTION MOD(11, 5)
+     WHEN 1
+                    PERFORM PASS
+     WHEN OTHER
+                    PERFORM FAIL
+     END-EVALUATE
+}
+
+syntax test statement7 (Statement) expects ok {
+CALL "IC224A-1" USING BY CONTENT DN1, DN2, DN3, DN4
+}
+
+syntax test statement8 (Statement) expects ok {
+CALL ID1 USING DN0 CONTENT DN1, DN2 BY REFERENCE DN3 DN4
+}
+
+syntax test statement9 (Statement) expects ok {
+COMPUTE WS-NUM = FUNCTION MEAN(E, 9 * A, 0, B / 2)
+}
+
+syntax test statement10 (Statement) expects ok {
+COMPUTE WS-NUM = FUNCTION MEAN(-2.6, -4.4)
+}
+
+syntax test statement11 (Statement) expects ok {
+COMPUTE WS-NUM = FUNCTION MAX(E + 4, H * 2, 5 + A)
+}
+
+syntax test statement12 (Statement) expects ok {
+COMPUTE WS-NUM = FUNCTION MIN(A * B, (C + 1) / 2)
+}
+
+syntax test statement13 (Statement) expects ok {
+COMPUTE WS-NUM = FUNCTION MAX(0.89, B + 1) + FUNCTION MIN(.5, A + 2)
+}
+
+syntax test statement14 (Statement) expects ok {
+COMPUTE WS-NUM = FUNCTION MAX(1 - 1.01) + FUNCTION MAX(A (1)) + FUNCTION MAX(T(ALL))
+}
+
+syntax test identificationDivisionContent1 (IdentificationDivisionContent) expects ok {
+AUTHOR.
+     NIST.
+*    A COMMENT LINE BETWEEN COMMENT-ENTRY LINES
+     "4.2 ".
+/
+ SECURITY.
+     NONE.
+     SG104A IS A COMPLETELY SELF-CONTAINED PROGRAM.  THE INPUT
+     PROCEDURE BUILDS THE EIGHT-RECORD FILE SHOWN BELOW. THE
+     OUTPUT PROCEDURE CHECKS THE SORTED FILE AND GENERATES THE
+     REPORT.
+}
+
+syntax test useStatement1 (UseStatement) expects ok {
+USE FOR DEBUGGING ON ALL REFERENCES OF SEQ-REC-1  SEQ-REC-2
+}
+
+syntax test useStatement2 (UseStatement) expects ok {
+USE FOR DEBUGGING ON ALL REFERENCES OF FREC
+}
+
+syntax test useStatement3 (UseStatement) expects ok {
+USE FOR DEBUGGING ON P1 ALL REFERENCES OF A B ALL C
+}
+
+syntax test expression3 (Expression) expects ok {
+A >= B
+}
+
+syntax test expression4 (Expression) expects ok {
+A <= B
+}
+
+syntax test expression5 (Expression) expects ok {
+A > B OR >= C
+}
+
+syntax test expression6 (Expression) expects ok {
+A < B OR <= C AND NOT = D
+}
+
+syntax test expression7 (Expression) expects ok {
+KEY-2 IS EQUAL TO 1 OR 2
+}
+
+syntax test expression8 (Expression) expects ok {
+A NOT IS POSITIVE
+}
+
+syntax test expression9 (Expression) expects ok {
+A NOT IS ZEROS
+}
+
+syntax test expression10 (Expression) expects ok {
+B IS NOT MYCLASS
+}
+
+syntax test expression11 (Expression) expects ok {
+A GREATER THEN B
+}
+
+syntax test expression12 (Expression) expects ok {
+A > B AND LESS C
+}
+
+syntax test expression13 (Expression) expects ok {
+X EQUAL TO ZEROS AND GREATERZERO
+}
+
+syntax test expression14 (Expression) expects ok {
+-5 - -5 * - A
+}
+
+syntax test fileAndSortDescriptionEntryClause1 (FileAndSortDescriptionEntryClause) expects ok {
+LINAGE IS 60 LINES WITH FOOTING AT 55 LINES AT TOP 5 LINES AT BOTTOM 2
+}
+
+syntax test fileAndSortDescriptionEntryClause2 (FileAndSortDescriptionEntryClause) expects ok {
+LINAGE 60 LINES TOP 5
+}
+
+syntax test copyStatement1 (CopyStatement) expects ok {
+COPY KSM31 REPLACING ==PERFORM== BY MOVE ZERO BY SPACE.
+}
+
+syntax test statement15 (Statement) expects ok {
+SEARCH ALL T WHEN K1 (I) = A AND K2 (I) = B AND C MOVE 1 TO X END-SEARCH
+}
+
+syntax test statement16 (Statement) expects ok {
+UNSTRING ID1-XN-12
+             DELIMITED BY "E" OR "H" OR "K" OR "L"
+             INTO ID4C-XXX ID4B-XX ID4A-X
+             TALLYING IN ID11-DU-2V0
+}
+
+syntax test statement17 (Statement) expects ok {
+INSPECT WRK-XN-83-1
+         REPLACING LEADING "AH" BY "OH" BEFORE INITIAL " AH YES"
+                   FIRST "I" BY "O" AFTER INITIAL "."
+                   ALL ". " BY ", " AFTER INITIAL "HE"
+}
+
+syntax test sentence6 (Sentence) expects ok {
+DISPLAY  ALL "ABCD"
+*        NOTE "ALL" LITERAL.
+     MOVE     "ABCD" TO DIS-PLAYER.
+}
+
+syntax test statement18 (Statement) expects ok {
+DISPLAY A (1) B (I + 1, J - 1) -1 C ZERO "X"
+}
+
+syntax test statement19 (Statement) expects ok {
+ADD A B (1) 3 TO C ROUNDED D
+}
+
+syntax test statement20 (Statement) expects ok {
+SET A B TO C D TO E
+}
+
+syntax test sentence7 (Sentence) expects ok {
+WRITE R AT EOP MOVE 1 TO X WRITE S INVALID KEY MOVE 2 TO Y.
+}
+
+syntax test sentence8 (Sentence) expects ok {
+CALL "SUB" ON OVERFLOW MOVE 1 TO X CALL "SUB2" ON EXCEPTION MOVE 2 TO X.
+}
+
+syntax test sentence9 (Sentence) expects ok {
+ADD 1 TO X ON SIZE ERROR ADD 1 TO Y NOT ON SIZE ERROR MOVE 0 TO Z.
+}
+
+syntax test sentence10 (Sentence) expects ok {
+CALL "A" ON EXCEPTION CALL "B" NOT ON EXCEPTION MOVE 1 TO X.
+}
+
+syntax test sentence11 (Sentence) expects ok {
+READ F AT END READ G NOT AT END MOVE 1 TO X.
+}
+
+syntax test sentence12 (Sentence) expects ok {
+ADD 1 TO X ON SIZE ERROR ADD 1 TO Y ON SIZE ERROR MOVE 1 TO Z END-ADD NOT ON SIZE ERROR MOVE 0 TO Z.
+}
+
+syntax test sentence13 (Sentence) expects ok {
+ADD 1 TO X ON SIZE ERROR ADD 1 TO Y END-ADD.
+}

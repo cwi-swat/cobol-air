@@ -54,14 +54,15 @@ Rascal grammar and analysis library for COBOL-85 (IBM VS COBOL II dialect). Gram
 - Find the first ambiguity quickly with `firstAmbiguity(#start[Cobol85], preprocess(readFile(file)))`, then explain it
   with `diagnose(tree)` from `analysis::grammars::Ambiguity`. A full parse followed by `diagnose` crashes on `amb` nodes
   without source locations.
-- Register every ambiguity found, once it is fixed, as an example in `src/main/rascal/lang/cobol85/test/regressions.dra`
-  with the smallest nonterminal that shows it (`Statement`, `Sentence`, `Expression`, ...), preferably with the real
-  NIST lines. Format: `<input, sort("X"), nothing(), "no amb.">` appended to `m.examples`; read and write it with
-  `readTextValueFile(#Model, loc)` / `writeTextValueFile` (the calling module must import `ParseTree` and
-  `util::Maybe`). Check each example with `reparse(#Cobol85, sym, text)` from `analysis::grammars::dramb::Util` first;
-  the regression test fails on any stored example that is still ambiguous.
-- Snippets with comment lines or margins: write the fixed-format lines, run `preprocess`, and trim the leading and
-  trailing U+E000 and whitespace.
+- Register every ambiguity found, once it is fixed, as a test in
+  `src/main/rascal/lang/cobol85/test/cobol85-regressions.rsc-tests`, with the smallest nonterminal that shows it
+  (`Statement`, `Sentence`, `Expression`, ...), preferably with the real NIST lines:
+  `syntax test statement21 (Statement) expects ok {` on one line, the example on the next lines without indentation
+  (it would become part of the input), and `}` on its own line. Curlies in the example are written `\{` and `\}`.
+  The runner is `analysis::grammars::ParserTesting::reportParserTestModule` (Rascal 0.43.2 and later).
+- Examples are preprocessed text. Snippets with comment lines or margins: write the fixed-format lines, run
+  `preprocess`, and trim the leading and trailing U+E000 and whitespace; the U+E000 inside the snippet stay as raw
+  characters, because the test file takes the example literally.
 
 ## Known Rascal pitfalls
 

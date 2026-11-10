@@ -1,19 +1,13 @@
 module lang::cobol85::\test::AmbiguityRegressionTest
 
-import analysis::grammars::dramb::Model;
-import analysis::grammars::dramb::Regression;
-import lang::cobol85::\syntax::Main;
-import IO;
-import ValueIO;
-// readTextValueFile builds the constructors it reads (type, prod, just, ...) from the definitions in scope here
-import ParseTree;
-import util::Maybe;
+import analysis::grammars::ParserTesting;
+import util::Reflective;
 
-@synopsis{Run the stored examples in regressions.dra against the current grammar}
+@synopsis{Run the regression tests in cobol85-regressions.rsc-tests against the current grammar}
 @description{
-If the tests fail, then run `drAmbiguity(|project://cobol-air/src/main/rascal/lang/cobol85/test/regressions.dra|)` to diagnose and fix the errors.
-Add more tests by "stashing" more examples in the model and press "file->save" in DrAmbiguity.
-The model is stored as a textual value, the format that `drAmbiguity(loc)` reads.
+Every test in `cobol85-regressions.rsc-tests` is an ambiguity that was fixed: an example that must parse without
+ambiguity as the nonterminal in its header. Failing tests are reported with their location in the test file.
+Diagnose a failing example with `firstAmbiguity` and `diagnose` from `analysis::grammars::Ambiguity`.
 }
-test bool runRegressionTests() = runRegressionTests(#Cobol85, readTextValueFile(#Model, model)) == []
-  when {loc model} := findResources(|relative:///lang/cobol85/test/regressions.dra|);
+test bool runRegressionTests()
+    = reportParserTestModule(|project://cobol-air/src/main/rascal/lang/cobol85/test/cobol85-regressions.rsc-tests|, pcfg=getProjectPathConfig(|project://cobol-air|));
