@@ -38,77 +38,6 @@ module lang::cobol85::\syntax::ReportSection
 extend lang::cobol85::\syntax::DataDivision;
 extend lang::cobol85::\syntax::Statement;
 
-// the reserved words of the Report Writer module
-keyword CobwordKeywords
-    = 'ARE'
-    | 'BEFORE'
-    | 'BLANK'
-    | 'CF'
-    | 'CH'
-    | 'CHARACTER'
-    | 'CODE'
-    | 'COLUMN'
-    | 'CONTROL'
-    | 'CONTROLS'
-    | 'DE'
-    | 'DETAIL'
-    | 'FINAL'
-    | 'FIRST'
-    | 'FOOTING'
-    | 'GENERATE'
-    | 'GLOBAL'
-    | 'GROUP'
-    | 'HEADING'
-    | 'INDICATE'
-    | 'INITIATE'
-    | 'IS'
-    | 'LAST'
-    | 'LIMIT'
-    | 'LIMITS'
-    | 'LINE'
-    | 'LINE-COUNTER'
-    | 'LINES'
-    | 'NEXT'
-    | 'NUMBER'
-    | 'ON'
-    | 'PAGE'
-    | 'PAGE-COUNTER'
-    | 'PF'
-    | 'PH'
-    | 'PLUS'
-    | 'PRINTING'
-    | 'RD'
-    | 'REPORT'
-    | 'REPORTING'
-    | 'REPORTS'
-    | 'RESET'
-    | 'RF'
-    | 'RH'
-    | 'RIGHT'
-    | 'SECTION'
-    | 'SEPARATE'
-    | 'SIGN'
-    | 'SOURCE'
-    | 'SUM'
-    | 'SUPPRESS'
-    | 'TERMINATE'
-    | 'TYPE'
-    | 'UPON'
-    | 'USAGE'
-    | 'USE'
-    | 'VALUE'
-    | 'WHEN'
-    ;
-
-// FD PRINT-FILE REPORT IS SALES-REPORT.
-syntax FileAndSortDescriptionEntryClause
-    = report: 'REPORT' 'IS'? Id+
-    | report: 'REPORTS' 'ARE'? Id+
-    ;
-
-// the records of a report file are described by its report groups, so its FD has no record descriptions
-syntax FileSectionEntry = reportFd: AltFdSd Id FileAndSortDescriptionEntryClause* ".";
-
 syntax DataSection = report: ReportSection;
 
 syntax ReportSection = reportSection: 'REPORT' 'SECTION' "." ReportDescription*;
@@ -206,14 +135,25 @@ syntax ReportGroupType
     | reportFooting: 'RF'
     ;
 
+syntax UponPhrase = upon: 'UPON' Id+;
+
+syntax ResetPhrase = reset: 'RESET' 'ON'? ControlName;
+
 syntax ControlName
     = final: 'FINAL'
     | dataName: Id
     ;
 
-syntax UponPhrase = upon: 'UPON' Id+;
+// the records of a report file are described by its report groups, so its FD has no record descriptions
+syntax FileSectionEntry = reportFd: AltFdSd Id FileAndSortDescriptionEntryClause* ".";
 
-syntax ResetPhrase = reset: 'RESET' 'ON'? ControlName;
+// FD PRINT-FILE REPORT IS SALES-REPORT.
+syntax FileAndSortDescriptionEntryClause
+    = report: 'REPORT' 'IS'? Id+
+    | report: 'REPORTS' 'ARE'? Id+
+    ;
+
+syntax UseStatement = useBefore: 'USE' 'GLOBAL'? 'BEFORE' 'REPORTING' Identifier;
 
 syntax Identifier
     = lineCounter: 'LINE-COUNTER'
@@ -231,4 +171,64 @@ syntax Statement
     | suppress: 'SUPPRESS' 'PRINTING'?
     ;
 
-syntax UseStatement = useBefore: 'USE' 'GLOBAL'? 'BEFORE' 'REPORTING' Identifier;
+// the reserved words of the Report Writer module
+keyword CobwordKeywords
+    = 'ARE'
+    | 'BEFORE'
+    | 'BLANK'
+    | 'CF'
+    | 'CH'
+    | 'CHARACTER'
+    | 'CODE'
+    | 'COLUMN'
+    | 'CONTROL'
+    | 'CONTROLS'
+    | 'DE'
+    | 'DETAIL'
+    | 'FINAL'
+    | 'FIRST'
+    | 'FOOTING'
+    | 'GENERATE'
+    | 'GLOBAL'
+    | 'GROUP'
+    | 'HEADING'
+    | 'INDICATE'
+    | 'INITIATE'
+    | 'IS'
+    | 'LAST'
+    | 'LIMIT'
+    | 'LIMITS'
+    | 'LINE'
+    | 'LINE-COUNTER'
+    | 'LINES'
+    | 'NEXT'
+    | 'NUMBER'
+    | 'ON'
+    | 'PAGE'
+    | 'PAGE-COUNTER'
+    | 'PF'
+    | 'PH'
+    | 'PLUS'
+    | 'PRINTING'
+    | 'RD'
+    | 'REPORT'
+    | 'REPORTING'
+    | 'REPORTS'
+    | 'RESET'
+    | 'RF'
+    | 'RH'
+    | 'RIGHT'
+    | 'SECTION'
+    | 'SEPARATE'
+    | 'SIGN'
+    | 'SOURCE'
+    | 'SUM'
+    | 'SUPPRESS'
+    | 'TERMINATE'
+    | 'TYPE'
+    | 'UPON'
+    | 'USAGE'
+    | 'USE'
+    | 'VALUE'
+    | 'WHEN'
+    ;

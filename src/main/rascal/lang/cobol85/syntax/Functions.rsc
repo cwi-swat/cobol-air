@@ -35,21 +35,7 @@ module lang::cobol85::\syntax::Functions
 
 extend lang::cobol85::\syntax::Expression;
 
-keyword CobwordKeywords
-    = 'ALL'
-    | 'FUNCTION'
-    | 'LENGTH'
-    | 'RANDOM'
-    ;
-
 syntax Identifier = \function: 'FUNCTION' FunctionName !>> [A-Za-z0-9\-] FunctionArguments? ReferenceModification?;
-
-syntax FunctionArguments = brackets: "(" Operand+ ")";
-
-// the same amendment introduced ALL subscripts, to pass all elements of a table to a function: `FUNCTION MAX(T(ALL))`
-syntax SubscriptExpression = \all: 'ALL';
-
-syntax ReferenceModification = brackets: "(" Expression ":" Expression? ")";
 
 syntax FunctionName
     = 'ACOS'
@@ -94,4 +80,18 @@ syntax FunctionName
     | 'UPPER-CASE'
     | 'VARIANCE'
     | 'WHEN-COMPILED'
+    ;
+
+syntax FunctionArguments = brackets: "(" Operand+ ")";
+
+syntax ReferenceModification = brackets: "(" Expression ":" Expression? ")";
+
+// the same amendment introduced ALL subscripts, to pass all elements of a table to a function: `FUNCTION MAX(T(ALL))`
+syntax SubscriptExpression = \all: 'ALL';
+
+keyword CobwordKeywords
+    = 'ALL'
+    | 'FUNCTION'
+    | 'LENGTH'
+    | 'RANDOM'
     ;

@@ -36,25 +36,15 @@ module lang::cobol85::\syntax::IdentificationDivision
 
 extend lang::cobol85::\syntax::Expression;
 
-keyword CobwordKeywords
-    = 'AUTHOR'
-    | 'DATA'
-    | 'DATE-COMPILED'
-    | 'DATE-WRITTEN'
-    | 'ENVIRONMENT'
-    | 'ID'
-    | 'IDENTIFICATION'
-    | 'INSTALLATION'
-    | 'PROCEDURE'
-    | 'REMARKS'
-    | 'SECURITY'
-    ;
-
 syntax IdentificationDivisionContent = identificationDivisionPhrase: IdentificationDivisionPhrase*;
 
-syntax Identification
-    = id: 'ID'
-    | identification: 'IDENTIFICATION'
+syntax IdentificationDivisionPhrase
+    = security: 'SECURITY' "."? MetaDataContentLine*
+    | dateCompiled: 'DATE-COMPILED' "."? MetaDataContentLine*
+    | author: 'AUTHOR' "."? MetaDataContentLine*
+    | dateWritten: 'DATE-WRITTEN' "."? MetaDataContentLine*
+    | remarks: 'REMARKS' "."? MetaDataContentLine*
+    | installation: 'INSTALLATION' "."? MetaDataContentLine*
     ;
 
 // a comment-entry line, up to the margin (or the end of a line without one), so the margin stays layout
@@ -81,11 +71,21 @@ keyword NoIDKeyword
     | 'PROCEDURE'
     ;
 
-syntax IdentificationDivisionPhrase
-    = security: 'SECURITY' "."? MetaDataContentLine*
-    | dateCompiled: 'DATE-COMPILED' "."? MetaDataContentLine*
-    | author: 'AUTHOR' "."? MetaDataContentLine*
-    | dateWritten: 'DATE-WRITTEN' "."? MetaDataContentLine*
-    | remarks: 'REMARKS' "."? MetaDataContentLine*
-    | installation: 'INSTALLATION' "."? MetaDataContentLine*
+syntax Identification
+    = id: 'ID'
+    | identification: 'IDENTIFICATION'
+    ;
+
+keyword CobwordKeywords
+    = 'AUTHOR'
+    | 'DATA'
+    | 'DATE-COMPILED'
+    | 'DATE-WRITTEN'
+    | 'ENVIRONMENT'
+    | 'ID'
+    | 'IDENTIFICATION'
+    | 'INSTALLATION'
+    | 'PROCEDURE'
+    | 'REMARKS'
+    | 'SECURITY'
     ;

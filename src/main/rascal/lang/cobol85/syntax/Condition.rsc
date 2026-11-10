@@ -37,42 +37,6 @@ module lang::cobol85::\syntax::Condition
 
 extend lang::cobol85::\syntax::Expression;
 
-keyword CobwordKeywords
-    = 'ALPHABETIC'
-    | 'ALPHABETIC-LOWER'
-    | 'ALPHABETIC-UPPER'
-    | 'AND'
-    | 'DBCS'
-    | 'EQUAL'
-    | 'GREATER'
-    | 'IS'
-    | 'KANJI'
-    | 'LESS'
-    | 'NEGATIVE'
-    | 'NOT'
-    | 'NUMERIC'
-    | 'OR'
-    | 'POSITIVE'
-    | 'THAN'
-    | 'THEN'
-    | 'TO'
-    | 'ZERO'
-    | 'ZEROES'
-    | 'ZEROS'
-    ;
-
-syntax GreaterThanOrEqualTo
-    = greaterThan: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'?
-    | notLessThan: 'NOT' 'LESS' 'THAN'?
-    | greaterThanOrEqual: "\>="
-    | notLessThanSign: 'NOT' "\<"
-    ;
-
-syntax GreaterThan
-    = greaterThanSign: "\>"
-    | greaterThan: 'GREATER' 'THAN'?
-    ;
-
 // conditions bind weaker than arithmetic; among the conditions (COBOL-85) sign and class conditions bind strongest,
 // then relations, then NOT, then AND, and OR binds weakest
 syntax Expression
@@ -158,3 +122,39 @@ syntax NotArithmetic = () !>> [*/+\-];
 
 // priorities do not keep the abbreviated `= B` out of `A < = B` and `A > = B`, so `<` and `>` exclude it here
 syntax NotEqualSign = () !>> "=";
+
+syntax GreaterThanOrEqualTo
+    = greaterThan: 'GREATER' 'THAN'? 'OR' 'EQUAL' 'TO'?
+    | notLessThan: 'NOT' 'LESS' 'THAN'?
+    | greaterThanOrEqual: "\>="
+    | notLessThanSign: 'NOT' "\<"
+    ;
+
+syntax GreaterThan
+    = greaterThanSign: "\>"
+    | greaterThan: 'GREATER' 'THAN'?
+    ;
+
+keyword CobwordKeywords
+    = 'ALPHABETIC'
+    | 'ALPHABETIC-LOWER'
+    | 'ALPHABETIC-UPPER'
+    | 'AND'
+    | 'DBCS'
+    | 'EQUAL'
+    | 'GREATER'
+    | 'IS'
+    | 'KANJI'
+    | 'LESS'
+    | 'NEGATIVE'
+    | 'NOT'
+    | 'NUMERIC'
+    | 'OR'
+    | 'POSITIVE'
+    | 'THAN'
+    | 'THEN'
+    | 'TO'
+    | 'ZERO'
+    | 'ZEROES'
+    | 'ZEROS'
+    ;
