@@ -50,7 +50,7 @@
         <version>3.1.1</version>
         <configuration>
           <tagNameFormat>v@{project.version}</tagNameFormat>
-          <arguments>-Drascal.compile.skip -DskipTests -Drascal.test.skip -Drascal.tutor.skip</arguments>
+          <arguments>-Drascal.compile.skip -DskipTests -Drascal.test.skip -Drascal.tutor.skip -Drascal.package.skip</arguments>
         </configuration>
       </plugin>
       <plugin>
