@@ -103,7 +103,7 @@
                   <sources>|http://github.com/cwi-swat/cobol-air/blob/main|</sources>
                   <issues>|http://github.com/cwi-swat/cobol-air/issues|</issues>
                   <srcs>
-                      <src>${project.basedir}/src</src>
+                      <src>${project.basedir}/src/main/rascal</src>
                       <src>${project.basedir}/courses/ToDo</src>
                   </srcs>
                   <ignores>
